@@ -1,13 +1,13 @@
 ﻿using BossrApi.Models.Interfaces;
-using BossrApi.Services.Security.HashGeneratorService;
+using BossrApi.Services.HashGenerator;
 
-namespace BossrApi.Services.Security.PasswordValidatorService
+namespace BossrApi.Services.PasswordValidator
 {
-    public class PasswordValidatorService : IPasswordValidatorService
+    public class PasswordValidator : IPasswordValidator
     {
-        private readonly IHashGeneratorService hashGeneratorService;
+        private readonly IHashGenerator hashGeneratorService;
 
-        public PasswordValidatorService(IHashGeneratorService hashGeneratorService)
+        public PasswordValidator(IHashGenerator hashGeneratorService)
         {
             this.hashGeneratorService = hashGeneratorService;
         }

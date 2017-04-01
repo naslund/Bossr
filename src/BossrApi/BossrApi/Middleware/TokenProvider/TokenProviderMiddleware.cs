@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using BossrApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using BossrApi.Models.Responses;
 using BossrApi.Repositories.UserRepository;
-using BossrApi.Services.Security.PasswordValidatorService;
 using BossrApi.Services.ResponseWriter;
+using BossrApi.Services.PasswordValidator;
+using BossrApi.Services.TokenGenerator;
 
 namespace BossrApi.Middleware.TokenProvider
 {
@@ -17,7 +17,7 @@ namespace BossrApi.Middleware.TokenProvider
         private readonly TokenProviderOptions options;
         private readonly IResponseWriter responseWriter;
         private readonly IUserRepository userRepository;
-        private readonly IPasswordValidatorService passwordValidatorService;
+        private readonly IPasswordValidator passwordValidator;
         private readonly ITokenGenerator tokenGenerator;
 
         public TokenProviderMiddleware(
@@ -25,14 +25,14 @@ namespace BossrApi.Middleware.TokenProvider
             IOptions<TokenProviderOptions> options,
             IResponseWriter responseWriter,
             IUserRepository userRepository,
-            IPasswordValidatorService passwordValidatorService,
+            IPasswordValidator passwordValidator,
             ITokenGenerator tokenGenerator)
         {
             this.next = next;
             this.options = options.Value;
             this.responseWriter = responseWriter;
             this.userRepository = userRepository;
-            this.passwordValidatorService = passwordValidatorService;
+            this.passwordValidator = passwordValidator;
             this.tokenGenerator = tokenGenerator;
         }
 
@@ -55,7 +55,7 @@ namespace BossrApi.Middleware.TokenProvider
             var password = context.Request.Form["password"];
 
             var user = await userRepository.ReadAsync(username);
-            if (!passwordValidatorService.IsPasswordValid(user, password))
+            if (!passwordValidator.IsPasswordValid(user, password))
             {
                 var response = new MessageResponse { Message = "Invalid username or password." };
                 await responseWriter.WriteResponseAsync(context, HttpStatusCode.BadRequest, response);

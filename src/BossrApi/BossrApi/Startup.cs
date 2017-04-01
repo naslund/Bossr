@@ -10,14 +10,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BossrApi.Middleware.TokenProvider;
-using BossrApi.Services.Security.HashGeneratorService;
-using BossrApi.Services.Security.PasswordValidatorService;
-using BossrApi.Services.Security.SaltGeneratorService;
 using BossrApi.Repositories.UserRepository;
 using BossrApi.Models.Interfaces;
 using BossrApi.Models.Dtos;
-using BossrApi.Repositories;
-using BossrApi.Services;
+using BossrApi.Services.ResponseWriter;
+using BossrApi.Services.HashGenerator;
+using BossrApi.Services.PasswordValidator;
+using BossrApi.Services.SaltGenerator;
 
 namespace BossrApi
 {
@@ -42,9 +41,9 @@ namespace BossrApi
             
             services.AddTransient<IUserRepository, UserRepository>();
             
-            services.AddTransient<IHashGeneratorService, HashGeneratorService>();
-            services.AddTransient<IPasswordValidatorService, PasswordValidatorService>();
-            services.AddTransient<ISaltGeneratorService, SaltGeneratorService>();
+            services.AddTransient<IHashGenerator, HashGenerator>();
+            services.AddTransient<IPasswordValidator, PasswordValidator>();
+            services.AddTransient<ISaltGenerator, SaltGenerator>();
 
             services.AddTransient<IResponseWriter, ResponseWriter>();
             

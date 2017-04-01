@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace BossrApi.Services.Security.SaltGeneratorService
+namespace BossrApi.Services.SaltGenerator
 {
-    public class SaltGeneratorService : ISaltGeneratorService
+    public class SaltGenerator : ISaltGenerator
     {
         public string GenerateSalt()
         {

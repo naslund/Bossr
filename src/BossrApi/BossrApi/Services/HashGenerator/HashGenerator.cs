@@ -3,9 +3,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BossrApi.Services.Security.HashGeneratorService
+namespace BossrApi.Services.HashGenerator
 {
-    public class HashGeneratorService : IHashGeneratorService
+    public class HashGenerator : IHashGenerator
     {
         public string GenerateSaltedHash(string password, string salt)
         {

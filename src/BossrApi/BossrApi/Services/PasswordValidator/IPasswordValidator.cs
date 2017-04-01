@@ -1,8 +1,8 @@
 ﻿using BossrApi.Models.Interfaces;
 
-namespace BossrApi.Services.Security.PasswordValidatorService
+namespace BossrApi.Services.PasswordValidator
 {
-    public interface IPasswordValidatorService
+    public interface IPasswordValidator
     {
         bool IsPasswordValid(IUser user, string password);
     }
