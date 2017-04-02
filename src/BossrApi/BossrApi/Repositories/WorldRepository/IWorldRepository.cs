@@ -1,8 +1,5 @@
-﻿using BossrApi.Models;
-using BossrApi.Models.Pocos;
-using System;
+﻿using BossrApi.Models.Pocos;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BossrApi.Repositories.WorldRepository

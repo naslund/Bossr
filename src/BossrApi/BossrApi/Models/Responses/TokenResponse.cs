@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BossrApi.Models.Responses
+﻿namespace BossrApi.Models.Responses
 {
     public class TokenResponse
     {

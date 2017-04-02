@@ -1,12 +1,12 @@
-using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System.Linq;
+using BossrApi.Attributes;
+using BossrApi.Models.Dtos;
 using BossrApi.Models.Requests;
 using BossrApi.Repositories.UserRepository;
-using BossrApi.Models.Dtos;
-using BossrApi.Attributes;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BossrApi.Controllers
 {

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BossrApi.Interfaces;
-using Dapper;
+﻿using BossrApi.Interfaces;
 using BossrApi.Models.Interfaces;
 using BossrApi.Models.Pocos;
 using BossrApi.Services.HashGenerator;
 using BossrApi.Services.SaltGenerator;
+using Dapper;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BossrApi.Repositories.UserRepository
 {

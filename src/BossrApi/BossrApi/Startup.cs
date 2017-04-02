@@ -1,7 +1,16 @@
-﻿using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
+using BossrApi.Attributes;
 using BossrApi.Factories;
 using BossrApi.Interfaces;
+using BossrApi.Middleware.TokenProvider;
+using BossrApi.Models.Dtos;
+using BossrApi.Models.Pocos;
+using BossrApi.Repositories.UserRepository;
+using BossrApi.Services.HashGenerator;
+using BossrApi.Services.PasswordValidator;
+using BossrApi.Services.ResponseWriter;
+using BossrApi.Services.SaltGenerator;
+using BossrApi.Services.TokenGenerator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,16 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using BossrApi.Middleware.TokenProvider;
-using BossrApi.Repositories.UserRepository;
-using BossrApi.Models.Dtos;
-using BossrApi.Services.ResponseWriter;
-using BossrApi.Services.HashGenerator;
-using BossrApi.Services.PasswordValidator;
-using BossrApi.Services.SaltGenerator;
-using BossrApi.Services.TokenGenerator;
-using BossrApi.Models.Pocos;
-using BossrApi.Attributes;
+using System.Text;
 
 namespace BossrApi
 {

@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 
 namespace BossrApi.Attributes
 {
     public class SqlExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        int number;
-        string message;
+        private readonly int number;
+        private readonly string message;
 
         public SqlExceptionFilterAttribute(int number, string message)
         {
