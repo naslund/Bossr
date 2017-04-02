@@ -2,27 +2,26 @@
 using System.Threading.Tasks;
 using BossrApi.Interfaces;
 using Dapper;
-using BossrApi.Services.Security.SaltGeneratorService;
-using BossrApi.Services.Security.HashGeneratorService;
 using BossrApi.Models.Interfaces;
 using BossrApi.Models.Pocos;
-using Dapper.Contrib.Extensions;
+using BossrApi.Services.HashGenerator;
+using BossrApi.Services.SaltGenerator;
 
 namespace BossrApi.Repositories.UserRepository
 {
     public class UserRepository : IUserRepository
     {
         private readonly IDbConnectionFactory dbConnectionFactory;
-        private readonly ISaltGeneratorService saltGeneratorService;
-        private readonly IHashGeneratorService hashGeneratorService;
+        private readonly ISaltGenerator saltGenerator;
+        private readonly IHashGenerator hashGenerator;
 
         public UserRepository(IDbConnectionFactory dbConnectionFactory,
-            ISaltGeneratorService saltGeneratorService,
-            IHashGeneratorService hashGeneratorService)
+            ISaltGenerator saltGenerator,
+            IHashGenerator hashGenerator)
         {
             this.dbConnectionFactory = dbConnectionFactory;
-            this.saltGeneratorService = saltGeneratorService;
-            this.hashGeneratorService = hashGeneratorService;
+            this.saltGenerator = saltGenerator;
+            this.hashGenerator = hashGenerator;
         }
 
         public async Task<IEnumerable<IUser>> ReadAsync()
@@ -54,8 +53,8 @@ namespace BossrApi.Repositories.UserRepository
 
         public async Task CreateAsync(string username, string password)
         {
-            var salt = saltGeneratorService.GenerateSalt();
-            var hashedPassword = hashGeneratorService.GenerateSaltedHash(password, salt);
+            var salt = saltGenerator.GenerateSalt();
+            var hashedPassword = hashGenerator.GenerateSaltedHash(password, salt);
 
             using (var conn = dbConnectionFactory.CreateConnection())
             {
@@ -65,8 +64,8 @@ namespace BossrApi.Repositories.UserRepository
 
         public async Task UpdatePasswordAsync(string id, string password)
         {
-            var salt = saltGeneratorService.GenerateSalt();
-            var hashedPassword = hashGeneratorService.GenerateSaltedHash(password, salt);
+            var salt = saltGenerator.GenerateSalt();
+            var hashedPassword = hashGenerator.GenerateSaltedHash(password, salt);
             
             using (var conn = dbConnectionFactory.CreateConnection())
             {

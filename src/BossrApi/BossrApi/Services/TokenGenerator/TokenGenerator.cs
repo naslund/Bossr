@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace BossrApi.Services.TokenGenerator
 {
-    public class TokenGenerator
+    public class TokenGenerator : ITokenGenerator
     {
         public TokenResponse GenerateToken(TokenProviderOptions options, IUser user)
         {

@@ -2,12 +2,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.Data.SqlClient;
 using System.Linq;
-using BossrApi.Models.Responses;
 using BossrApi.Models.Requests;
 using BossrApi.Repositories.UserRepository;
 using BossrApi.Models.Dtos;
+using BossrApi.Attributes;
 
 namespace BossrApi.Controllers
 {
@@ -33,23 +32,17 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var user = await userRepository.ReadAsync(id);
+            if (user == null)
+                return NotFound();
             var userDto = Mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
 
         [HttpPost]
+        [SqlExceptionFilter(2627, "Username not available.")]
         public async Task<IActionResult> Post([FromBody]UserPostRequest request)
         {
-            try
-            {
-                await userRepository.CreateAsync(request.Username, request.Password);
-            }
-            catch (SqlException ex) when (ex.Number == 2627)
-            {
-                var error = new MessageResponse { Message = "Username not available." };
-                return BadRequest(error);
-            }
-
+            await userRepository.CreateAsync(request.Username, request.Password);
             var user = await userRepository.ReadAsync(request.Username);
             var userDto = Mapper.Map<UserDto>(user);
             return CreatedAtRoute("GetUser", new { controller = "api/users", id = userDto.Id }, userDto);

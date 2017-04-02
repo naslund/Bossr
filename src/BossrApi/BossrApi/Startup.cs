@@ -11,12 +11,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BossrApi.Middleware.TokenProvider;
 using BossrApi.Repositories.UserRepository;
-using BossrApi.Models.Interfaces;
 using BossrApi.Models.Dtos;
 using BossrApi.Services.ResponseWriter;
 using BossrApi.Services.HashGenerator;
 using BossrApi.Services.PasswordValidator;
 using BossrApi.Services.SaltGenerator;
+using BossrApi.Services.TokenGenerator;
+using BossrApi.Models.Pocos;
+using BossrApi.Attributes;
 
 namespace BossrApi
 {
@@ -34,34 +36,31 @@ namespace BossrApi
         }
 
         public IConfigurationRoot Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(Configuration["ConnectionString"]));
-            
+
             services.AddTransient<IUserRepository, UserRepository>();
-            
+
             services.AddTransient<IHashGenerator, HashGenerator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
             services.AddTransient<ISaltGenerator, SaltGenerator>();
-
+            services.AddTransient<ITokenGenerator, TokenGenerator>();
             services.AddTransient<IResponseWriter, ResponseWriter>();
-            
-            services.AddMvc();
+
+            services.AddMvc(x => { x.Filters.Add(new ModelStateValidationFilterAttribute()); });
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            Mapper.Initialize(x =>
-            {
-                x.CreateMap<IUser, UserDto>();
-            });
+            Mapper.Initialize(x => { x.CreateMap<User, UserDto>(); });
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SecretKey"]));
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(new TokenProviderOptions
             {
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
