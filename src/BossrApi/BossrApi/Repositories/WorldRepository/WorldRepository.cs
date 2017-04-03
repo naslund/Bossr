@@ -1,5 +1,6 @@
 ﻿using BossrApi.Interfaces;
 using BossrApi.Models.Pocos;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,34 +15,55 @@ namespace BossrApi.Repositories.WorldRepository
             this.dbConnectionFactory = dbConnectionFactory;
         }
 
-        public Task CreateAsync(string name)
+        public async Task CreateAsync(string name)
         {
-            throw new NotImplementedException();
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                await conn.ExecuteAsync("INSERT INTO Worlds (Name) VALUES (@Name)", new { Name = name });
+            }
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                await conn.ExecuteAsync("DELETE FROM Worlds WHERE Id = @Id", new { Id = id });
+            }
         }
 
-        public Task<IEnumerable<World>> ReadAsync()
+        public async Task<IEnumerable<World>> ReadAsync()
         {
-            throw new NotImplementedException();
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                var worlds = await conn.QueryAsync<World>("SELECT * FROM Worlds");
+                return worlds;
+            }
         }
 
-        public Task<World> ReadAsync(int id)
+        public async Task<World> ReadAsync(int id)
         {
-            throw new NotImplementedException();
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                var world = await conn.QuerySingleOrDefaultAsync<World>("SELECT * FROM Worlds WHERE Id = @Id", new { Id = id });
+                return world;
+            }
         }
 
-        public Task<World> ReadAsync(string name)
+        public async Task<World> ReadAsync(string name)
         {
-            throw new NotImplementedException();
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                var world = await conn.QuerySingleOrDefaultAsync<World>("SELECT * FROM Worlds WHERE Name = @Name", new { Name = name });
+                return world;
+            }
         }
 
-        public Task UpdateNameAsync(int id, string name)
+        public async Task UpdateNameAsync(int id, string name)
         {
-            throw new NotImplementedException();
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                await conn.ExecuteAsync("UPDATE Worlds SET Name = @Name WHERE Id = @Id", new { Id = id, Name = name });
+            }
         }
     }
 }

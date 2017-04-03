@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BossrApi.Repositories.WorldRepository
 {
-    interface IWorldRepository
+    public interface IWorldRepository
     {
         Task<IEnumerable<World>> ReadAsync();
         Task<World> ReadAsync(int id);

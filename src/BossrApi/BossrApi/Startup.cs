@@ -6,6 +6,7 @@ using BossrApi.Middleware.TokenProvider;
 using BossrApi.Models.Dtos;
 using BossrApi.Models.Pocos;
 using BossrApi.Repositories.UserRepository;
+using BossrApi.Repositories.WorldRepository;
 using BossrApi.Services.HashGenerator;
 using BossrApi.Services.PasswordValidator;
 using BossrApi.Services.ResponseWriter;
@@ -42,6 +43,7 @@ namespace BossrApi
             services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(Configuration["ConnectionString"]));
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IWorldRepository, WorldRepository>();
 
             services.AddTransient<IHashGenerator, HashGenerator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
@@ -54,7 +56,11 @@ namespace BossrApi
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            Mapper.Initialize(x => { x.CreateMap<User, UserDto>(); });
+            Mapper.Initialize(x =>
+            {
+                x.CreateMap<User, UserDto>();
+                x.CreateMap<World, WorldDto>();
+            });
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SecretKey"]));
 
