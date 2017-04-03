@@ -5,7 +5,7 @@ namespace BossrApi.Models.Requests
     public class UserPutPasswordRequest
     {
         [Required]
-        [StringLength(100, MinimumLength = 8)]
+        [StringLength(ValidationRules.UserPasswordMaxLength, MinimumLength = ValidationRules.UserPasswordMinLength)]
         public string Password { get; set; }
     }
 }

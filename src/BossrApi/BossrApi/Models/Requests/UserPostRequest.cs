@@ -5,12 +5,12 @@ namespace BossrApi.Models.Requests
     public class UserPostRequest
     {
         [Required]
-        [StringLength(30, MinimumLength = 3)]
-        [RegularExpression("^[a-zA-Z0-9_]*$", ErrorMessage = "Only alphanumeric characters (A-Z, a-z, 0-9) and underscores are allowed.")]
+        [StringLength(ValidationRules.UserUsernameMaxLength, MinimumLength = ValidationRules.UserUsernameMinLength)]
+        [RegularExpression(ValidationRules.UserUsernameRegex, ErrorMessage = ValidationRules.UserUsernameRegexErrorMessage)]
         public string Username { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 8)]
+        [StringLength(ValidationRules.UserPasswordMaxLength, MinimumLength = ValidationRules.UserPasswordMinLength)]
         public string Password { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace BossrApi.Models.Requests
     public class WorldPostRequest
     {
         [Required]
-        [StringLength(30)]
+        [StringLength(ValidationRules.WorldNameMaxLength)]
         public string Name { get; set; }
     }
 }
