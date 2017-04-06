@@ -1,9 +1,9 @@
 ﻿using BossrScraper.Factories;
-using BossrScraper.Services;
+using BossrScraper.Services.DataFetcher;
+using BossrScraper.Services.Parsers;
 using BossrScraper.Services.Scheduler;
-using BossrScraper.Services.Scraper;
+using BossrScraper.Services.Scrapers;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace BossrScraper
 {
@@ -14,8 +14,11 @@ namespace BossrScraper
             var serviceProvider = new ServiceCollection()
                 .AddTransient<IConfigurationFactory, ConfigurationFactory>()
                 .AddTransient<IScheduler, Scheduler>()
+                .AddTransient<IDataFetcher, DataFetcher>()
+
+                .AddTransient<IWorldScraper, WorldScraper>()
                 .AddTransient<IWorldParser, WorldParser>()
-                .AddTransient<IScraper, Scraper>()
+
                 .BuildServiceProvider();
 
             var scraper = serviceProvider.GetService<IScheduler>();

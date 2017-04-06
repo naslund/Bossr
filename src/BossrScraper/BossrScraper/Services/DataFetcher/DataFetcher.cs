@@ -1,11 +1,11 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BossrScraper.Services.Scraper
+namespace BossrScraper.Services.DataFetcher
 {
-    public class Scraper : IScraper
+    public class DataFetcher : IDataFetcher
     {
-        public async Task<HttpResponseMessage> Scrape(string url)
+        public async Task<HttpResponseMessage> FetchHttpResponse(string url)
         {
             using (HttpClient client = new HttpClient())
             {

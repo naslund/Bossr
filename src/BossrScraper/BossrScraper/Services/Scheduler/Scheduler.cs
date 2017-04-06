@@ -1,4 +1,4 @@
-﻿using BossrScraper.Services.Scraper;
+﻿using BossrScraper.Services.Scrapers;
 using System;
 using System.Threading.Tasks;
 
@@ -6,8 +6,8 @@ namespace BossrScraper.Services.Scheduler
 {
     public class Scheduler : IScheduler
     {
-        private readonly IWorldParser worldScraper;
-        public Scheduler(IWorldParser worldScraper)
+        private readonly IWorldScraper worldScraper;
+        public Scheduler(IWorldScraper worldScraper)
         {
             this.worldScraper = worldScraper;
         }
@@ -15,7 +15,7 @@ namespace BossrScraper.Services.Scheduler
         {
             while (true)
             {
-                await worldScraper.Parse();
+                await worldScraper.Scrape();
                 await Task.Delay(TimeSpan.FromMinutes(30));
             }
         }
