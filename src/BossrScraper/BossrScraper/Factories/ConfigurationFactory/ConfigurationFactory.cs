@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace BossrScraper.Factories
+namespace BossrScraper.Factories.ConfigurationFactory
 {
     public class ConfigurationFactory : IConfigurationFactory
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BossrScraper.Services.Parsers
+namespace BossrScraper.Services.Parsers.WorldParser
 {
     public interface IWorldParser
     {

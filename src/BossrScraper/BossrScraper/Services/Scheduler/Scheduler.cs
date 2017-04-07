@@ -1,4 +1,4 @@
-﻿using BossrScraper.Services.Scrapers;
+﻿using BossrScraper.Services.Scrapers.WorldScraper;
 using System;
 using System.Threading.Tasks;
 
