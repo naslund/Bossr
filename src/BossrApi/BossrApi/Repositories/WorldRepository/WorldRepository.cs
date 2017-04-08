@@ -1,7 +1,6 @@
 ﻿using BossrApi.Interfaces;
-using BossrApi.Models.Pocos;
+using BossrApi.Models.Entities;
 using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

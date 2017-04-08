@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BossrApi", "BossrApi\BossrApi.csproj", "{3DB3CBCB-4405-4A26-8718-0BA7FEFC01F3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{F8347A4A-48FE-4F66-B291-62DA2E016FF7}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\Tables.sql = Scripts\Tables.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

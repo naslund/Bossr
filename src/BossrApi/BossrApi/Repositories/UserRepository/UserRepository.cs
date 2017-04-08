@@ -1,6 +1,6 @@
 ﻿using BossrApi.Interfaces;
+using BossrApi.Models.Entities;
 using BossrApi.Models.Interfaces;
-using BossrApi.Models.Pocos;
 using BossrApi.Services.HashGenerator;
 using BossrApi.Services.SaltGenerator;
 using Dapper;

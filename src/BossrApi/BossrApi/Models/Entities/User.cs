@@ -1,6 +1,6 @@
 ﻿using BossrApi.Models.Interfaces;
 
-namespace BossrApi.Models.Pocos
+namespace BossrApi.Models.Entities
 {
     public class User : IEntity, IUser
     {

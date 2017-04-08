@@ -4,7 +4,7 @@ using BossrApi.Factories;
 using BossrApi.Interfaces;
 using BossrApi.Middleware.TokenProvider;
 using BossrApi.Models.Dtos;
-using BossrApi.Models.Pocos;
+using BossrApi.Models.Entities;
 using BossrApi.Repositories.UserRepository;
 using BossrApi.Repositories.WorldRepository;
 using BossrApi.Services.HashGenerator;

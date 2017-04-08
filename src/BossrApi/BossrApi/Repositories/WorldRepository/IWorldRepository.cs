@@ -1,4 +1,4 @@
-﻿using BossrApi.Models.Pocos;
+﻿using BossrApi.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
