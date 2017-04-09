@@ -8,15 +8,19 @@
 );
 
 CREATE TABLE [dbo].[Worlds] (
-    [Id]   INT           IDENTITY (1, 1) NOT NULL,
-    [Name] NVARCHAR (30) NOT NULL,
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [Name]        NVARCHAR (30) NOT NULL,
+    [IsMonitored] BIT           DEFAULT ((0)) NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     UNIQUE NONCLUSTERED ([Name] ASC)
 );
 
 CREATE TABLE [dbo].[Creatures] (
-    [Id]   INT           IDENTITY (1, 1) NOT NULL,
-    [Name] NVARCHAR (30) NOT NULL,
+    [Id]                INT           IDENTITY (1, 1) NOT NULL,
+    [Name]              NVARCHAR (30) NOT NULL,
+    [SpawnRateHoursMin] INT           DEFAULT ((0)) NOT NULL,
+    [SpawnRateHoursMax] INT           DEFAULT ((0)) NOT NULL,
+    [IsMonitored]       BIT           DEFAULT ((0)) NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     UNIQUE NONCLUSTERED ([Name] ASC)
 );
