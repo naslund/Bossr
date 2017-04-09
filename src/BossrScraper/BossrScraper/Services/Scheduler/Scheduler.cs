@@ -7,10 +7,12 @@ namespace BossrScraper.Services.Scheduler
     public class Scheduler : IScheduler
     {
         private readonly IWorldScraper worldScraper;
+
         public Scheduler(IWorldScraper worldScraper)
         {
             this.worldScraper = worldScraper;
         }
+
         public async Task Run()
         {
             while (true)

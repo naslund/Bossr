@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BossrScraper
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
                 .AddTransient<IConfigurationFactory, ConfigurationFactory>()

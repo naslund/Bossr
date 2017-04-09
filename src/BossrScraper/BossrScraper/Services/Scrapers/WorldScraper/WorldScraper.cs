@@ -11,9 +11,10 @@ namespace BossrScraper.Services.Scrapers.WorldScraper
         private readonly IConfiguration configuration;
         private readonly IWorldParser worldParser;
         private readonly IDataFetcher dataFetcher;
+
         public WorldScraper(
             IConfigurationFactory configurationFactory,
-            IWorldParser worldParser, 
+            IWorldParser worldParser,
             IDataFetcher dataFetcher)
         {
             configuration = configurationFactory.CreateConfiguration();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BossrScraper.Models
+﻿namespace BossrScraper.Models
 {
     public class World : IWorld
     {
