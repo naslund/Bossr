@@ -2,7 +2,7 @@
 
 namespace BossrApi.Models.Entities
 {
-    public class User : IEntity, IUser
+    public class User : IUser
     {
         public int Id { get; set; }
         public string Username { get; set; }

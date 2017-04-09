@@ -5,6 +5,8 @@ using BossrApi.Interfaces;
 using BossrApi.Middleware.TokenProvider;
 using BossrApi.Models.Dtos;
 using BossrApi.Models.Entities;
+using BossrApi.Repositories.CreatureRepository;
+using BossrApi.Repositories.SpawnRepository;
 using BossrApi.Repositories.UserRepository;
 using BossrApi.Repositories.WorldRepository;
 using BossrApi.Services.HashGenerator;
@@ -12,6 +14,7 @@ using BossrApi.Services.PasswordValidator;
 using BossrApi.Services.ResponseWriter;
 using BossrApi.Services.SaltGenerator;
 using BossrApi.Services.TokenGenerator;
+using BossrApi.Services.UserManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +47,10 @@ namespace BossrApi
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IWorldRepository, WorldRepository>();
+            services.AddTransient<ICreatureRepository, CreatureRepository>();
+            services.AddTransient<ISpawnRepository, SpawnRepository>();
 
+            services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IHashGenerator, HashGenerator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
             services.AddTransient<ISaltGenerator, SaltGenerator>();
@@ -59,7 +65,6 @@ namespace BossrApi
             Mapper.Initialize(x =>
             {
                 x.CreateMap<User, UserDto>();
-                x.CreateMap<World, WorldDto>();
             });
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SecretKey"]));

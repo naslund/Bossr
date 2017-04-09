@@ -1,8 +1,6 @@
 ﻿using BossrApi.Interfaces;
 using BossrApi.Models.Entities;
 using BossrApi.Models.Interfaces;
-using BossrApi.Services.HashGenerator;
-using BossrApi.Services.SaltGenerator;
 using Dapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,16 +10,26 @@ namespace BossrApi.Repositories.UserRepository
     public class UserRepository : IUserRepository
     {
         private readonly IDbConnectionFactory dbConnectionFactory;
-        private readonly ISaltGenerator saltGenerator;
-        private readonly IHashGenerator hashGenerator;
 
-        public UserRepository(IDbConnectionFactory dbConnectionFactory,
-            ISaltGenerator saltGenerator,
-            IHashGenerator hashGenerator)
+        public UserRepository(IDbConnectionFactory dbConnectionFactory)
         {
             this.dbConnectionFactory = dbConnectionFactory;
-            this.saltGenerator = saltGenerator;
-            this.hashGenerator = hashGenerator;
+        }
+
+        public async Task CreateAsync(IUser user)
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                await conn.ExecuteAsync("INSERT INTO Users (Username, HashedPassword, Salt) VALUES (@Username, @HashedPassword, @Salt)", user);
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                await conn.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", new { Id = id });
+            }
         }
 
         public async Task<IEnumerable<IUser>> ReadAsync()
@@ -51,33 +59,11 @@ namespace BossrApi.Repositories.UserRepository
             }
         }
 
-        public async Task CreateAsync(string username, string password)
-        {
-            var salt = saltGenerator.GenerateSalt();
-            var hashedPassword = hashGenerator.GenerateSaltedHash(password, salt);
-
-            using (var conn = dbConnectionFactory.CreateConnection())
-            {
-                await conn.ExecuteAsync("INSERT INTO Users (Username, HashedPassword, Salt) VALUES (@Username, @HashedPassword, @Salt)", new { Username = username, HashedPassword = hashedPassword, Salt = salt });
-            }
-        }
-
-        public async Task UpdatePasswordAsync(string id, string password)
-        {
-            var salt = saltGenerator.GenerateSalt();
-            var hashedPassword = hashGenerator.GenerateSaltedHash(password, salt);
-            
-            using (var conn = dbConnectionFactory.CreateConnection())
-            {
-                await conn.ExecuteAsync("UPDATE Users SET HashedPassword = @HashedPassword, Salt = @Salt WHERE Id = @Id", new { HashedPassword = hashedPassword, Salt = salt, Id = id });
-            }
-        }
-
-        public async Task DeleteAsync(int id)
+        public async Task UpdateAsync(IUser user)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", new { Id = id });
+                await conn.ExecuteAsync("UPDATE Users SET Username = @Username, HashedPassword = @HashedPassword, Salt = @Salt WHERE Id = @Id", user);
             }
         }
     }

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using BossrApi.Attributes;
-using BossrApi.Models.Dtos;
-using BossrApi.Models.Requests;
+﻿using BossrApi.Attributes;
+using BossrApi.Models.Interfaces;
 using BossrApi.Repositories.WorldRepository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BossrApi.Controllers
@@ -15,37 +13,10 @@ namespace BossrApi.Controllers
     public class WorldsController : Controller
     {
         private readonly IWorldRepository worldRepository;
+
         public WorldsController(IWorldRepository worldRepository)
         {
             this.worldRepository = worldRepository;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var worlds = await worldRepository.ReadAsync();
-            var worldsDto = worlds.Select(x => Mapper.Map<WorldDto>(x));
-            return Ok(worldsDto);
-        }
-
-        [HttpGet("{id}", Name = "GetWorld")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var world = await worldRepository.ReadAsync(id);
-            if (world == null)
-                return NotFound();
-            var worldDto = Mapper.Map<WorldDto>(world);
-            return Ok(worldDto);
-        }
-
-        [HttpPost]
-        [SqlExceptionFilter(2627, "World name not available.")]
-        public async Task<IActionResult> Post([FromBody]WorldPostRequest request)
-        {
-            await worldRepository.CreateAsync(request.Name);
-            var world = await worldRepository.ReadAsync(request.Name);
-            var worldDto = Mapper.Map<WorldDto>(world);
-            return CreatedAtRoute("GetWorld", new { controller = "api/worlds", id = worldDto.Id }, worldDto);
         }
 
         [HttpDelete("{id}")]
@@ -55,10 +26,48 @@ namespace BossrApi.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]WorldPutRequest request)
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
-            await worldRepository.UpdateNameAsync(id, request.Name);
+            var worlds = await worldRepository.ReadAsync();
+            return Ok(worlds);
+        }
+
+        [HttpGet("{id}", Name = "GetWorld")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var world = await worldRepository.ReadAsync(id);
+            if (world == null)
+                return NotFound();
+
+            return Ok(world);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
+        {
+            var world = await worldRepository.ReadAsync(id);
+            if (world == null)
+                return NotFound();
+
+            patch.ApplyTo(world);
+            await worldRepository.UpdateAsync(world);
+            return Ok();
+        }
+
+        [HttpPost]
+        [SqlExceptionFilter(2627, "World name not available.")]
+        public async Task<IActionResult> Post([FromBody]IWorld request)
+        {
+            await worldRepository.CreateAsync(request);
+            var world = await worldRepository.ReadAsync(request.Name);
+            return CreatedAtRoute("GetWorld", new { controller = "api/worlds", id = world.Id }, world);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody]IWorld request)
+        {
+            request.Id = id;
+            await worldRepository.UpdateAsync(request);
             return Ok();
         }
     }

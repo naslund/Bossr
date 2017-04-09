@@ -3,6 +3,7 @@ using BossrApi.Attributes;
 using BossrApi.Models.Dtos;
 using BossrApi.Models.Requests;
 using BossrApi.Repositories.UserRepository;
+using BossrApi.Services.UserManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -14,10 +15,19 @@ namespace BossrApi.Controllers
     [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
+        private readonly IUserManager userManager;
         private readonly IUserRepository userRepository;
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, IUserManager userManager)
         {
             this.userRepository = userRepository;
+            this.userManager = userManager;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await userRepository.DeleteAsync(id);
+            return Ok();
         }
 
         [HttpGet]
@@ -34,6 +44,7 @@ namespace BossrApi.Controllers
             var user = await userRepository.ReadAsync(id);
             if (user == null)
                 return NotFound();
+
             var userDto = Mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
@@ -42,23 +53,16 @@ namespace BossrApi.Controllers
         [SqlExceptionFilter(2627, "Username not available.")]
         public async Task<IActionResult> Post([FromBody]UserPostRequest request)
         {
-            await userRepository.CreateAsync(request.Username, request.Password);
+            await userManager.CreateUserAsync(request.Username, request.Password);
+
             var user = await userRepository.ReadAsync(request.Username);
             var userDto = Mapper.Map<UserDto>(user);
             return CreatedAtRoute("GetUser", new { controller = "api/users", id = userDto.Id }, userDto);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await userRepository.DeleteAsync(id);
-            return Ok();
-        }
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPassword(string id, [FromBody]UserPutPasswordRequest request)
+        public async Task<IActionResult> PutPassword(int id, [FromBody]UserPutPasswordRequest request)
         {
-            await userRepository.UpdatePasswordAsync(id, request.Password);
+            await userManager.UpdatePasswordAsync(id, request.Password);
             return Ok();
         }
     }

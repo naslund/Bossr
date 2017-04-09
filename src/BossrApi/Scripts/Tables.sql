@@ -20,3 +20,14 @@ CREATE TABLE [dbo].[Creatures] (
     PRIMARY KEY CLUSTERED ([Id] ASC),
     UNIQUE NONCLUSTERED ([Name] ASC)
 );
+
+CREATE TABLE [dbo].[Spawns] (
+    [Id]         INT                IDENTITY (1, 1) NOT NULL,
+    [WorldId]    INT                NOT NULL,
+    [CreatureId] INT                NOT NULL,
+    [TimeMin]    DATETIMEOFFSET (7) NOT NULL,
+    [TimeMax]    DATETIMEOFFSET (7) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Spawns_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
+    CONSTRAINT [FK_Spawns_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id])
+);

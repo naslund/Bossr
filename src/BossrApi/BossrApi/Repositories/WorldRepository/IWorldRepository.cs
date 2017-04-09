@@ -1,4 +1,4 @@
-﻿using BossrApi.Models.Entities;
+﻿using BossrApi.Models.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,11 +6,16 @@ namespace BossrApi.Repositories.WorldRepository
 {
     public interface IWorldRepository
     {
-        Task<IEnumerable<World>> ReadAsync();
-        Task<World> ReadAsync(int id);
-        Task<World> ReadAsync(string name);
-        Task CreateAsync(string name);
-        Task UpdateNameAsync(int id, string name);
+        Task CreateAsync(IWorld world);
+
         Task DeleteAsync(int id);
+
+        Task<IEnumerable<IWorld>> ReadAsync();
+
+        Task<IWorld> ReadAsync(int id);
+
+        Task<IWorld> ReadAsync(string name);
+
+        Task UpdateAsync(IWorld world);
     }
 }
