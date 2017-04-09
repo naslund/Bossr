@@ -32,7 +32,7 @@ namespace BossrApi.Repositories.SpawnRepository
             }
         }
 
-        public async Task<IEnumerable<ISpawn>> ReadAsync()
+        public async Task<IEnumerable<ISpawn>> ReadAllAsync()
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {

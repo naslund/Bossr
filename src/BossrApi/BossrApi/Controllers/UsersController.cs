@@ -34,7 +34,7 @@ namespace BossrApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var users = await userRepository.ReadAsync();
+            var users = await userRepository.ReadAllAsync();
             var usersDto = users.Select(x => Mapper.Map<UserDto>(x));
             return Ok(usersDto);
         }

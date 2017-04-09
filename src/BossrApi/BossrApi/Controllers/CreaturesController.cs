@@ -29,7 +29,7 @@ namespace BossrApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var creatures = await creatureRepository.ReadAsync();
+            var creatures = await creatureRepository.ReadAllAsync();
             return Ok(creatures);
         }
 

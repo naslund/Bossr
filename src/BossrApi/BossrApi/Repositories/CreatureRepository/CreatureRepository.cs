@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.CreatureRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("INSERT INTO Creatures (Name) VALUES (@Name)", creature);
+                await conn.ExecuteAsync("INSERT INTO Creatures (Name, SpawnRateHoursMin, SpawnRateHoursMax, IsMonitored) VALUES (@Name, @SpawnRateHoursMin, @SpawnRateHoursMax, @IsMonitored)", creature);
             }
         }
 
@@ -32,12 +32,19 @@ namespace BossrApi.Repositories.CreatureRepository
             }
         }
 
-        public async Task<IEnumerable<ICreature>> ReadAsync()
+        public async Task<IEnumerable<ICreature>> ReadAllAsync()
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var creatures = await conn.QueryAsync<Creature>("SELECT * FROM Creatures");
-                return creatures;
+                return await conn.QueryAsync<Creature>("SELECT * FROM Creatures");
+            }
+        }
+
+        public async Task<IEnumerable<ICreature>> ReadAllAsync(bool isMonitored)
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                return await conn.QueryAsync<Creature>("SELECT * FROM Creatures WHERE IsMonitored = @IsMonitored", new { IsMonitored = isMonitored });
             }
         }
 
@@ -45,8 +52,7 @@ namespace BossrApi.Repositories.CreatureRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var creature = await conn.QuerySingleOrDefaultAsync<Creature>("SELECT * FROM Creatures WHERE Id = @Id", new { Id = id });
-                return creature;
+                return await conn.QuerySingleOrDefaultAsync<Creature>("SELECT * FROM Creatures WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -54,8 +60,7 @@ namespace BossrApi.Repositories.CreatureRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var creature = await conn.QuerySingleOrDefaultAsync<Creature>("SELECT * FROM Creatures WHERE Name = @Name", new { Name = name });
-                return creature;
+                return await conn.QuerySingleOrDefaultAsync<Creature>("SELECT * FROM Creatures WHERE Name = @Name", new { Name = name });
             }
         }
 
@@ -63,7 +68,7 @@ namespace BossrApi.Repositories.CreatureRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Creatures SET Name = @Name WHERE Id = @Id", creature);
+                await conn.ExecuteAsync("UPDATE Creatures SET Name = @Name, SpawnRateHoursMin = @SpawnRateHoursMin, SpawnRateHoursMax = @SpawnRateHoursMax, IsMonitored = @IsMonitored WHERE Id = @Id", creature);
             }
         }
     }

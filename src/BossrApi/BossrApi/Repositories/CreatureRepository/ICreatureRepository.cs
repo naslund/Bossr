@@ -10,11 +10,13 @@ namespace BossrApi.Repositories.CreatureRepository
 
         Task DeleteAsync(int id);
 
+        Task<IEnumerable<ICreature>> ReadAllAsync();
+
+        Task<IEnumerable<ICreature>> ReadAllAsync(bool isMonitored);
+
         Task<ICreature> ReadAsync(int id);
 
         Task<ICreature> ReadAsync(string name);
-
-        Task<IEnumerable<ICreature>> ReadAsync();
 
         Task UpdateAsync(ICreature creature);
     }

@@ -21,7 +21,7 @@ namespace BossrApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var spawns = await spawnRepository.ReadAsync();
+            var spawns = await spawnRepository.ReadAllAsync();
             return Ok(spawns);
         }
 

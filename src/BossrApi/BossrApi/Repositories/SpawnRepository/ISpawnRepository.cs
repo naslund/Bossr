@@ -10,7 +10,7 @@ namespace BossrApi.Repositories.SpawnRepository
 
         Task DeleteAsync(int id);
 
-        Task<IEnumerable<ISpawn>> ReadAsync();
+        Task<IEnumerable<ISpawn>> ReadAllAsync();
 
         Task<ISpawn> ReadAsync(int id);
 

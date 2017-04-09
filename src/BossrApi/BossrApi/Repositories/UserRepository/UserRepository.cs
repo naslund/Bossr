@@ -32,12 +32,11 @@ namespace BossrApi.Repositories.UserRepository
             }
         }
 
-        public async Task<IEnumerable<IUser>> ReadAsync()
+        public async Task<IEnumerable<IUser>> ReadAllAsync()
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var users = await conn.QueryAsync<User>("SELECT * FROM Users");
-                return users;
+                return await conn.QueryAsync<User>("SELECT * FROM Users");
             }
         }
 
@@ -45,8 +44,7 @@ namespace BossrApi.Repositories.UserRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var user = await conn.QuerySingleOrDefaultAsync<User>("SELECT * FROM Users WHERE Username = @Username", new { Username = username });
-                return user;
+                return await conn.QuerySingleOrDefaultAsync<User>("SELECT * FROM Users WHERE Username = @Username", new { Username = username });
             }
         }
 
@@ -54,8 +52,7 @@ namespace BossrApi.Repositories.UserRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var user = await conn.QuerySingleOrDefaultAsync<User>("SELECT * FROM Users WHERE Id = @Id", new { Id = id });
-                return user;
+                return await conn.QuerySingleOrDefaultAsync<User>("SELECT * FROM Users WHERE Id = @Id", new { Id = id });
             }
         }
 

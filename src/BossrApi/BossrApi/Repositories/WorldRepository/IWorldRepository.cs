@@ -10,7 +10,9 @@ namespace BossrApi.Repositories.WorldRepository
 
         Task DeleteAsync(int id);
 
-        Task<IEnumerable<IWorld>> ReadAsync();
+        Task<IEnumerable<IWorld>> ReadAllAsync();
+
+        Task<IEnumerable<IWorld>> ReadAllAsync(bool isMonitored);
 
         Task<IWorld> ReadAsync(int id);
 

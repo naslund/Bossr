@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.WorldRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("INSERT INTO Worlds (Name) VALUES (@Name)", world);
+                await conn.ExecuteAsync("INSERT INTO Worlds (Name, IsMonitored) VALUES (@Name, @IsMonitored)", world);
             }
         }
 
@@ -32,12 +32,19 @@ namespace BossrApi.Repositories.WorldRepository
             }
         }
 
-        public async Task<IEnumerable<IWorld>> ReadAsync()
+        public async Task<IEnumerable<IWorld>> ReadAllAsync()
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var worlds = await conn.QueryAsync<World>("SELECT * FROM Worlds");
-                return worlds;
+                return await conn.QueryAsync<World>("SELECT * FROM Worlds");
+            }
+        }
+
+        public async Task<IEnumerable<IWorld>> ReadAllAsync(bool isMonitored)
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                return await conn.QueryAsync<World>("SELECT * FROM Worlds WHERE IsMonitored = @IsMonitored", new { IsMonitored = isMonitored });
             }
         }
 
@@ -45,8 +52,7 @@ namespace BossrApi.Repositories.WorldRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var world = await conn.QuerySingleOrDefaultAsync<World>("SELECT * FROM Worlds WHERE Id = @Id", new { Id = id });
-                return world;
+                return await conn.QuerySingleOrDefaultAsync<World>("SELECT * FROM Worlds WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -54,8 +60,7 @@ namespace BossrApi.Repositories.WorldRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var world = await conn.QuerySingleOrDefaultAsync<World>("SELECT * FROM Worlds WHERE Name = @Name", new { Name = name });
-                return world;
+                return await conn.QuerySingleOrDefaultAsync<World>("SELECT * FROM Worlds WHERE Name = @Name", new { Name = name });
             }
         }
 
@@ -63,7 +68,7 @@ namespace BossrApi.Repositories.WorldRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Worlds SET Name = @Name WHERE Id = @Id", world);
+                await conn.ExecuteAsync("UPDATE Worlds SET Name = @Name, IsMonitored = @IsMonitored WHERE Id = @Id", world);
             }
         }
     }

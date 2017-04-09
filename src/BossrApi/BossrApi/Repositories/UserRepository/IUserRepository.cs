@@ -10,7 +10,7 @@ namespace BossrApi.Repositories.UserRepository
 
         Task DeleteAsync(int id);
 
-        Task<IEnumerable<IUser>> ReadAsync();
+        Task<IEnumerable<IUser>> ReadAllAsync();
 
         Task<IUser> ReadAsync(string username);
 
