@@ -22,11 +22,11 @@ CREATE TABLE [dbo].[Creatures] (
 );
 
 CREATE TABLE [dbo].[Spawns] (
-    [Id]         INT                IDENTITY (1, 1) NOT NULL,
-    [WorldId]    INT                NOT NULL,
-    [CreatureId] INT                NOT NULL,
-    [TimeMin]    DATETIMEOFFSET (7) NOT NULL,
-    [TimeMax]    DATETIMEOFFSET (7) NOT NULL,
+    [Id]         INT      IDENTITY (1, 1) NOT NULL,
+    [WorldId]    INT      NOT NULL,
+    [CreatureId] INT      NOT NULL,
+    [TimeMinUtc] DATETIME NOT NULL,
+    [TimeMaxUtc] DATETIME NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Spawns_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
     CONSTRAINT [FK_Spawns_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id])

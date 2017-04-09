@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.SpawnRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("INSERT INTO Spawns (WorldId, CreatureId, TimeMin, TimeMax) VALUES (@WorldId, @CreatureId, @TimeMin, @TimeMax)", spawn);
+                await conn.ExecuteAsync("INSERT INTO Spawns (WorldId, CreatureId, TimeMinUtc, TimeMaxUtc) VALUES (@WorldId, @CreatureId, @TimeMinUtc, @TimeMaxUtc)", spawn);
             }
         }
 
@@ -52,7 +52,7 @@ namespace BossrApi.Repositories.SpawnRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Spawns SET CreatureId = @CreatureId, WorldId = @WorldId, TimeMin = @TimeMin, TimeMax = @TimeMax WHERE Id = @Id", spawn);
+                await conn.ExecuteAsync("UPDATE Spawns SET CreatureId = @CreatureId, WorldId = @WorldId, TimeMinUtc = @TimeMinUtc, TimeMaxUtc = @TimeMaxUtc WHERE Id = @Id", spawn);
             }
         }
     }

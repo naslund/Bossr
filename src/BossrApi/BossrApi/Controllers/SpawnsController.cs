@@ -1,4 +1,4 @@
-﻿using BossrApi.Models.Interfaces;
+﻿using BossrApi.Models.Entities;
 using BossrApi.Repositories.SpawnRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -48,7 +48,7 @@ namespace BossrApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]ISpawn request)
+        public async Task<IActionResult> Post([FromBody]Spawn request)
         {
             await spawnRepository.CreateAsync(request);
             return Ok();

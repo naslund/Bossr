@@ -1,5 +1,5 @@
 ﻿using BossrApi.Attributes;
-using BossrApi.Models.Interfaces;
+using BossrApi.Models.Entities;
 using BossrApi.Repositories.CreatureRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -57,14 +57,14 @@ namespace BossrApi.Controllers
 
         [HttpPost]
         [SqlExceptionFilter(2627, "Creature name not available.")]
-        public async Task<IActionResult> Post([FromBody]ICreature request)
+        public async Task<IActionResult> Post([FromBody]Creature request)
         {
             await creatureRepository.CreateAsync(request);
             var creature = await creatureRepository.ReadAsync(request.Name);
             return CreatedAtRoute("GetCreature", new { controller = "api/creatures", id = creature.Id }, creature);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]ICreature request)
+        public async Task<IActionResult> Update(int id, [FromBody]Creature request)
         {
             request.Id = id;
             await creatureRepository.UpdateAsync(request);

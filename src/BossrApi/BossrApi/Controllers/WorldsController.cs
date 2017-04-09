@@ -1,5 +1,5 @@
 ﻿using BossrApi.Attributes;
-using BossrApi.Models.Interfaces;
+using BossrApi.Models.Entities;
 using BossrApi.Repositories.WorldRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -57,14 +57,14 @@ namespace BossrApi.Controllers
 
         [HttpPost]
         [SqlExceptionFilter(2627, "World name not available.")]
-        public async Task<IActionResult> Post([FromBody]IWorld request)
+        public async Task<IActionResult> Post([FromBody]World request)
         {
             await worldRepository.CreateAsync(request);
             var world = await worldRepository.ReadAsync(request.Name);
             return CreatedAtRoute("GetWorld", new { controller = "api/worlds", id = world.Id }, world);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]IWorld request)
+        public async Task<IActionResult> Put(int id, [FromBody]World request)
         {
             request.Id = id;
             await worldRepository.UpdateAsync(request);

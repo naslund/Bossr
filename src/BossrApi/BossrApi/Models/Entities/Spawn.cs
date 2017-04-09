@@ -8,7 +8,7 @@ namespace BossrApi.Models.Entities
         public int Id { get; set; }
         public int CreatureId { get; set; }
         public int WorldId { get; set; }
-        public DateTimeOffset TimeMin { get; set; }
-        public DateTimeOffset TimeMax { get; set; }
+        public DateTime TimeMinUtc { get; set; }
+        public DateTime TimeMaxUtc { get; set; }
     }
 }

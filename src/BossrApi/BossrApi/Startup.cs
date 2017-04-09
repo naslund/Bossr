@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BossrApi.Attributes;
+using BossrApi.Converters;
 using BossrApi.Factories;
 using BossrApi.Interfaces;
 using BossrApi.Middleware.TokenProvider;
@@ -15,6 +16,7 @@ using BossrApi.Services.ResponseWriter;
 using BossrApi.Services.SaltGenerator;
 using BossrApi.Services.TokenGenerator;
 using BossrApi.Services.UserManager;
+using Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -66,6 +68,8 @@ namespace BossrApi
             {
                 x.CreateMap<User, UserDto>();
             });
+
+            SqlMapper.AddTypeHandler(new DateTimeTypeHandler());
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SecretKey"]));
 

@@ -7,7 +7,7 @@ namespace BossrApi.Models.Interfaces
         int Id { get; set; }
         int CreatureId { get; set; }
         int WorldId { get; set; }
-        DateTimeOffset TimeMin { get; set; }
-        DateTimeOffset TimeMax { get; set; }
+        DateTime TimeMinUtc { get; set; }
+        DateTime TimeMaxUtc { get; set; }
     }
 }
