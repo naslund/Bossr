@@ -53,5 +53,14 @@ namespace BossrApi.Controllers
             await spawnRepository.CreateAsync(request);
             return Ok();
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody]Spawn request)
+        {
+            request.Id = id;
+
+            await spawnRepository.UpdateAsync(request);
+            return Ok();
+        }
     }
 }

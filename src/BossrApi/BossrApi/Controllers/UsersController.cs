@@ -17,6 +17,7 @@ namespace BossrApi.Controllers
     {
         private readonly IUserManager userManager;
         private readonly IUserRepository userRepository;
+
         public UsersController(IUserRepository userRepository, IUserManager userManager)
         {
             this.userRepository = userRepository;
@@ -59,7 +60,8 @@ namespace BossrApi.Controllers
             var userDto = Mapper.Map<UserDto>(user);
             return CreatedAtRoute("GetUser", new { controller = "api/users", id = userDto.Id }, userDto);
         }
-        [HttpPut("{id}")]
+
+        [HttpPut("{id}/password")]
         public async Task<IActionResult> PutPassword(int id, [FromBody]UserPutPasswordRequest request)
         {
             await userManager.UpdatePasswordAsync(id, request.Password);
