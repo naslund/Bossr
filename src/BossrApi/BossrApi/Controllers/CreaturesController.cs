@@ -60,7 +60,7 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Post([FromBody]Creature request)
         {
             await creatureRepository.CreateAsync(request);
-            var creature = await creatureRepository.ReadAsync(request.Name);
+            var creature = await creatureRepository.ReadAsync(request.Id);
             return CreatedAtRoute("GetCreature", new { controller = "api/creatures", id = creature.Id }, creature);
         }
 

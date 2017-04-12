@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.CreatureRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("INSERT INTO Creatures (Name, SpawnRateHoursMin, SpawnRateHoursMax, IsMonitored) VALUES (@Name, @SpawnRateHoursMin, @SpawnRateHoursMax, @IsMonitored)", creature);
+                creature.Id = await conn.QuerySingleAsync<int>("INSERT INTO Creatures (Name, SpawnRateHoursMin, SpawnRateHoursMax, IsMonitored) VALUES (@Name, @SpawnRateHoursMin, @SpawnRateHoursMax, @IsMonitored) SELECT CAST(SCOPE_IDENTITY() as int)", creature);
             }
         }
 

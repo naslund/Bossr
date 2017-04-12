@@ -51,7 +51,8 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Post([FromBody]Spawn request)
         {
             await spawnRepository.CreateAsync(request);
-            return Ok();
+            var spawn = await spawnRepository.ReadAsync(request.Id);
+            return CreatedAtRoute("GetSpawn", new { controller = "api/spawns", id = spawn.Id }, spawn);
         }
 
         [HttpPut("{id}")]

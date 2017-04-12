@@ -25,13 +25,19 @@ CREATE TABLE [dbo].[Creatures] (
     UNIQUE NONCLUSTERED ([Name] ASC)
 );
 
-CREATE TABLE [dbo].[Spawns] (
+CREATE TABLE [dbo].[Scrapes] (
     [Id]         INT      IDENTITY (1, 1) NOT NULL,
-    [WorldId]    INT      NOT NULL,
-    [CreatureId] INT      NOT NULL,
     [TimeMinUtc] DATETIME NOT NULL,
-    [TimeMaxUtc] DATETIME NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[Spawns] (
+    [Id]         INT IDENTITY (1, 1) NOT NULL,
+    [WorldId]    INT NOT NULL,
+    [CreatureId] INT NOT NULL,
+    [ScrapeId]   INT NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Spawns_Scrapes] FOREIGN KEY ([ScrapeId]) REFERENCES [dbo].[Scrapes] ([Id]),
     CONSTRAINT [FK_Spawns_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
     CONSTRAINT [FK_Spawns_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id])
 );

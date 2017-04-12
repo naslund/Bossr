@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.UserRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("INSERT INTO Users (Username, HashedPassword, Salt) VALUES (@Username, @HashedPassword, @Salt)", user);
+                user.Id = await conn.QuerySingleAsync<int>("INSERT INTO Users (Username, HashedPassword, Salt) VALUES (@Username, @HashedPassword, @Salt) SELECT CAST(SCOPE_IDENTITY() as int)", user);
             }
         }
 

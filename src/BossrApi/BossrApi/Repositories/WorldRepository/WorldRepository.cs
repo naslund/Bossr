@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.WorldRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("INSERT INTO Worlds (Name, IsMonitored) VALUES (@Name, @IsMonitored)", world);
+                world.Id = await conn.QuerySingleAsync<int>("INSERT INTO Worlds (Name, IsMonitored) VALUES (@Name, @IsMonitored) SELECT CAST(SCOPE_IDENTITY() as int)", world);
             }
         }
 

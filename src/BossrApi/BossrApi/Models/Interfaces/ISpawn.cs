@@ -7,7 +7,6 @@ namespace BossrApi.Models.Interfaces
         int Id { get; set; }
         int CreatureId { get; set; }
         int WorldId { get; set; }
-        DateTime TimeMinUtc { get; set; }
-        DateTime TimeMaxUtc { get; set; }
+        int ScrapeId { get; set; }
     }
 }

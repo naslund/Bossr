@@ -60,7 +60,7 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Post([FromBody]World request)
         {
             await worldRepository.CreateAsync(request);
-            var world = await worldRepository.ReadAsync(request.Name);
+            var world = await worldRepository.ReadAsync(request.Id);
             return CreatedAtRoute("GetWorld", new { controller = "api/worlds", id = world.Id }, world);
         }
 
