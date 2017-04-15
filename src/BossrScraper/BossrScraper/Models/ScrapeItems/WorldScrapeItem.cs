@@ -1,6 +1,6 @@
-﻿namespace BossrScraper.Models
+﻿namespace BossrScraper.Models.ScrapeItems
 {
-    public class World : IWorld
+    public class WorldScrapeItem : IWorldScrapeItem
     {
         public string Name { get; set; }
         public string PlayersOnline { get; set; }

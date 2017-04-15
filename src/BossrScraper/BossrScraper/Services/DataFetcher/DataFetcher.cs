@@ -9,8 +9,7 @@ namespace BossrScraper.Services.DataFetcher
         {
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(url);
-                return response;
+                return await client.GetAsync(url);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using BossrScraper.Models;
+﻿using BossrScraper.Models.Entities;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

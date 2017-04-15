@@ -1,4 +1,5 @@
-﻿using BossrScraper.Models;
+﻿using BossrScraper.Models.Entities;
+using BossrScraper.Models.ScrapeItems;
 using HtmlAgilityPack;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BossrScraper.Services.Parsers.WorldParser
         public async Task<IEnumerable<IWorld>> Parse(HttpResponseMessage response)
         {
             var nodes = await ConvertToNodesAsync(response);
-            return ConvertToModel(nodes);
+            return ConvertToEntity(nodes);
         }
 
         private async Task<IEnumerable<HtmlNode>> ConvertToNodesAsync(HttpResponseMessage response)
@@ -27,15 +28,11 @@ namespace BossrScraper.Services.Parsers.WorldParser
                 .Where(x => x.Name == "tr");
         }
 
-        private IEnumerable<IWorld> ConvertToModel(IEnumerable<HtmlNode> nodes)
+        private IEnumerable<IWorld> ConvertToEntity(IEnumerable<HtmlNode> nodes)
         {
             return nodes.Select(x => new World
             {
-                Name = x.ChildNodes[0].InnerText.HtmlDecodeAndTrim(),
-                PlayersOnline = x.ChildNodes[1].InnerText.HtmlDecodeAndTrim(),
-                Location = x.ChildNodes[2].InnerText.HtmlDecodeAndTrim(),
-                PvpType = x.ChildNodes[3].InnerText.HtmlDecodeAndTrim(),
-                Tags = x.ChildNodes[4].InnerText.HtmlDecodeAndTrim()
+                Name = x.ChildNodes[0].InnerText.HtmlDecodeAndTrim()
             });
         }
     }
