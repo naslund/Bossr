@@ -1,12 +1,11 @@
 ﻿using BossrScraper.Models.Entities;
-using BossrScraper.Models.ScrapeItems;
 using HtmlAgilityPack;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BossrScraper.Services.Parsers.WorldParser
+namespace BossrScraper.Services.Parsers
 {
     public class WorldParser : IWorldParser
     {
@@ -23,9 +22,7 @@ namespace BossrScraper.Services.Parsers.WorldParser
             return document
                 .DocumentNode
                 .SelectSingleNode("//*[@class='InnerTableContainer']/table/tr[2]/td/div[2]/div/table")
-                .ChildNodes
-                .Skip(1)
-                .Where(x => x.Name == "tr");
+                .SelectNodes("tr[position() > 1]");
         }
 
         private IEnumerable<IWorld> ConvertToEntity(IEnumerable<HtmlNode> nodes)

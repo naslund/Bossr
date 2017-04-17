@@ -1,4 +1,4 @@
-﻿using BossrScraper.Factories.ConfigurationFactory;
+﻿using BossrScraper.Factories;
 using BossrScraper.Models.Authentication;
 using BossrScraper.Models.Entities;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +11,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BossrScraper.Services.RestClient
+namespace BossrScraper.Services
 {
     public class RestClient : IRestClient
     {
@@ -38,11 +38,33 @@ namespace BossrScraper.Services.RestClient
             return null;
         }
 
+        public async Task<IEnumerable<ICreature>> GetCreaturesAsync()
+        {
+            await ValidateToken();
+            var response = await client.GetAsync(configuration["BossrApi:Resources:Creatures"]);
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<Creature[]>(await response.Content.ReadAsStringAsync());
+
+            return null;
+        }
+
         public async Task PostWorldAsync(IWorld world)
         {
             await ValidateToken();
             var worldJson = JsonConvert.SerializeObject(world);
             var response = await client.PostAsync(configuration["BossrApi:Resources:Worlds"], new StringContent(worldJson, Encoding.UTF8, "application/json"));
+            if (response.IsSuccessStatusCode)
+                world.Id = JsonConvert.DeserializeObject<World>(await response.Content.ReadAsStringAsync()).Id;
+        }
+
+        public async Task PostCreatureAsync(ICreature creature)
+        {
+            await ValidateToken();
+            var creatureJson = JsonConvert.SerializeObject(creature);
+            var response = await client.PostAsync(configuration["BossrApi:Resources:Creatures"], new StringContent(creatureJson, Encoding.UTF8, "application/json"));
+            if (response.IsSuccessStatusCode)
+                creature.Id = JsonConvert.DeserializeObject<Creature>(await response.Content.ReadAsStringAsync()).Id;
         }
 
         private async Task PostTokenAsync()

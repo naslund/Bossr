@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace BossrScraper.Factories.ConfigurationFactory
+namespace BossrScraper.Factories
 {
     public interface IConfigurationFactory
     {

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace BossrScraper.Services.Parsers
 {
-    public interface IWorldParser
+    public interface IStatsParser
     {
-        Task<IEnumerable<IWorld>> Parse(HttpResponseMessage response);
+        Task<IEnumerable<IStatistic>> Parse(HttpResponseMessage response, int worldId);
     }
 }

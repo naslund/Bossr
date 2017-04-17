@@ -1,4 +1,4 @@
-﻿namespace BossrApi.Models.Interfaces
+﻿namespace BossrScraper.Models.Entities
 {
     public interface ICreature
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BossrScraper.Services.Scheduler
+namespace BossrScraper.Services
 {
     public interface IScheduler
     {

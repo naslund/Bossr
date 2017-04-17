@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.CreatureRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                creature.Id = await conn.QuerySingleAsync<int>("INSERT INTO Creatures (Name, SpawnRateHoursMin, SpawnRateHoursMax, IsMonitored) VALUES (@Name, @SpawnRateHoursMin, @SpawnRateHoursMax, @IsMonitored) SELECT CAST(SCOPE_IDENTITY() as int)", creature);
+                creature.Id = await conn.QuerySingleAsync<int>("INSERT INTO Creatures (Name, IsMonitored) VALUES (@Name, @IsMonitored) SELECT CAST(SCOPE_IDENTITY() as int)", creature);
             }
         }
 
@@ -68,7 +68,7 @@ namespace BossrApi.Repositories.CreatureRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Creatures SET Name = @Name, SpawnRateHoursMin = @SpawnRateHoursMin, SpawnRateHoursMax = @SpawnRateHoursMax, IsMonitored = @IsMonitored WHERE Id = @Id", creature);
+                await conn.ExecuteAsync("UPDATE Creatures SET Name = @Name, IsMonitored = @IsMonitored WHERE Id = @Id", creature);
             }
         }
     }

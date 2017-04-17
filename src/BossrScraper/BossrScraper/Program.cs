@@ -1,10 +1,8 @@
-﻿using BossrScraper.Factories.ConfigurationFactory;
-using BossrScraper.Services.Comparers.WorldComparer;
-using BossrScraper.Services.DataFetcher;
-using BossrScraper.Services.Parsers.WorldParser;
-using BossrScraper.Services.RestClient;
-using BossrScraper.Services.Scheduler;
-using BossrScraper.Services.Scrapers.WorldScraper;
+﻿using BossrScraper.Factories;
+using BossrScraper.Services;
+using BossrScraper.Services.Comparers;
+using BossrScraper.Services.Parsers;
+using BossrScraper.Services.Scrapers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BossrScraper
@@ -22,6 +20,11 @@ namespace BossrScraper
                 .AddTransient<IWorldScraper, WorldScraper>()
                 .AddTransient<IWorldParser, WorldParser>()
                 .AddTransient<IWorldComparer, WorldComparer>()
+
+                .AddTransient<IStatsScraper, StatsScraper>()
+                .AddTransient<IStatsParser, StatsParser>()
+
+                .AddTransient<ICreatureComparer, CreatureComparer>()
 
                 .BuildServiceProvider();
 

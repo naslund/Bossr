@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BossrScraper.Services.DataFetcher
+namespace BossrScraper.Services
 {
     public interface IDataFetcher
     {

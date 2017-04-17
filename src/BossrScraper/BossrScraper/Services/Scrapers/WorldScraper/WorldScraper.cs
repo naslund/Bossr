@@ -1,12 +1,10 @@
-﻿using BossrScraper.Factories.ConfigurationFactory;
-using BossrScraper.Services.Comparers.WorldComparer;
-using BossrScraper.Services.DataFetcher;
-using BossrScraper.Services.Parsers.WorldParser;
-using BossrScraper.Services.RestClient;
+﻿using BossrScraper.Factories;
+using BossrScraper.Services.Comparers;
+using BossrScraper.Services.Parsers;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
-namespace BossrScraper.Services.Scrapers.WorldScraper
+namespace BossrScraper.Services.Scrapers
 {
     public class WorldScraper : IWorldScraper
     {

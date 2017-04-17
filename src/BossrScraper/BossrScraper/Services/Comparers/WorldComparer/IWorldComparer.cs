@@ -1,8 +1,7 @@
 ﻿using BossrScraper.Models.Entities;
-using BossrScraper.Models.ScrapeItems;
 using System.Collections.Generic;
 
-namespace BossrScraper.Services.Comparers.WorldComparer
+namespace BossrScraper.Services.Comparers
 {
     public interface IWorldComparer
     {
