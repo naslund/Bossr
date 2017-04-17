@@ -1,11 +1,11 @@
-﻿using BossrApi.Models.Entities;
+﻿using AutoMapper;
+using BossrApi.Models.Dtos;
+using BossrApi.Models.Entities;
 using BossrApi.Repositories.ScrapeRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BossrApi.Controllers
@@ -32,7 +32,8 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Get()
         {
             var scrapes = await scrapeRepository.ReadAllAsync();
-            return Ok(scrapes);
+            var scrapesDto = Mapper.Map<List<ScrapeDto>>(scrapes);
+            return Ok(scrapesDto);
         }
 
         [HttpGet("{id}", Name = "GetScrape")]
@@ -42,10 +43,11 @@ namespace BossrApi.Controllers
             if (scrape == null)
                 return NotFound();
 
-            return Ok(scrape);
+            var scrapeDto = Mapper.Map<ScrapeDto>(scrape);
+            return Ok(scrapeDto);
         }
 
-        [HttpPatch("{id}")]
+        //[HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var scrape = await scrapeRepository.ReadAsync(id);
@@ -58,19 +60,19 @@ namespace BossrApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Scrape request)
+        public async Task<IActionResult> Post([FromBody]ScrapeDto request)
         {
-            await scrapeRepository.CreateAsync(request);
-            var scrape = await scrapeRepository.ReadAsync(request.Id);
-            return CreatedAtRoute("GetScrape", new { controller = "api/scrapes", id = scrape.Id }, scrape);
+            var scrape = Mapper.Map<Scrape>(request);
+            await scrapeRepository.CreateAsync(scrape);
+            return CreatedAtRoute("GetScrape", new { controller = "api/scrapes", id = scrape.Id }, Mapper.Map<ScrapeDto>(scrape));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]Scrape request)
+        public async Task<IActionResult> Put(int id, [FromBody]ScrapeDto request)
         {
             request.Id = id;
-
-            await scrapeRepository.UpdateAsync(request);
+            var scrape = Mapper.Map<Scrape>(request);
+            await scrapeRepository.UpdateAsync(scrape);
             return Ok();
         }
     }

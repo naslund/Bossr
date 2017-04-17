@@ -1,7 +1,7 @@
 ﻿using NodaTime;
 using System;
 
-namespace BossrApi.Models.Interfaces
+namespace BossrScraper.Models.Entities
 {
     public interface IScrape
     {

@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.ScrapeRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                scrape.Id = await conn.QuerySingleAsync<int>("INSERT INTO Scrapes (TimeMinUtc) VALUES (@TimeMinUtc) SELECT CAST(SCOPE_IDENTITY() as int)", scrape);
+                scrape.Id = await conn.QuerySingleAsync<int>("INSERT INTO Scrapes (Date) VALUES (@Date) SELECT CAST(SCOPE_IDENTITY() as int)", scrape);
             }
         }
 
@@ -52,7 +52,7 @@ namespace BossrApi.Repositories.ScrapeRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Scrapes SET TimeMinUtc = @TimeMinUtc WHERE Id = @Id", scrape);
+                await conn.ExecuteAsync("UPDATE Scrapes SET Date = @Date WHERE Id = @Id", scrape);
             }
         }
     }

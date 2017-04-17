@@ -1,8 +1,6 @@
-﻿using BossrApi.Models.Interfaces;
-using NodaTime;
-using System;
+﻿using NodaTime;
 
-namespace BossrApi.Models.Entities
+namespace BossrScraper.Models.Entities
 {
     public class Scrape : IScrape
     {

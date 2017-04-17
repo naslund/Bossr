@@ -7,6 +7,7 @@ using BossrApi.Middleware.TokenProvider;
 using BossrApi.Models.Dtos;
 using BossrApi.Models.Entities;
 using BossrApi.Repositories.CreatureRepository;
+using BossrApi.Repositories.ScrapeRepository;
 using BossrApi.Repositories.SpawnRepository;
 using BossrApi.Repositories.UserRepository;
 using BossrApi.Repositories.WorldRepository;
@@ -24,6 +25,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NodaTime;
+using System;
+using System.Globalization;
 using System.Text;
 
 namespace BossrApi
@@ -51,6 +55,7 @@ namespace BossrApi
             services.AddTransient<IWorldRepository, WorldRepository>();
             services.AddTransient<ICreatureRepository, CreatureRepository>();
             services.AddTransient<ISpawnRepository, SpawnRepository>();
+            services.AddTransient<IScrapeRepository, ScrapeRepository>();
 
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IHashGenerator, HashGenerator>();
@@ -67,9 +72,11 @@ namespace BossrApi
             Mapper.Initialize(x =>
             {
                 x.CreateMap<User, UserDto>();
+                x.CreateMap<Scrape, ScrapeDto>().ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToString(y.Date)));
+                x.CreateMap<ScrapeDto, Scrape>().ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToLocalDate(y.Date)));
             });
 
-            SqlMapper.AddTypeHandler(new DateTimeTypeHandler());
+            SqlMapper.AddTypeHandler(new LocalDateTypeHandler());
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SecretKey"]));
 
