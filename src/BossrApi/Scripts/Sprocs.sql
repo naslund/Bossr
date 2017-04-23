@@ -103,3 +103,47 @@ AS
 	SET Name = @Name, X = @X, Y = @Y, Z = @Z, RespawnHoursMin = @RespawnHoursMin, RespawnHoursMax = @RespawnHoursMax
 	WHERE Id = @Id
 RETURN 0
+
+/* CATEGORIES */
+
+GO
+CREATE PROCEDURE [dbo].[spDeleteCategoryById]
+	@Id int
+AS
+	DELETE FROM Categories
+	WHERE Id = @Id
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spGetCategoryById]
+	@Id int
+AS
+	SELECT * FROM Categories 
+	WHERE Id = @Id
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spGetCategories]
+AS
+	SELECT * FROM Categories
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spInsertCategory]
+	@Id int,
+	@Name nvarchar(30)
+AS
+	INSERT INTO Categories (Name)
+	VALUES (@Name)
+	SELECT CAST(SCOPE_IDENTITY() as int)
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spUpdateCategory]
+	@Id int,
+	@Name nvarchar(30)
+AS
+	UPDATE Categories 
+	SET Name = @Name
+	WHERE Id = @Id
+RETURN 0

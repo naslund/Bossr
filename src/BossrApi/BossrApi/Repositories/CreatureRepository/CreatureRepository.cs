@@ -23,7 +23,7 @@ namespace BossrApi.Repositories
             }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
@@ -39,7 +39,7 @@ namespace BossrApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<ICreature>> ReadAllAsync(bool isMonitored)
+        public async Task<IEnumerable<ICreature>> ReadAllByIsMonitoredAsync(bool isMonitored)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
@@ -47,7 +47,7 @@ namespace BossrApi.Repositories
             }
         }
 
-        public async Task<ICreature> ReadAsync(int id)
+        public async Task<ICreature> ReadByIdAsync(int id)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
@@ -55,7 +55,7 @@ namespace BossrApi.Repositories
             }
         }
 
-        public async Task<ICreature> ReadAsync(string name)
+        public async Task<ICreature> ReadByNameAsync(string name)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {

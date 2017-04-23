@@ -54,7 +54,7 @@ CREATE TABLE [dbo].[Positions] (
     UNIQUE NONCLUSTERED ([Name] ASC)
 );
 
-CREATE TABLE [dbo].[TagCategories] (
+CREATE TABLE [dbo].[Categories] (
     [Id]   INT           IDENTITY (1, 1) NOT NULL,
     [Name] NVARCHAR (30) NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
@@ -62,12 +62,12 @@ CREATE TABLE [dbo].[TagCategories] (
 );
 
 CREATE TABLE [dbo].[Tags] (
-    [Id]            INT           IDENTITY (1, 1) NOT NULL,
-    [Name]          NVARCHAR (30) NOT NULL,
-    [TagCategoryId] INT           NOT NULL,
+    [Id]         INT           IDENTITY (1, 1) NOT NULL,
+    [Name]       NVARCHAR (30) NOT NULL,
+    [CategoryId] INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    UNIQUE NONCLUSTERED ([Name] ASC, [TagCategoryId] ASC),
-    CONSTRAINT [FK_Tags_TagCategories] FOREIGN KEY ([TagCategoryId]) REFERENCES [dbo].[TagCategories] ([Id])
+    UNIQUE NONCLUSTERED ([Name] ASC, [CategoryId] ASC),
+    CONSTRAINT [FK_Tags_Categories] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[Categories] ([Id])
 );
 
 CREATE TABLE [dbo].[WorldTags] (

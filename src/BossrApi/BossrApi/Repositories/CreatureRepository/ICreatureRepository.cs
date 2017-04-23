@@ -1,23 +1,12 @@
 ﻿using BossrApi.Models.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using BossrApi.Repositories.Interfaces;
 
 namespace BossrApi.Repositories
 {
-    public interface ICreatureRepository
+    public interface ICreatureRepository : 
+        ICrudable<ICreature>,
+        IListableByIsMonitored<ICreature>, 
+        IReadableByName<ICreature>
     {
-        Task CreateAsync(ICreature creature);
-
-        Task DeleteAsync(int id);
-
-        Task<IEnumerable<ICreature>> ReadAllAsync();
-
-        Task<IEnumerable<ICreature>> ReadAllAsync(bool isMonitored);
-
-        Task<ICreature> ReadAsync(int id);
-
-        Task<ICreature> ReadAsync(string name);
-
-        Task UpdateAsync(ICreature creature);
     }
 }

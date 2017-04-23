@@ -22,7 +22,7 @@ namespace BossrApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await creatureRepository.DeleteAsync(id);
+            await creatureRepository.DeleteByIdAsync(id);
             return Ok();
         }
 
@@ -36,7 +36,7 @@ namespace BossrApi.Controllers
         [HttpGet("{id}", Name = "GetCreature")]
         public async Task<IActionResult> Get(int id)
         {
-            var creature = await creatureRepository.ReadAsync(id);
+            var creature = await creatureRepository.ReadByIdAsync(id);
             if (creature == null)
                 return NotFound();
 
@@ -46,7 +46,7 @@ namespace BossrApi.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
-            var creature = await creatureRepository.ReadAsync(id);
+            var creature = await creatureRepository.ReadByIdAsync(id);
             if (creature == null)
                 return NotFound();
 
@@ -60,7 +60,7 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Post([FromBody]Creature request)
         {
             await creatureRepository.CreateAsync(request);
-            var creature = await creatureRepository.ReadAsync(request.Id);
+            var creature = await creatureRepository.ReadByIdAsync(request.Id);
             return CreatedAtRoute("GetCreature", new { controller = "api/creatures", id = creature.Id }, creature);
         }
 
