@@ -19,7 +19,7 @@ namespace BossrApi.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                spawn.Id = await conn.QuerySingleAsync<int>("INSERT INTO Spawns (WorldId, CreatureId, ScrapeId) VALUES (@WorldId, @CreatureId, @ScrapeId) SELECT CAST(SCOPE_IDENTITY() as int)", spawn);
+                spawn.Id = await conn.QuerySingleAsync<int>("INSERT INTO Spawns (WorldId, CreatureId, ScrapeId, Amount) VALUES (@WorldId, @CreatureId, @ScrapeId, @Amount) SELECT CAST(SCOPE_IDENTITY() as int)", spawn);
             }
         }
 
@@ -51,7 +51,7 @@ namespace BossrApi.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Spawns SET CreatureId = @CreatureId, WorldId = @WorldId, ScrapeId = @ScrapeId WHERE Id = @Id", spawn);
+                await conn.ExecuteAsync("UPDATE Spawns SET CreatureId = @CreatureId, WorldId = @WorldId, ScrapeId = @ScrapeId, Amount = @Amount WHERE Id = @Id", spawn);
             }
         }
     }

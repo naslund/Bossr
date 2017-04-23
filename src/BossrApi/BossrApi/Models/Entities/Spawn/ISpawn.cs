@@ -7,5 +7,6 @@ namespace BossrApi.Models.Entities
         int CreatureId { get; set; }
         int WorldId { get; set; }
         int ScrapeId { get; set; }
+        int Amount { get; set; }
     }
 }

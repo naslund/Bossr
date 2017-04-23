@@ -6,5 +6,6 @@
         public int WorldId { get; set; }
         public int CreatureId { get; set; }
         public int ScrapeId { get; set; }
+        public int Amount { get; set; }
     }
 }
