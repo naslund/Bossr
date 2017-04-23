@@ -20,7 +20,7 @@ namespace BossrApi.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                scrape.Id = await conn.QuerySingleAsync<int>("spInsertScrape", new { Date = scrape.Date }, commandType: CommandType.StoredProcedure);
+                scrape.Id = await conn.QuerySingleAsync<int>("spInsertScrape", scrape, commandType: CommandType.StoredProcedure);
             }
         }
 
