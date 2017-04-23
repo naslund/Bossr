@@ -1,15 +1,13 @@
 ﻿using BossrApi.Models.Responses;
-using BossrApi.Repositories.UserRepository;
-using BossrApi.Services.PasswordValidator;
-using BossrApi.Services.ResponseWriter;
-using BossrApi.Services.TokenGenerator;
+using BossrApi.Repositories;
+using BossrApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace BossrApi.Middleware.TokenProvider
+namespace BossrApi.Middleware
 {
     public class TokenProviderMiddleware
     {

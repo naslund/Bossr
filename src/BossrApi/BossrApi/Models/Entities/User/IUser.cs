@@ -1,4 +1,4 @@
-﻿namespace BossrApi.Models.Interfaces
+﻿namespace BossrApi.Models.Entities
 {
     public interface IUser
     {

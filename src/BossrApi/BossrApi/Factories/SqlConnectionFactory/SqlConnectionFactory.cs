@@ -1,5 +1,4 @@
-﻿using BossrApi.Interfaces;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 
 namespace BossrApi.Factories

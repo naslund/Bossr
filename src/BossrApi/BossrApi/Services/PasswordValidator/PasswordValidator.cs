@@ -1,7 +1,6 @@
-﻿using BossrApi.Models.Interfaces;
-using BossrApi.Services.HashGenerator;
+﻿using BossrApi.Models.Entities;
 
-namespace BossrApi.Services.PasswordValidator
+namespace BossrApi.Services
 {
     public class PasswordValidator : IPasswordValidator
     {

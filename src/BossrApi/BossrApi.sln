@@ -10,6 +10,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{F834
 		Scripts\Tables.sql = Scripts\Tables.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sprocs", "Sprocs", "{6D231E70-08F4-4673-9FB0-0B3A2F8E7A49}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\Sprocs\spDeleteScrapeById.sql = Scripts\Sprocs\spDeleteScrapeById.sql
+		Scripts\Sprocs\spGetScrapeById.sql = Scripts\Sprocs\spGetScrapeById.sql
+		Scripts\Sprocs\spGetScrapeByLatestDate.sql = Scripts\Sprocs\spGetScrapeByLatestDate.sql
+		Scripts\Sprocs\spGetScrapes.sql = Scripts\Sprocs\spGetScrapes.sql
+		Scripts\Sprocs\spInsertScrape.sql = Scripts\Sprocs\spInsertScrape.sql
+		Scripts\Sprocs\spUpdateScrape.sql = Scripts\Sprocs\spUpdateScrape.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +33,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D231E70-08F4-4673-9FB0-0B3A2F8E7A49} = {F8347A4A-48FE-4F66-B291-62DA2E016FF7}
 	EndGlobalSection
 EndGlobal

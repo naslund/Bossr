@@ -1,8 +1,8 @@
-﻿using BossrApi.Models.Interfaces;
+﻿using BossrApi.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BossrApi.Repositories.UserRepository
+namespace BossrApi.Repositories
 {
     public interface IUserRepository
     {

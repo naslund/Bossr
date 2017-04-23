@@ -1,6 +1,4 @@
-﻿using BossrApi.Models.Interfaces;
-
-namespace BossrApi.Models.Entities
+﻿namespace BossrApi.Models.Entities
 {
     public class Creature : ICreature
     {

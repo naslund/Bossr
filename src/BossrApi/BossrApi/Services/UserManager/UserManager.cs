@@ -1,10 +1,8 @@
 ﻿using BossrApi.Models.Entities;
-using BossrApi.Repositories.UserRepository;
-using BossrApi.Services.HashGenerator;
-using BossrApi.Services.SaltGenerator;
+using BossrApi.Repositories;
 using System.Threading.Tasks;
 
-namespace BossrApi.Services.UserManager
+namespace BossrApi.Services
 {
     public class UserManager : IUserManager
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BossrApi.Services.UserManager
+namespace BossrApi.Services
 {
     public interface IUserManager
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 
-namespace BossrApi.Middleware.TokenProvider
+namespace BossrApi.Middleware
 {
     public class TokenProviderOptions
     {

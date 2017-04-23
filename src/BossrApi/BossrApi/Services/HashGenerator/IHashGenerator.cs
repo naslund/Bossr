@@ -1,4 +1,4 @@
-﻿namespace BossrApi.Services.HashGenerator
+﻿namespace BossrApi.Services
 {
     public interface IHashGenerator
     {

@@ -26,7 +26,8 @@ CREATE TABLE [dbo].[Creatures] (
 CREATE TABLE [dbo].[Scrapes] (
     [Id]   INT  IDENTITY (1, 1) NOT NULL,
     [Date] DATE NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+	UNIQUE NONCLUSTERED ([Date] ASC)
 );
 
 CREATE TABLE [dbo].[Spawns] (

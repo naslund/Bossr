@@ -49,6 +49,17 @@ namespace BossrScraper.Services
             return null;
         }
 
+        public async Task<IScrapeDto> GetLatestScrapeAsync()
+        {
+            await ValidateToken();
+            var response = await client.GetAsync(configuration["BossrApi:Resources:Scrapes"] + "/latest");
+
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ScrapeDto>(await response.Content.ReadAsStringAsync());
+
+            return null;
+        }
+
         public async Task PostWorldAsync(IWorld world)
         {
             await ValidateToken();
@@ -65,6 +76,24 @@ namespace BossrScraper.Services
             var response = await client.PostAsync(configuration["BossrApi:Resources:Creatures"], new StringContent(creatureJson, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
                 creature.Id = JsonConvert.DeserializeObject<Creature>(await response.Content.ReadAsStringAsync()).Id;
+        }
+
+        public async Task PostScrapeAsync(IScrapeDto scrape)
+        {
+            await ValidateToken();
+            var scrapeJson = JsonConvert.SerializeObject(scrape);
+            var response = await client.PostAsync(configuration["BossrApi:Resources:Scrapes"], new StringContent(scrapeJson, Encoding.UTF8, "application/json"));
+            if (response.IsSuccessStatusCode)
+                scrape.Id = JsonConvert.DeserializeObject<ScrapeDto>(await response.Content.ReadAsStringAsync()).Id;
+        }
+
+        public async Task PostSpawnAsync(ISpawn spawn)
+        {
+            await ValidateToken();
+            var spawnJson = JsonConvert.SerializeObject(spawn);
+            var response = await client.PostAsync(configuration["BossrApi:Resources:Spawns"], new StringContent(spawnJson, Encoding.UTF8, "application/json"));
+            if (response.IsSuccessStatusCode)
+                spawn.Id = JsonConvert.DeserializeObject<Spawn>(await response.Content.ReadAsStringAsync()).Id;
         }
 
         private async Task PostTokenAsync()

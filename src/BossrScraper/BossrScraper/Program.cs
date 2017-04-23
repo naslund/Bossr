@@ -1,6 +1,7 @@
 ﻿using BossrScraper.Factories;
 using BossrScraper.Services;
 using BossrScraper.Services.Comparers;
+using BossrScraper.Services.Converters;
 using BossrScraper.Services.Parsers;
 using BossrScraper.Services.Scrapers;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,8 @@ namespace BossrScraper
         {
             var serviceProvider = new ServiceCollection()
                 .AddTransient<IConfigurationFactory, ConfigurationFactory>()
+                .AddTransient<IYesterdayLocalDateFactory, YesterdayLocalDateFactory>()
+
                 .AddTransient<IScheduler, Scheduler>()
                 .AddTransient<IDataFetcher, DataFetcher>()
                 .AddTransient<IRestClient, RestClient>()
@@ -21,8 +24,9 @@ namespace BossrScraper
                 .AddTransient<IWorldParser, WorldParser>()
                 .AddTransient<IWorldComparer, WorldComparer>()
 
-                .AddTransient<IStatsScraper, StatsScraper>()
-                .AddTransient<IStatsParser, StatsParser>()
+                .AddTransient<IStatisticScraper, StatisticScraper>()
+                .AddTransient<IStatisticParser, StatisticParser>()
+                .AddTransient<IStatisticConverter, StatisticConverter>()
 
                 .AddTransient<ICreatureComparer, CreatureComparer>()
 

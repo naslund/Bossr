@@ -1,11 +1,10 @@
-﻿using BossrApi.Interfaces;
+﻿using BossrApi.Factories;
 using BossrApi.Models.Entities;
-using BossrApi.Models.Interfaces;
 using Dapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BossrApi.Repositories.SpawnRepository
+namespace BossrApi.Repositories
 {
     public class SpawnRepository : ISpawnRepository
     {

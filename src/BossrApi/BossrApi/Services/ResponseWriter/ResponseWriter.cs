@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace BossrApi.Services.ResponseWriter
+namespace BossrApi.Services
 {
     public class ResponseWriter : IResponseWriter
     {

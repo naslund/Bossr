@@ -1,4 +1,4 @@
-﻿namespace BossrApi.Services.SaltGenerator
+﻿namespace BossrApi.Services
 {
     public interface ISaltGenerator
     {

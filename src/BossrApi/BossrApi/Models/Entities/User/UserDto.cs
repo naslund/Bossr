@@ -1,4 +1,4 @@
-﻿namespace BossrApi.Models.Dtos
+﻿namespace BossrApi.Models.Entities
 {
     public class UserDto
     {

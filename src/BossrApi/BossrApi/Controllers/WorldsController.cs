@@ -1,6 +1,6 @@
 ﻿using BossrApi.Attributes;
 using BossrApi.Models.Entities;
-using BossrApi.Repositories.WorldRepository;
+using BossrApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

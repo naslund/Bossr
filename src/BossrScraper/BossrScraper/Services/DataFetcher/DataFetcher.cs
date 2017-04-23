@@ -16,7 +16,7 @@ namespace BossrScraper.Services
 
         public async Task<HttpResponseMessage> FetchHttpResponse(string url)
         {
-            var delay = int.Parse(configuration["ScrapeDelayMs"]);
+            var delay = int.Parse(configuration["DataFetcherDelayMs"]);
             await Task.Delay(delay);
 
             using (HttpClient client = new HttpClient())

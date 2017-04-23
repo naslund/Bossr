@@ -1,6 +1,6 @@
-﻿using BossrApi.Models.Interfaces;
+﻿using BossrApi.Models.Entities;
 
-namespace BossrApi.Services.PasswordValidator
+namespace BossrApi.Services
 {
     public interface IPasswordValidator
     {

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using BossrApi.Models.Dtos;
 using BossrApi.Models.Entities;
-using BossrApi.Repositories.ScrapeRepository;
+using BossrApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +33,14 @@ namespace BossrApi.Controllers
             var scrapes = await scrapeRepository.ReadAllAsync();
             var scrapesDto = Mapper.Map<List<ScrapeDto>>(scrapes);
             return Ok(scrapesDto);
+        }
+
+        [HttpGet("latest")]
+        public async Task<IActionResult> GetLatest()
+        {
+            var scrape = await scrapeRepository.ReadLatest();
+            var scrapeDto = Mapper.Map<ScrapeDto>(scrape);
+            return Ok(scrapeDto);
         }
 
         [HttpGet("{id}", Name = "GetScrape")]

@@ -2,21 +2,10 @@
 using BossrApi.Attributes;
 using BossrApi.Converters;
 using BossrApi.Factories;
-using BossrApi.Interfaces;
-using BossrApi.Middleware.TokenProvider;
-using BossrApi.Models.Dtos;
+using BossrApi.Middleware;
 using BossrApi.Models.Entities;
-using BossrApi.Repositories.CreatureRepository;
-using BossrApi.Repositories.ScrapeRepository;
-using BossrApi.Repositories.SpawnRepository;
-using BossrApi.Repositories.UserRepository;
-using BossrApi.Repositories.WorldRepository;
-using BossrApi.Services.HashGenerator;
-using BossrApi.Services.PasswordValidator;
-using BossrApi.Services.ResponseWriter;
-using BossrApi.Services.SaltGenerator;
-using BossrApi.Services.TokenGenerator;
-using BossrApi.Services.UserManager;
+using BossrApi.Repositories;
+using BossrApi.Services;
 using Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,9 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NodaTime;
-using System;
-using System.Globalization;
 using System.Text;
 
 namespace BossrApi

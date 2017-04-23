@@ -1,6 +1,4 @@
-﻿using NodaTime;
-
-namespace BossrApi.Models.Dtos
+﻿namespace BossrApi.Models.Entities
 {
     public class ScrapeDto
     {

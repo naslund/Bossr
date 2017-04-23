@@ -1,11 +1,11 @@
-﻿using BossrApi.Middleware.TokenProvider;
-using BossrApi.Models.Interfaces;
+﻿using BossrApi.Middleware;
+using BossrApi.Models.Entities;
 using BossrApi.Models.Responses;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace BossrApi.Services.TokenGenerator
+namespace BossrApi.Services
 {
     public class TokenGenerator : ITokenGenerator
     {

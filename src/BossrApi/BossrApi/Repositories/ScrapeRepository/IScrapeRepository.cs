@@ -1,8 +1,8 @@
-﻿using BossrApi.Models.Interfaces;
+﻿using BossrApi.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BossrApi.Repositories.ScrapeRepository
+namespace BossrApi.Repositories
 {
     public interface IScrapeRepository
     {
@@ -13,6 +13,8 @@ namespace BossrApi.Repositories.ScrapeRepository
         Task<IEnumerable<IScrape>> ReadAllAsync();
 
         Task<IScrape> ReadAsync(int id);
+
+        Task<IScrape> ReadLatest();
 
         Task UpdateAsync(IScrape scrape);
     }

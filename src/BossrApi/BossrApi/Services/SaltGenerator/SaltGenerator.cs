@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace BossrApi.Services.SaltGenerator
+namespace BossrApi.Services
 {
     public class SaltGenerator : ISaltGenerator
     {

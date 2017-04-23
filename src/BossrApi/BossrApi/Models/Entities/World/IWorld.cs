@@ -1,6 +1,6 @@
-﻿namespace BossrApi.Models.Interfaces
+﻿namespace BossrApi.Models.Entities
 {
-    public interface ICreature
+    public interface IWorld
     {
         int Id { get; set; }
         string Name { get; set; }

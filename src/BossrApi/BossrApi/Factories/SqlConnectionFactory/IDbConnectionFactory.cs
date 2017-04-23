@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace BossrApi.Interfaces
+namespace BossrApi.Factories
 {
     public interface IDbConnectionFactory
     {

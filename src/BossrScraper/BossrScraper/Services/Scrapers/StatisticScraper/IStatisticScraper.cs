@@ -2,7 +2,7 @@
 
 namespace BossrScraper.Services.Scrapers
 {
-    public interface IStatsScraper
+    public interface IStatisticScraper
     {
         Task Scrape();
     }

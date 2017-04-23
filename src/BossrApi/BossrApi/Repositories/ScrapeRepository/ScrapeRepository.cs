@@ -1,11 +1,11 @@
-﻿using BossrApi.Interfaces;
+﻿using BossrApi.Factories;
 using BossrApi.Models.Entities;
-using BossrApi.Models.Interfaces;
 using Dapper;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
-namespace BossrApi.Repositories.ScrapeRepository
+namespace BossrApi.Repositories
 {
     public class ScrapeRepository : IScrapeRepository
     {
@@ -20,7 +20,7 @@ namespace BossrApi.Repositories.ScrapeRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                scrape.Id = await conn.QuerySingleAsync<int>("INSERT INTO Scrapes (Date) VALUES (@Date) SELECT CAST(SCOPE_IDENTITY() as int)", scrape);
+                scrape.Id = await conn.QuerySingleAsync<int>("spInsertScrape", new { Date = scrape.Date }, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -28,7 +28,7 @@ namespace BossrApi.Repositories.ScrapeRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("DELETE FROM Scrapes WHERE Id = @Id", new { Id = id });
+                await conn.ExecuteAsync("spDeleteScrapeById", new { Id = id }, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -36,7 +36,7 @@ namespace BossrApi.Repositories.ScrapeRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QueryAsync<Scrape>("SELECT * FROM Scrapes");
+                return await conn.QueryAsync<Scrape>("spGetScrapes", commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -44,7 +44,15 @@ namespace BossrApi.Repositories.ScrapeRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QuerySingleOrDefaultAsync<Scrape>("SELECT * FROM Scrapes WHERE Id = @Id", new { Id = id });
+                return await conn.QuerySingleOrDefaultAsync<Scrape>("spGetScrapeById", new { Id = id }, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<IScrape> ReadLatest()
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                return await conn.QuerySingleOrDefaultAsync<Scrape>("spGetScrapeByLatestDate", commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -52,7 +60,7 @@ namespace BossrApi.Repositories.ScrapeRepository
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Scrapes SET Date = @Date WHERE Id = @Id", scrape);
+                await conn.ExecuteAsync("spUpdateScrape", scrape, commandType: CommandType.StoredProcedure);
             }
         }
     }

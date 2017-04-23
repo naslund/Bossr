@@ -1,8 +1,8 @@
-﻿using BossrApi.Middleware.TokenProvider;
-using BossrApi.Models.Interfaces;
+﻿using BossrApi.Middleware;
+using BossrApi.Models.Entities;
 using BossrApi.Models.Responses;
 
-namespace BossrApi.Services.TokenGenerator
+namespace BossrApi.Services
 {
     public interface ITokenGenerator
     {

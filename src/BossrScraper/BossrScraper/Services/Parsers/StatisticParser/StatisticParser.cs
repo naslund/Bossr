@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BossrScraper.Services.Parsers
 {
-    public class StatsParser : IStatsParser
+    public class StatisticParser : IStatisticParser
     {
         public async Task<IEnumerable<IStatistic>> Parse(HttpResponseMessage response, int worldId)
         {
