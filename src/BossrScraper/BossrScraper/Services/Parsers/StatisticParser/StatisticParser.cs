@@ -1,4 +1,5 @@
-﻿using BossrScraper.Models.Entities;
+﻿using BossrScraper.Extensions;
+using BossrScraper.Models.Entities;
 using HtmlAgilityPack;
 using System.Collections.Generic;
 using System.Linq;

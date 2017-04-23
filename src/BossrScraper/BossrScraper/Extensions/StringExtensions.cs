@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace BossrScraper
+namespace BossrScraper.Extensions
 {
     public static class StringExtensions
     {
