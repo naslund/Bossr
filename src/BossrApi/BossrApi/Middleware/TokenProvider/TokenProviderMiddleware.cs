@@ -52,7 +52,7 @@ namespace BossrApi.Middleware
             var username = context.Request.Form["username"];
             var password = context.Request.Form["password"];
 
-            var user = await userRepository.ReadAsync(username);
+            var user = await userRepository.ReadByUsername(username);
             if (!passwordValidator.IsPasswordValid(user, password))
             {
                 var response = new MessageResponse { Message = "Invalid username or password." };

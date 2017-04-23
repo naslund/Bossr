@@ -22,7 +22,7 @@ namespace BossrApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await repository.DeleteAsync(id);
+            await repository.DeleteByIdAsync(id);
             return Ok();
         }
 
@@ -36,7 +36,7 @@ namespace BossrApi.Controllers
         [HttpGet("{id}", Name = "GetPosition")]
         public async Task<IActionResult> Get(int id)
         {
-            var position = await repository.ReadAsync(id);
+            var position = await repository.ReadByIdAsync(id);
             if (position == null)
                 return NotFound();
 
@@ -46,7 +46,7 @@ namespace BossrApi.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
-            var position = await repository.ReadAsync(id);
+            var position = await repository.ReadByIdAsync(id);
             if (position == null)
                 return NotFound();
 
@@ -60,7 +60,7 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Post([FromBody]Position request)
         {
             await repository.CreateAsync(request);
-            var position = await repository.ReadAsync(request.Id);
+            var position = await repository.ReadByIdAsync(request.Id);
             return CreatedAtRoute("GetPosition", new { controller = "api/positions", id = position.Id }, position);
         }
 

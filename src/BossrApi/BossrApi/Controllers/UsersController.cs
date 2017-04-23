@@ -27,7 +27,7 @@ namespace BossrApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await userRepository.DeleteAsync(id);
+            await userRepository.DeleteByIdAsync(id);
             return Ok();
         }
 
@@ -42,7 +42,7 @@ namespace BossrApi.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> Get(int id)
         {
-            var user = await userRepository.ReadAsync(id);
+            var user = await userRepository.ReadByIdAsync(id);
             if (user == null)
                 return NotFound();
 
@@ -56,7 +56,7 @@ namespace BossrApi.Controllers
         {
             await userManager.CreateUserAsync(request.Username, request.Password);
 
-            var user = await userRepository.ReadAsync(request.Username);
+            var user = await userRepository.ReadByUsername(request.Username);
             var userDto = Mapper.Map<UserDto>(user);
             return CreatedAtRoute("GetUser", new { controller = "api/users", id = userDto.Id }, userDto);
         }

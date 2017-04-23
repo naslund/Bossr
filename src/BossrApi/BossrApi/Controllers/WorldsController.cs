@@ -22,7 +22,7 @@ namespace BossrApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await worldRepository.DeleteAsync(id);
+            await worldRepository.DeleteByIdAsync(id);
             return Ok();
         }
 
@@ -36,7 +36,7 @@ namespace BossrApi.Controllers
         [HttpGet("{id}", Name = "GetWorld")]
         public async Task<IActionResult> Get(int id)
         {
-            var world = await worldRepository.ReadAsync(id);
+            var world = await worldRepository.ReadByIdAsync(id);
             if (world == null)
                 return NotFound();
 
@@ -46,7 +46,7 @@ namespace BossrApi.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
-            var world = await worldRepository.ReadAsync(id);
+            var world = await worldRepository.ReadByIdAsync(id);
             if (world == null)
                 return NotFound();
 
@@ -60,7 +60,7 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Post([FromBody]World request)
         {
             await worldRepository.CreateAsync(request);
-            var world = await worldRepository.ReadAsync(request.Id);
+            var world = await worldRepository.ReadByIdAsync(request.Id);
             return CreatedAtRoute("GetWorld", new { controller = "api/worlds", id = world.Id }, world);
         }
 

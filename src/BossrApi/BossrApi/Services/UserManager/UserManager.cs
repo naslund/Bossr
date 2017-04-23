@@ -39,7 +39,7 @@ namespace BossrApi.Services
             var salt = saltGenerator.GenerateSalt();
             var hashedPassword = hashGenerator.GenerateSaltedHash(password, salt);
 
-            var user = await userRepository.ReadAsync(id);
+            var user = await userRepository.ReadByIdAsync(id);
             user.Salt = salt;
             user.HashedPassword = hashedPassword;
 

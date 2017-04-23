@@ -1,21 +1,11 @@
 ﻿using BossrApi.Models.Entities;
-using System.Collections.Generic;
+using BossrApi.Repositories.Interfaces;
 using System.Threading.Tasks;
 
 namespace BossrApi.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : ICrudable<IUser>
     {
-        Task CreateAsync(IUser user);
-
-        Task DeleteAsync(int id);
-
-        Task<IEnumerable<IUser>> ReadAllAsync();
-
-        Task<IUser> ReadAsync(string username);
-
-        Task<IUser> ReadAsync(int id);
-
-        Task UpdateAsync(IUser user);
+        Task<IUser> ReadByUsername(string username);
     }
 }

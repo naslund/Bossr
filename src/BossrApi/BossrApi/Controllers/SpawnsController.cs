@@ -28,7 +28,7 @@ namespace BossrApi.Controllers
         [HttpGet("{id}", Name = "GetSpawn")]
         public async Task<IActionResult> Get(int id)
         {
-            var spawn = await spawnRepository.ReadAsync(id);
+            var spawn = await spawnRepository.ReadByIdAsync(id);
             if (spawn == null)
                 return NotFound();
 
@@ -38,7 +38,7 @@ namespace BossrApi.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
-            var spawn = await spawnRepository.ReadAsync(id);
+            var spawn = await spawnRepository.ReadByIdAsync(id);
             if (spawn == null)
                 return NotFound();
 
@@ -51,7 +51,7 @@ namespace BossrApi.Controllers
         public async Task<IActionResult> Post([FromBody]Spawn request)
         {
             await spawnRepository.CreateAsync(request);
-            var spawn = await spawnRepository.ReadAsync(request.Id);
+            var spawn = await spawnRepository.ReadByIdAsync(request.Id);
             return CreatedAtRoute("GetSpawn", new { controller = "api/spawns", id = spawn.Id }, spawn);
         }
 

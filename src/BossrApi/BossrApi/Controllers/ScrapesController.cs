@@ -23,7 +23,7 @@ namespace BossrApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await scrapeRepository.DeleteAsync(id);
+            await scrapeRepository.DeleteByIdAsync(id);
             return Ok();
         }
 
@@ -46,7 +46,7 @@ namespace BossrApi.Controllers
         [HttpGet("{id}", Name = "GetScrape")]
         public async Task<IActionResult> Get(int id)
         {
-            var scrape = await scrapeRepository.ReadAsync(id);
+            var scrape = await scrapeRepository.ReadByIdAsync(id);
             if (scrape == null)
                 return NotFound();
 
@@ -57,7 +57,7 @@ namespace BossrApi.Controllers
         //[HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
-            var scrape = await scrapeRepository.ReadAsync(id);
+            var scrape = await scrapeRepository.ReadByIdAsync(id);
             if (scrape == null)
                 return NotFound();
 

@@ -1,21 +1,11 @@
 ﻿using BossrApi.Models.Entities;
-using System.Collections.Generic;
+using BossrApi.Repositories.Interfaces;
 using System.Threading.Tasks;
 
 namespace BossrApi.Repositories
 {
-    public interface IScrapeRepository
+    public interface IScrapeRepository : ICrudable<IScrape>
     {
-        Task CreateAsync(IScrape scrape);
-
-        Task DeleteAsync(int id);
-
-        Task<IEnumerable<IScrape>> ReadAllAsync();
-
-        Task<IScrape> ReadAsync(int id);
-
         Task<IScrape> ReadLatest();
-
-        Task UpdateAsync(IScrape scrape);
     }
 }

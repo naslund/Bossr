@@ -23,7 +23,7 @@ namespace BossrApi.Repositories
             }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
@@ -39,7 +39,7 @@ namespace BossrApi.Repositories
             }
         }
 
-        public async Task<IUser> ReadAsync(string username)
+        public async Task<IUser> ReadByUsername(string username)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
@@ -47,7 +47,7 @@ namespace BossrApi.Repositories
             }
         }
 
-        public async Task<IUser> ReadAsync(int id)
+        public async Task<IUser> ReadByIdAsync(int id)
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
