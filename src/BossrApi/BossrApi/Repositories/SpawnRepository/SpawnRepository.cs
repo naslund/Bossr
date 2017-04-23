@@ -2,6 +2,7 @@
 using BossrApi.Models.Entities;
 using Dapper;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace BossrApi.Repositories
@@ -36,6 +37,14 @@ namespace BossrApi.Repositories
             using (var conn = dbConnectionFactory.CreateConnection())
             {
                 return await conn.QueryAsync<Spawn>("SELECT * FROM Spawns");
+            }
+        }
+
+        public async Task<IEnumerable<ISpawn>> ReadAllByWorldIdAsync(int worldId)
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                return await conn.QueryAsync<Spawn>("spGetSpawnsByWorldId", new { WorldId = worldId }, commandType: CommandType.StoredProcedure);
             }
         }
 

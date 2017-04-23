@@ -193,3 +193,13 @@ AS
 	SET Name = @Name, CategoryId = @CategoryId
 	WHERE Id = @Id
 RETURN 0
+
+/* SPAWNS */
+
+GO
+CREATE PROCEDURE [dbo].[spGetSpawnsByWorldId]
+	@WorldId int
+AS
+	SELECT * FROM Spawns 
+	WHERE WorldId = @WorldId
+RETURN 0
