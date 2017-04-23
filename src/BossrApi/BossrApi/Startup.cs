@@ -42,7 +42,7 @@ namespace BossrApi
             services.AddTransient<ICreatureRepository, CreatureRepository>();
             services.AddTransient<ISpawnRepository, SpawnRepository>();
             services.AddTransient<IScrapeRepository, ScrapeRepository>();
-            services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IPositionRepository, PositionRepository>();
 
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IHashGenerator, HashGenerator>();

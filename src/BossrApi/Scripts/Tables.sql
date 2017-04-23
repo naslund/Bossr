@@ -43,11 +43,13 @@ CREATE TABLE [dbo].[Spawns] (
 );
 
 CREATE TABLE [dbo].[Positions] (
-    [Id]   INT           IDENTITY (1, 1) NOT NULL,
-    [Name] NVARCHAR (30) NOT NULL,
-    [X]    INT           NOT NULL,
-    [Y]    INT           NOT NULL,
-    [Z]    INT           NOT NULL,
+    [Id]              INT           IDENTITY (1, 1) NOT NULL,
+    [Name]            NVARCHAR (30) NOT NULL,
+    [X]               INT           NOT NULL,
+    [Y]               INT           NOT NULL,
+    [Z]               INT           NOT NULL,
+    [RespawnHoursMin] INT           NOT NULL,
+    [RespawnHoursMax] INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     UNIQUE NONCLUSTERED ([Name] ASC)
 );

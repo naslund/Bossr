@@ -49,3 +49,57 @@ AS
 	SET Date = @Date
 	WHERE Id = @Id
 RETURN 0
+
+/* POSITIONS */
+
+GO
+CREATE PROCEDURE [dbo].[spDeletePositionById]
+	@Id int
+AS
+	DELETE FROM Positions
+	WHERE Id = @Id
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spGetPositionById]
+	@Id int
+AS
+	SELECT * FROM Positions 
+	WHERE Id = @Id
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spGetPositions]
+AS
+	SELECT * FROM Positions
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spInsertPosition]
+	@Id int,
+	@Name nvarchar(30),
+	@X int,
+	@Y int,
+	@Z int,
+	@RespawnHoursMin int,
+	@RespawnHoursMax int
+AS
+	INSERT INTO Positions (Name, X, Y, Z, RespawnHoursMin, RespawnHoursMax)
+	VALUES (@Name, @X, @Y, @Z, @RespawnHoursMin, @RespawnHoursMax)
+	SELECT CAST(SCOPE_IDENTITY() as int)
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spUpdatePosition]
+	@Id int,
+	@Name nvarchar(30),
+	@X int,
+	@Y int,
+	@Z int,
+	@RespawnHoursMin int,
+	@RespawnHoursMax int
+AS
+	UPDATE Positions 
+	SET Name = @Name, X = @X, Y = @Y, Z = @Z, RespawnHoursMin = @RespawnHoursMin, RespawnHoursMax = @RespawnHoursMax
+	WHERE Id = @Id
+RETURN 0
