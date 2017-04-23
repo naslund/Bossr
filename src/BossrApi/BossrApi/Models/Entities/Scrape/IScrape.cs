@@ -1,10 +1,10 @@
-﻿using NodaTime;
+﻿using BossrApi.Models.Interfaces;
+using NodaTime;
 
 namespace BossrApi.Models.Entities
 {
-    public interface IScrape
+    public interface IScrape : IEntity
     {
-        int Id { get; set; }
         LocalDate Date { get; set; }
     }
 }

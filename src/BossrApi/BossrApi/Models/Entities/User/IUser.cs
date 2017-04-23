@@ -1,8 +1,9 @@
-﻿namespace BossrApi.Models.Entities
+﻿using BossrApi.Models.Interfaces;
+
+namespace BossrApi.Models.Entities
 {
-    public interface IUser
+    public interface IUser : IEntity
     {
-        int Id { get; set; }
         string Username { get; set; }
         string HashedPassword { get; set; }
         string Salt { get; set; }

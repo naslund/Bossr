@@ -1,8 +1,9 @@
-﻿namespace BossrApi.Models.Entities
+﻿using BossrApi.Models.Interfaces;
+
+namespace BossrApi.Models.Entities
 {
-    public interface ISpawn
+    public interface ISpawn : IEntity
     {
-        int Id { get; set; }
         int CreatureId { get; set; }
         int WorldId { get; set; }
         int ScrapeId { get; set; }
