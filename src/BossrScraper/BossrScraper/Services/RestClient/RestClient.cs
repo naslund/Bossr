@@ -120,7 +120,7 @@ namespace BossrScraper.Services
 
         private async Task ValidateToken()
         {
-            if (Token == null || new JwtSecurityToken(Token.AccessToken).ValidTo > DateTime.UtcNow)
+            if (Token == null || new JwtSecurityToken(Token.AccessToken).ValidTo < DateTime.UtcNow.AddMinutes(5))
             {
                 await PostTokenAsync();
                 SetHttpClientAuthentication(client);
