@@ -44,6 +44,7 @@ namespace BossrApi
             services.AddTransient<IScrapeRepository, ScrapeRepository>();
             services.AddTransient<IPositionRepository, PositionRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
 
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IHashGenerator, HashGenerator>();

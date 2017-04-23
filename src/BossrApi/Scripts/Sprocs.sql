@@ -147,3 +147,49 @@ AS
 	SET Name = @Name
 	WHERE Id = @Id
 RETURN 0
+
+/* TAGS */
+
+GO
+CREATE PROCEDURE [dbo].[spDeleteTagById]
+	@Id int
+AS
+	DELETE FROM Tags
+	WHERE Id = @Id
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spGetTagById]
+	@Id int
+AS
+	SELECT * FROM Tags 
+	WHERE Id = @Id
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spGetTags]
+AS
+	SELECT * FROM Tags
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spInsertTag]
+	@Id int,
+	@Name nvarchar(30),
+	@CategoryId int
+AS
+	INSERT INTO Tags (Name, CategoryId)
+	VALUES (@Name, @CategoryId)
+	SELECT CAST(SCOPE_IDENTITY() as int)
+RETURN 0
+
+GO
+CREATE PROCEDURE [dbo].[spUpdateTag]
+	@Id int,
+	@Name nvarchar(30),
+	@CategoryId int
+AS
+	UPDATE Tags 
+	SET Name = @Name, CategoryId = @CategoryId
+	WHERE Id = @Id
+RETURN 0
