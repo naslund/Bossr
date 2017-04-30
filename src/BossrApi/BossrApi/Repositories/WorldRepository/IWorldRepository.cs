@@ -1,7 +1,5 @@
-﻿using BossrApi.Models.Entities;
-using BossrApi.Repositories.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using BossrApi.Repositories.Interfaces;
+using BossrLib.Models.Entities;
 
 namespace BossrApi.Repositories
 {

@@ -1,5 +1,5 @@
-﻿using BossrApi.Models.Entities;
-using BossrApi.Repositories;
+﻿using BossrApi.Repositories;
+using BossrLib.Models.Entities;
 using System.Threading.Tasks;
 
 namespace BossrApi.Services

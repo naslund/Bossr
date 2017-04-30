@@ -1,9 +1,9 @@
 using AutoMapper;
 using BossrApi.Attributes;
-using BossrApi.Models.Entities;
 using BossrApi.Models.Requests;
 using BossrApi.Repositories;
 using BossrApi.Services;
+using BossrLib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;

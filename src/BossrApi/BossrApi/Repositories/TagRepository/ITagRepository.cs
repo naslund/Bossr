@@ -1,5 +1,5 @@
-﻿using BossrApi.Models.Entities;
-using BossrApi.Repositories.Interfaces;
+﻿using BossrApi.Repositories.Interfaces;
+using BossrLib.Models.Entities;
 
 namespace BossrApi.Repositories
 {

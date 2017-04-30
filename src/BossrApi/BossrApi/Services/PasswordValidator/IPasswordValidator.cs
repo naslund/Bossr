@@ -1,4 +1,4 @@
-﻿using BossrApi.Models.Entities;
+﻿using BossrLib.Models.Entities;
 
 namespace BossrApi.Services
 {

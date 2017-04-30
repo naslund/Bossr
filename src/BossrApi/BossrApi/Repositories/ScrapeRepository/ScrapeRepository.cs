@@ -1,5 +1,5 @@
 ﻿using BossrApi.Factories;
-using BossrApi.Models.Entities;
+using BossrLib.Models.Entities;
 using Dapper;
 using System.Collections.Generic;
 using System.Data;

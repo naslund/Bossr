@@ -1,4 +1,4 @@
-﻿using BossrApi.Models.Interfaces;
+﻿using BossrLib.Models.Interfaces;
 
 namespace BossrApi.Repositories.Interfaces
 {

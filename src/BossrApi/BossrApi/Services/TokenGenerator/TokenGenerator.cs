@@ -1,6 +1,6 @@
 ﻿using BossrApi.Middleware;
-using BossrApi.Models.Entities;
 using BossrApi.Models.Responses;
+using BossrLib.Models.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

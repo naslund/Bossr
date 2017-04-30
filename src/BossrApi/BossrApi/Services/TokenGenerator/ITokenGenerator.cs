@@ -1,6 +1,6 @@
 ﻿using BossrApi.Middleware;
-using BossrApi.Models.Entities;
 using BossrApi.Models.Responses;
+using BossrLib.Models.Entities;
 
 namespace BossrApi.Services
 {

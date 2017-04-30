@@ -1,4 +1,4 @@
-﻿using BossrApi.Models.Interfaces;
+﻿using BossrLib.Models.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
