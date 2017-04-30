@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using BossrScraper.Models.Entities;
 using System.Linq;
+using BossrLib.Models.Entities;
 
 namespace BossrScraper.Services.Converters
 {
     public class StatisticConverter : IStatisticConverter
     {
-        public IEnumerable<ISpawn> ConvertToSpawns(IEnumerable<IStatistic> statistics, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, IScrapeDto scrapeDto)
+        public IEnumerable<ISpawn> ConvertToSpawns(IEnumerable<IStatistic> statistics, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, ScrapeDto scrapeDto)
         {
             return statistics
                 .Where(x => x.CreaturesKilled > 0 || x.PlayersKilled > 0)

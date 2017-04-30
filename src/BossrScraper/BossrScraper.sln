@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BossrScraper", "BossrScraper\BossrScraper.csproj", "{0F36E99D-921D-4E85-9886-5F1B979C9591}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BossrLib", "..\BossrLib\BossrLib\BossrLib.csproj", "{2F1C5F6F-019E-455B-BB25-B9EA4EA5E9F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0F36E99D-921D-4E85-9886-5F1B979C9591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F36E99D-921D-4E85-9886-5F1B979C9591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F36E99D-921D-4E85-9886-5F1B979C9591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F1C5F6F-019E-455B-BB25-B9EA4EA5E9F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F1C5F6F-019E-455B-BB25-B9EA4EA5E9F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F1C5F6F-019E-455B-BB25-B9EA4EA5E9F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F1C5F6F-019E-455B-BB25-B9EA4EA5E9F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
-﻿namespace BossrScraper.Models.Entities
+﻿namespace BossrLib.Models.Entities
 {
-    public class ScrapeDto : IScrapeDto
+    public class ScrapeDto
     {
         public int Id { get; set; }
         public string Date { get; set; }

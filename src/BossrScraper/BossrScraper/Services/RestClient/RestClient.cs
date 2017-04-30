@@ -1,4 +1,5 @@
-﻿using BossrScraper.Factories;
+﻿using BossrLib.Models.Entities;
+using BossrScraper.Factories;
 using BossrScraper.Models.Authentication;
 using BossrScraper.Models.Entities;
 using Microsoft.Extensions.Configuration;
@@ -49,7 +50,7 @@ namespace BossrScraper.Services
             return null;
         }
 
-        public async Task<IScrapeDto> GetLatestScrapeAsync()
+        public async Task<ScrapeDto> GetLatestScrapeAsync()
         {
             await ValidateToken();
             var response = await client.GetAsync(configuration["BossrApi:Resources:Scrapes"] + "/latest");
@@ -78,7 +79,7 @@ namespace BossrScraper.Services
                 creature.Id = JsonConvert.DeserializeObject<Creature>(await response.Content.ReadAsStringAsync()).Id;
         }
 
-        public async Task PostScrapeAsync(IScrapeDto scrape)
+        public async Task PostScrapeAsync(ScrapeDto scrape)
         {
             await ValidateToken();
             var scrapeJson = JsonConvert.SerializeObject(scrape);

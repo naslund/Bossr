@@ -1,4 +1,4 @@
-﻿using BossrScraper.Models.Entities;
+﻿using BossrLib.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,13 +10,13 @@ namespace BossrScraper.Services
 
         Task<IEnumerable<ICreature>> GetCreaturesAsync();
 
-        Task<IScrapeDto> GetLatestScrapeAsync();
+        Task<ScrapeDto> GetLatestScrapeAsync();
 
         Task PostWorldAsync(IWorld world);
 
         Task PostCreatureAsync(ICreature creature);
 
-        Task PostScrapeAsync(IScrapeDto scrape);
+        Task PostScrapeAsync(ScrapeDto scrape);
 
         Task PostSpawnAsync(ISpawn spawn);
     }

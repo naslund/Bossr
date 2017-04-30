@@ -1,4 +1,5 @@
-﻿using BossrScraper.Converters;
+﻿using BossrLib.Models.Entities;
+using BossrScraper.Converters;
 using BossrScraper.Factories;
 using BossrScraper.Models.Entities;
 using BossrScraper.Services.Comparers;

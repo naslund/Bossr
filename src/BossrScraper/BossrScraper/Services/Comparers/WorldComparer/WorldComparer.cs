@@ -1,4 +1,4 @@
-﻿using BossrScraper.Models.Entities;
+﻿using BossrLib.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;
 

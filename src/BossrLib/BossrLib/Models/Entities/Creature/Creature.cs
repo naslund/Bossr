@@ -1,4 +1,4 @@
-﻿namespace BossrScraper.Models.Entities
+﻿namespace BossrLib.Models.Entities
 {
     public class Creature : ICreature
     {

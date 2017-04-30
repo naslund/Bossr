@@ -1,4 +1,5 @@
-﻿using BossrScraper.Models.Entities;
+﻿using BossrLib.Models.Entities;
+using BossrScraper.Models.Entities;
 using System.Collections.Generic;
 
 namespace BossrScraper.Services.Comparers

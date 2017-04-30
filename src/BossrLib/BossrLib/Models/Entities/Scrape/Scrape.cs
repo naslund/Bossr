@@ -1,6 +1,6 @@
 ﻿using NodaTime;
 
-namespace BossrScraper.Models.Entities
+namespace BossrLib.Models.Entities
 {
     public class Scrape : IScrape
     {
