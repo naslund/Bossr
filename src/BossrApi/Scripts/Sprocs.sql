@@ -82,10 +82,11 @@ CREATE PROCEDURE [dbo].[spInsertPosition]
 	@Y int,
 	@Z int,
 	@RespawnHoursMin int,
-	@RespawnHoursMax int
+	@RespawnHoursMax int,
+	@CreatureId int
 AS
-	INSERT INTO Positions (Name, X, Y, Z, RespawnHoursMin, RespawnHoursMax)
-	VALUES (@Name, @X, @Y, @Z, @RespawnHoursMin, @RespawnHoursMax)
+	INSERT INTO Positions (Name, X, Y, Z, RespawnHoursMin, RespawnHoursMax, CreatureId)
+	VALUES (@Name, @X, @Y, @Z, @RespawnHoursMin, @RespawnHoursMax, @CreatureId)
 	SELECT CAST(SCOPE_IDENTITY() as int)
 RETURN 0
 

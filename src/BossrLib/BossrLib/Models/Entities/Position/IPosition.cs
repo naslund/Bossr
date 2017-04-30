@@ -9,5 +9,6 @@ namespace BossrLib.Models.Entities
         int Z { get; set; }
         int RespawnHoursMin { get; set; }
         int RespawnHoursMax { get; set; }
+        int CreatureId { get; set; }
     }
 }

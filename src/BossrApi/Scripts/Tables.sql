@@ -50,8 +50,9 @@ CREATE TABLE [dbo].[Positions] (
     [Z]               INT           NOT NULL,
     [RespawnHoursMin] INT           NOT NULL,
     [RespawnHoursMax] INT           NOT NULL,
+    [CreatureId]      INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    UNIQUE NONCLUSTERED ([Name] ASC)
+    CONSTRAINT [FK_Positions_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id])
 );
 
 CREATE TABLE [dbo].[Categories] (
