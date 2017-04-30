@@ -1,7 +1,6 @@
 ﻿using BossrLib.Models.Entities;
 using BossrScraper.Factories;
 using BossrScraper.Models.Authentication;
-using BossrScraper.Models.Entities;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -16,32 +15,19 @@ namespace BossrScraper.Services
 {
     public class RestClient : IRestClient
     {
+        private readonly HttpClient client = new HttpClient();
         private readonly IConfiguration configuration;
-        private readonly HttpClient client;
+        private IAuthenticationToken token;
 
         public RestClient(IConfigurationFactory configurationFactory)
         {
             configuration = configurationFactory.CreateConfiguration();
-            client = new HttpClient();
-            SetHttpClientBaseAdress(client);
-        }
-
-        private IAuthenticationToken Token { get; set; }
-
-        public async Task<IEnumerable<IWorld>> GetWorldsAsync()
-        {
-            await ValidateToken();
-            var response = await client.GetAsync(configuration["BossrApi:Resources:Worlds"]);
-            
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<World[]>(await response.Content.ReadAsStringAsync());
-
-            return null;
+            client.BaseAddress = new Uri(configuration["BossrApi:BaseUrl"]);
         }
 
         public async Task<IEnumerable<ICreature>> GetCreaturesAsync()
         {
-            await ValidateToken();
+            await RefreshToken();
             var response = await client.GetAsync(configuration["BossrApi:Resources:Creatures"]);
 
             if (response.IsSuccessStatusCode)
@@ -52,7 +38,7 @@ namespace BossrScraper.Services
 
         public async Task<ScrapeDto> GetLatestScrapeAsync()
         {
-            await ValidateToken();
+            await RefreshToken();
             var response = await client.GetAsync(configuration["BossrApi:Resources:Scrapes"] + "/latest");
 
             if (response.IsSuccessStatusCode)
@@ -61,18 +47,20 @@ namespace BossrScraper.Services
             return null;
         }
 
-        public async Task PostWorldAsync(IWorld world)
+        public async Task<IEnumerable<IWorld>> GetWorldsAsync()
         {
-            await ValidateToken();
-            var worldJson = JsonConvert.SerializeObject(world);
-            var response = await client.PostAsync(configuration["BossrApi:Resources:Worlds"], new StringContent(worldJson, Encoding.UTF8, "application/json"));
+            await RefreshToken();
+            var response = await client.GetAsync(configuration["BossrApi:Resources:Worlds"]);
+
             if (response.IsSuccessStatusCode)
-                world.Id = JsonConvert.DeserializeObject<World>(await response.Content.ReadAsStringAsync()).Id;
+                return JsonConvert.DeserializeObject<World[]>(await response.Content.ReadAsStringAsync());
+
+            return null;
         }
 
         public async Task PostCreatureAsync(ICreature creature)
         {
-            await ValidateToken();
+            await RefreshToken();
             var creatureJson = JsonConvert.SerializeObject(creature);
             var response = await client.PostAsync(configuration["BossrApi:Resources:Creatures"], new StringContent(creatureJson, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
@@ -81,7 +69,7 @@ namespace BossrScraper.Services
 
         public async Task PostScrapeAsync(ScrapeDto scrape)
         {
-            await ValidateToken();
+            await RefreshToken();
             var scrapeJson = JsonConvert.SerializeObject(scrape);
             var response = await client.PostAsync(configuration["BossrApi:Resources:Scrapes"], new StringContent(scrapeJson, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
@@ -90,11 +78,20 @@ namespace BossrScraper.Services
 
         public async Task PostSpawnAsync(ISpawn spawn)
         {
-            await ValidateToken();
+            await RefreshToken();
             var spawnJson = JsonConvert.SerializeObject(spawn);
             var response = await client.PostAsync(configuration["BossrApi:Resources:Spawns"], new StringContent(spawnJson, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
                 spawn.Id = JsonConvert.DeserializeObject<Spawn>(await response.Content.ReadAsStringAsync()).Id;
+        }
+
+        public async Task PostWorldAsync(IWorld world)
+        {
+            await RefreshToken();
+            var worldJson = JsonConvert.SerializeObject(world);
+            var response = await client.PostAsync(configuration["BossrApi:Resources:Worlds"], new StringContent(worldJson, Encoding.UTF8, "application/json"));
+            if (response.IsSuccessStatusCode)
+                world.Id = JsonConvert.DeserializeObject<World>(await response.Content.ReadAsStringAsync()).Id;
         }
 
         private async Task PostTokenAsync()
@@ -106,25 +103,15 @@ namespace BossrScraper.Services
             }));
 
             if (response.IsSuccessStatusCode)
-                Token = JsonConvert.DeserializeObject<AuthenticationToken>(await response.Content.ReadAsStringAsync());
+                token = JsonConvert.DeserializeObject<AuthenticationToken>(await response.Content.ReadAsStringAsync());
         }
 
-        private void SetHttpClientBaseAdress(HttpClient client)
+        private async Task RefreshToken()
         {
-            client.BaseAddress = new Uri(configuration["BossrApi:BaseUrl"]);
-        }
-
-        private void SetHttpClientAuthentication(HttpClient client)
-        {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.AccessToken);
-        }
-
-        private async Task ValidateToken()
-        {
-            if (Token == null || new JwtSecurityToken(Token.AccessToken).ValidTo < DateTime.UtcNow.AddMinutes(5))
+            if (token == null || new JwtSecurityToken(token.AccessToken).ValidTo < DateTime.UtcNow.AddMinutes(5))
             {
                 await PostTokenAsync();
-                SetHttpClientAuthentication(client);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
             }
         }
     }
