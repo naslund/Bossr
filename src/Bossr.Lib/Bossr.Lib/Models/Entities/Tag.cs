@@ -6,4 +6,11 @@ namespace Bossr.Lib.Models.Entities
     {
         int CategoryId { get; set; }
     }
+
+    public class Tag : ITag
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int CategoryId { get; set; }
+    }
 }
