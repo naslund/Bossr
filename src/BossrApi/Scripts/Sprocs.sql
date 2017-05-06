@@ -80,13 +80,10 @@ CREATE PROCEDURE [dbo].[spInsertPosition]
 	@Name nvarchar(30),
 	@X int,
 	@Y int,
-	@Z int,
-	@RespawnHoursMin int,
-	@RespawnHoursMax int,
-	@CreatureId int
+	@Z int
 AS
-	INSERT INTO Positions (Name, X, Y, Z, RespawnHoursMin, RespawnHoursMax, CreatureId)
-	VALUES (@Name, @X, @Y, @Z, @RespawnHoursMin, @RespawnHoursMax, @CreatureId)
+	INSERT INTO Positions (Name, X, Y, Z)
+	VALUES (@Name, @X, @Y, @Z)
 	SELECT CAST(SCOPE_IDENTITY() as int)
 RETURN 0
 
@@ -96,12 +93,10 @@ CREATE PROCEDURE [dbo].[spUpdatePosition]
 	@Name nvarchar(30),
 	@X int,
 	@Y int,
-	@Z int,
-	@RespawnHoursMin int,
-	@RespawnHoursMax int
+	@Z int
 AS
 	UPDATE Positions 
-	SET Name = @Name, X = @X, Y = @Y, Z = @Z, RespawnHoursMin = @RespawnHoursMin, RespawnHoursMax = @RespawnHoursMax
+	SET Name = @Name, X = @X, Y = @Y, Z = @Z
 	WHERE Id = @Id
 RETURN 0
 

@@ -43,16 +43,23 @@ CREATE TABLE [dbo].[Spawns] (
 );
 
 CREATE TABLE [dbo].[Positions] (
-    [Id]              INT           IDENTITY (1, 1) NOT NULL,
-    [Name]            NVARCHAR (30) NOT NULL,
-    [X]               INT           NOT NULL,
-    [Y]               INT           NOT NULL,
-    [Z]               INT           NOT NULL,
-    [RespawnHoursMin] INT           NOT NULL,
-    [RespawnHoursMax] INT           NOT NULL,
-    [CreatureId]      INT           NOT NULL,
+    [Id]   INT           IDENTITY (1, 1) NOT NULL,
+    [Name] NVARCHAR (30) NOT NULL,
+    [X]    INT           NOT NULL,
+    [Y]    INT           NOT NULL,
+    [Z]    INT           NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[Instances] (
+    [Id]                INT IDENTITY (1, 1) NOT NULL,
+    [FrequencyHoursMin] INT NOT NULL,
+    [FrequencyHoursMax] INT NOT NULL,
+    [CreatureId]        INT NOT NULL,
+    [PositionId]        INT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Positions_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id])
+    CONSTRAINT [FK_Instances_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id]),
+    CONSTRAINT [FK_Instances_Positions] FOREIGN KEY ([PositionId]) REFERENCES [dbo].[Positions] ([Id])
 );
 
 CREATE TABLE [dbo].[Categories] (
