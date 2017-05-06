@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bossr.Api", "Bossr.Api\Bossr.Api.csproj", "{3DB3CBCB-4405-4A26-8718-0BA7FEFC01F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{F8347A4A-48FE-4F66-B291-62DA2E016FF7}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\Sprocs.sql = Scripts\Sprocs.sql
+		Scripts\Tables.sql = Scripts\Tables.sql
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bossr.Lib", "..\Bossr.Lib\Bossr.Lib\Bossr.Lib.csproj", "{3098CA96-BF3A-408D-9730-403283F869DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DB3CBCB-4405-4A26-8718-0BA7FEFC01F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DB3CBCB-4405-4A26-8718-0BA7FEFC01F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DB3CBCB-4405-4A26-8718-0BA7FEFC01F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DB3CBCB-4405-4A26-8718-0BA7FEFC01F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3098CA96-BF3A-408D-9730-403283F869DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3098CA96-BF3A-408D-9730-403283F869DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3098CA96-BF3A-408D-9730-403283F869DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3098CA96-BF3A-408D-9730-403283F869DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
