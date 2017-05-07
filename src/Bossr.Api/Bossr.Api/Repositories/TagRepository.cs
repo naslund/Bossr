@@ -1,4 +1,5 @@
 ﻿using Bossr.Api.Factories;
+using Bossr.Api.Repositories.Interfaces;
 using Bossr.Lib.Models.Entities;
 using Dapper;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
+    public interface ITagRepository : ICrudable<ITag> { }
+
     public class TagRepository : ITagRepository
     {
         private readonly IDbConnectionFactory dbConnectionFactory;

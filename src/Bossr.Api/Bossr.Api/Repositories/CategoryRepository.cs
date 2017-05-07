@@ -1,4 +1,5 @@
 ﻿using Bossr.Api.Factories;
+using Bossr.Api.Repositories.Interfaces;
 using Bossr.Lib.Models.Entities;
 using Dapper;
 using System.Collections.Generic;
@@ -7,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
+    public interface ICategoryRepository :
+        ICrudable<ICategory>
+    {
+    }
+
     public class CategoryRepository : ICategoryRepository
     {
         private readonly IDbConnectionFactory dbConnectionFactory;
