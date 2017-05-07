@@ -2,6 +2,11 @@
 
 namespace Bossr.Api.Services
 {
+    public interface IPasswordValidator
+    {
+        bool IsPasswordValid(IUser user, string password);
+    }
+
     public class PasswordValidator : IPasswordValidator
     {
         private readonly IHashGenerator hashGeneratorService;

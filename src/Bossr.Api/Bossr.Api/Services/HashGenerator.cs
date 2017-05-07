@@ -5,6 +5,11 @@ using System.Text;
 
 namespace Bossr.Api.Services
 {
+    public interface IHashGenerator
+    {
+        string GenerateSaltedHash(string password, string salt);
+    }
+
     public class HashGenerator : IHashGenerator
     {
         public string GenerateSaltedHash(string password, string salt)
