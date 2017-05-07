@@ -1,4 +1,5 @@
-﻿CREATE TABLE [dbo].[Users] (
+﻿GO
+CREATE TABLE [dbo].[Users] (
     [Id]             INT            IDENTITY (1, 1) NOT NULL,
     [Username]       NVARCHAR (30)  NOT NULL,
     [HashedPassword] NVARCHAR (100) NOT NULL,
@@ -7,14 +8,7 @@
     UNIQUE NONCLUSTERED ([Username] ASC)
 );
 
-CREATE TABLE [dbo].[Worlds] (
-    [Id]          INT           IDENTITY (1, 1) NOT NULL,
-    [Name]        NVARCHAR (30) NOT NULL,
-    [IsMonitored] BIT           DEFAULT ((0)) NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC),
-    UNIQUE NONCLUSTERED ([Name] ASC)
-);
-
+GO
 CREATE TABLE [dbo].[Creatures] (
     [Id]          INT           IDENTITY (1, 1) NOT NULL,
     [Name]        NVARCHAR (30) NOT NULL,
@@ -23,6 +17,16 @@ CREATE TABLE [dbo].[Creatures] (
     UNIQUE NONCLUSTERED ([Name] ASC)
 );
 
+GO
+CREATE TABLE [dbo].[Worlds] (
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [Name]        NVARCHAR (30) NOT NULL,
+    [IsMonitored] BIT           DEFAULT ((0)) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([Name] ASC)
+);
+
+GO
 CREATE TABLE [dbo].[Scrapes] (
     [Id]   INT  IDENTITY (1, 1) NOT NULL,
     [Date] DATE NOT NULL,
@@ -30,18 +34,37 @@ CREATE TABLE [dbo].[Scrapes] (
     UNIQUE NONCLUSTERED ([Date] ASC)
 );
 
-CREATE TABLE [dbo].[Spawns] (
+GO
+CREATE TABLE [dbo].[Statistics] (
     [Id]         INT IDENTITY (1, 1) NOT NULL,
     [WorldId]    INT NOT NULL,
     [CreatureId] INT NOT NULL,
     [ScrapeId]   INT NOT NULL,
     [Amount]     INT NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Spawns_Scrapes] FOREIGN KEY ([ScrapeId]) REFERENCES [dbo].[Scrapes] ([Id]),
-    CONSTRAINT [FK_Spawns_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
+    CONSTRAINT [FK_Statistics_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id]),
+    CONSTRAINT [FK_Statistics_Scrapes] FOREIGN KEY ([ScrapeId]) REFERENCES [dbo].[Scrapes] ([Id]),
+    CONSTRAINT [FK_Statistics_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id])
+);
+
+GO
+CREATE TABLE [dbo].[Raids] (
+    [Id]                INT IDENTITY (1, 1) NOT NULL,
+    [FrequencyHoursMin] INT NOT NULL,
+    [FrequencyHoursMax] INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+GO
+CREATE TABLE [dbo].[Spawns] (
+    [Id]         INT IDENTITY (1, 1) NOT NULL,
+    [CreatureId] INT NOT NULL,
+    [Amount]     INT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Spawns_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id])
 );
 
+GO
 CREATE TABLE [dbo].[Positions] (
     [Id]   INT           IDENTITY (1, 1) NOT NULL,
     [Name] NVARCHAR (30) NOT NULL,
@@ -51,17 +74,27 @@ CREATE TABLE [dbo].[Positions] (
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
-CREATE TABLE [dbo].[Instances] (
-    [Id]                INT IDENTITY (1, 1) NOT NULL,
-    [FrequencyHoursMin] INT NOT NULL,
-    [FrequencyHoursMax] INT NOT NULL,
-    [CreatureId]        INT NOT NULL,
-    [PositionId]        INT NULL,
+GO
+CREATE TABLE [dbo].[RaidSpawns] (
+    [Id]      INT IDENTITY (1, 1) NOT NULL,
+    [RaidId]  INT NOT NULL,
+    [SpawnId] INT NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Instances_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id]),
-    CONSTRAINT [FK_Instances_Positions] FOREIGN KEY ([PositionId]) REFERENCES [dbo].[Positions] ([Id])
+    CONSTRAINT [FK_RaidSpawns_Raids] FOREIGN KEY ([RaidId]) REFERENCES [dbo].[Raids] ([Id]),
+    CONSTRAINT [FK_RaidSpawns_Spawns] FOREIGN KEY ([SpawnId]) REFERENCES [dbo].[Spawns] ([Id])
 );
 
+GO
+CREATE TABLE [dbo].[SpawnPositions] (
+    [Id]         INT IDENTITY (1, 1) NOT NULL,
+    [SpawnId]    INT NOT NULL,
+    [PositionId] INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_SpawnPositions_Positions] FOREIGN KEY ([PositionId]) REFERENCES [dbo].[Positions] ([Id]),
+    CONSTRAINT [FK_SpawnPositions_Spawns] FOREIGN KEY ([SpawnId]) REFERENCES [dbo].[Spawns] ([Id])
+);
+
+GO
 CREATE TABLE [dbo].[Categories] (
     [Id]   INT           IDENTITY (1, 1) NOT NULL,
     [Name] NVARCHAR (30) NOT NULL,
@@ -69,6 +102,7 @@ CREATE TABLE [dbo].[Categories] (
     UNIQUE NONCLUSTERED ([Name] ASC)
 );
 
+GO
 CREATE TABLE [dbo].[Tags] (
     [Id]         INT           IDENTITY (1, 1) NOT NULL,
     [Name]       NVARCHAR (30) NOT NULL,
@@ -78,16 +112,7 @@ CREATE TABLE [dbo].[Tags] (
     CONSTRAINT [FK_Tags_Categories] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[Categories] ([Id])
 );
 
-CREATE TABLE [dbo].[WorldTags] (
-    [Id]      INT IDENTITY (1, 1) NOT NULL,
-    [WorldId] INT NOT NULL,
-    [TagId]   INT NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC),
-    UNIQUE NONCLUSTERED ([WorldId] ASC, [TagId] ASC),
-    CONSTRAINT [FK_WorldTags_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
-    CONSTRAINT [FK_WorldTags_Tags] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tags] ([Id])
-);
-
+GO
 CREATE TABLE [dbo].[CreatureTags] (
     [Id]         INT IDENTITY (1, 1) NOT NULL,
     [CreatureId] INT NOT NULL,
@@ -98,6 +123,7 @@ CREATE TABLE [dbo].[CreatureTags] (
     CONSTRAINT [FK_CreatureTags_Tags] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tags] ([Id])
 );
 
+GO
 CREATE TABLE [dbo].[PositionTags] (
     [Id]         INT IDENTITY (1, 1) NOT NULL,
     [PositionId] INT NOT NULL,
@@ -106,4 +132,26 @@ CREATE TABLE [dbo].[PositionTags] (
     UNIQUE NONCLUSTERED ([PositionId] ASC, [TagId] ASC),
     CONSTRAINT [FK_PositionTags_Positions] FOREIGN KEY ([PositionId]) REFERENCES [dbo].[Positions] ([Id]),
     CONSTRAINT [FK_PositionTags_Tags] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tags] ([Id])
+);
+
+GO
+CREATE TABLE [dbo].[RaidTags] (
+    [Id]     INT IDENTITY (1, 1) NOT NULL,
+    [RaidId] INT NOT NULL,
+    [TagId]  INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([RaidId] ASC, [TagId] ASC),
+    CONSTRAINT [FK_RaidTags_Raids] FOREIGN KEY ([RaidId]) REFERENCES [dbo].[Raids] ([Id]),
+    CONSTRAINT [FK_RaidTags_Tags] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tags] ([Id])
+);
+
+GO
+CREATE TABLE [dbo].[WorldTags] (
+    [Id]      INT IDENTITY (1, 1) NOT NULL,
+    [WorldId] INT NOT NULL,
+    [TagId]   INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([WorldId] ASC, [TagId] ASC),
+    CONSTRAINT [FK_WorldTags_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
+    CONSTRAINT [FK_WorldTags_Tags] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tags] ([Id])
 );
