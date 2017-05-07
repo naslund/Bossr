@@ -3,7 +3,6 @@ using Bossr.Api.Repositories.Interfaces;
 using Bossr.Lib.Models.Entities;
 using Dapper;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
@@ -26,7 +25,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                category.Id = await conn.QuerySingleAsync<int>("spInsertCategory", category, commandType: CommandType.StoredProcedure);
+                category.Id = await conn.QuerySingleAsync<int>("INSERT INTO Categories (Name) VALUES (@Name) SELECT CAST(SCOPE_IDENTITY() as int)", category);
             }
         }
 
@@ -34,7 +33,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("spDeleteCategoryById", new { Id = id }, commandType: CommandType.StoredProcedure);
+                await conn.ExecuteAsync("DELETE FROM Categories WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -42,7 +41,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QueryAsync<Category>("spGetCategories", commandType: CommandType.StoredProcedure);
+                return await conn.QueryAsync<Category>("SELECT * FROM Categories");
             }
         }
 
@@ -50,7 +49,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QuerySingleOrDefaultAsync<Category>("spGetCategoryById", new { Id = id }, commandType: CommandType.StoredProcedure);
+                return await conn.QuerySingleOrDefaultAsync<Category>("SELECT * FROM Categories WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -58,7 +57,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("spUpdateCategory", category, commandType: CommandType.StoredProcedure);
+                await conn.ExecuteAsync("UPDATE Categories SET Name = @Name WHERE Id = @Id", category);
             }
         }
     }

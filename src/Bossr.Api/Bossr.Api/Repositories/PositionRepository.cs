@@ -3,7 +3,6 @@ using Bossr.Api.Repositories.Interfaces;
 using Bossr.Lib.Models.Entities;
 using Dapper;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
@@ -23,7 +22,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                position.Id = await conn.QuerySingleAsync<int>("spInsertPosition", position, commandType: CommandType.StoredProcedure);
+                position.Id = await conn.QuerySingleAsync<int>("INSERT INTO Positions (Name, X, Y, Z) VALUES (@Name, @X, @Y, @Z) SELECT CAST(SCOPE_IDENTITY() as int)", position);
             }
         }
 
@@ -31,7 +30,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("spDeletePositionById", new { Id = id }, commandType: CommandType.StoredProcedure);
+                await conn.ExecuteAsync("DELETE FROM Positions WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -39,7 +38,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QueryAsync<Position>("spGetPositions", commandType: CommandType.StoredProcedure);
+                return await conn.QueryAsync<Position>("SELECT * FROM Positions");
             }
         }
 
@@ -47,7 +46,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QuerySingleOrDefaultAsync<Position>("spGetPositionById", new { Id = id }, commandType: CommandType.StoredProcedure);
+                return await conn.QuerySingleOrDefaultAsync<Position>("SELECT * FROM Positions WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -55,7 +54,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("spUpdatePosition", position, commandType: CommandType.StoredProcedure);
+                await conn.ExecuteAsync("UPDATE Positions SET Name = @Name, X = @X, Y = @Y, Z = @Z WHERE Id = @Id", position);
             }
         }
     }

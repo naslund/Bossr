@@ -23,7 +23,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                tag.Id = await conn.QuerySingleAsync<int>("spInsertTag", tag, commandType: CommandType.StoredProcedure);
+                tag.Id = await conn.QuerySingleAsync<int>("INSERT INTO Tags (Name, CategoryId) VALUES (@Name, @CategoryId) SELECT CAST(SCOPE_IDENTITY() as int)", tag);
             }
         }
 
@@ -31,7 +31,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("spDeleteTagById", new { Id = id }, commandType: CommandType.StoredProcedure);
+                await conn.ExecuteAsync("DELETE FROM Tags WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -39,7 +39,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QueryAsync<Tag>("spGetTags", commandType: CommandType.StoredProcedure);
+                return await conn.QueryAsync<Tag>("SELECT * FROM Tags");
             }
         }
 
@@ -47,7 +47,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QuerySingleOrDefaultAsync<Tag>("spGetTagById", new { Id = id }, commandType: CommandType.StoredProcedure);
+                return await conn.QuerySingleOrDefaultAsync<Tag>("SELECT * FROM Tags WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -55,7 +55,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("spUpdateTag", tag, commandType: CommandType.StoredProcedure);
+                await conn.ExecuteAsync("UPDATE Tags SET Name = @Name, CategoryId = @CategoryId WHERE Id = @Id", tag);
             }
         }
     }

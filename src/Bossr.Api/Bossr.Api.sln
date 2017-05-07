@@ -8,7 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{F8347A4A-48FE-4F66-B291-62DA2E016FF7}"
 	ProjectSection(SolutionItems) = preProject
 		Scripts\GetRaids.sql = Scripts\GetRaids.sql
-		Scripts\Sprocs.sql = Scripts\Sprocs.sql
 		Scripts\Tables.sql = Scripts\Tables.sql
 	EndProjectSection
 EndProject
