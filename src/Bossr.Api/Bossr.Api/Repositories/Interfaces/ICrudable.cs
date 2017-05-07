@@ -4,7 +4,7 @@ namespace Bossr.Api.Repositories.Interfaces
 {
     public interface ICrudable<T> : 
         ICreateable<T>,
-        IDeletableById,
+        IDeletableById<T>,
         IListable<T>,
         IReadableById<T>,
         IUpdatable<T>
