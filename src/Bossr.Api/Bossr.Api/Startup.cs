@@ -37,6 +37,10 @@ namespace Bossr.Api
         {
             services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(Configuration["ConnectionString"]));
 
+            services.AddTransient<ITokenResponseFactory, TokenResponseFactory>();
+            services.AddTransient<IJwtTokenFactory, JwtTokenFactory>();
+            services.AddTransient<IClaimsFetcher, ClaimsFetcher>();
+
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IWorldRepository, WorldRepository>();
             services.AddTransient<ICreatureRepository, CreatureRepository>();
