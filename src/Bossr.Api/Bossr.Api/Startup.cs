@@ -44,7 +44,6 @@ namespace Bossr.Api
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IWorldRepository, WorldRepository>();
             services.AddTransient<ICreatureRepository, CreatureRepository>();
-            services.AddTransient<ISpawnRepository, SpawnRepository>();
             services.AddTransient<IScrapeRepository, ScrapeRepository>();
             services.AddTransient<IPositionRepository, PositionRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
