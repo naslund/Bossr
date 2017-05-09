@@ -49,9 +49,10 @@ CREATE TABLE [dbo].[Statistics] (
 
 GO
 CREATE TABLE [dbo].[Raids] (
-    [Id]                INT IDENTITY (1, 1) NOT NULL,
-    [FrequencyHoursMin] INT NOT NULL,
-    [FrequencyHoursMax] INT NOT NULL,
+    [Id]                INT           IDENTITY (1, 1) NOT NULL,
+    [Name]              NVARCHAR (30) NULL,
+    [FrequencyHoursMin] INT           NOT NULL,
+    [FrequencyHoursMax] INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -59,9 +60,11 @@ GO
 CREATE TABLE [dbo].[Spawns] (
     [Id]         INT IDENTITY (1, 1) NOT NULL,
     [CreatureId] INT NOT NULL,
+    [RaidId]     INT NOT NULL,
     [Amount]     INT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Spawns_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id])
+    CONSTRAINT [FK_Spawns_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id]),
+    CONSTRAINT [FK_Spawns_Raids] FOREIGN KEY ([RaidId]) REFERENCES [dbo].[Raids] ([Id])
 );
 
 GO
@@ -72,16 +75,6 @@ CREATE TABLE [dbo].[Positions] (
     [Y]    INT           NOT NULL,
     [Z]    INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-GO
-CREATE TABLE [dbo].[RaidSpawns] (
-    [Id]      INT IDENTITY (1, 1) NOT NULL,
-    [RaidId]  INT NOT NULL,
-    [SpawnId] INT NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_RaidSpawns_Raids] FOREIGN KEY ([RaidId]) REFERENCES [dbo].[Raids] ([Id]),
-    CONSTRAINT [FK_RaidSpawns_Spawns] FOREIGN KEY ([SpawnId]) REFERENCES [dbo].[Spawns] ([Id])
 );
 
 GO
