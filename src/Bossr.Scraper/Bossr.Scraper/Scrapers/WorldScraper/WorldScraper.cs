@@ -1,6 +1,6 @@
-﻿using Bossr.Scraper.Factories;
-using Bossr.Scraper.Services.Comparers;
-using Bossr.Scraper.Services.Parsers;
+﻿using Bossr.Scraper.Comparers;
+using Bossr.Scraper.Factories;
+using Bossr.Scraper.Parsers;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 

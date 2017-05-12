@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bossr.Scraper.Services.Comparers
+namespace Bossr.Scraper.Comparers
 {
     public class WorldComparer : IWorldComparer
     {

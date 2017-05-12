@@ -1,10 +1,9 @@
 ﻿using Bossr.Lib.Models.Entities;
-using Bossr.Scraper.Models.Entities;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Bossr.Scraper.Services.Parsers
+namespace Bossr.Scraper.Parsers
 {
     public interface IWorldParser
     {

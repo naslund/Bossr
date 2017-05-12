@@ -18,6 +18,6 @@ namespace Bossr.Scraper.Services
 
         Task PostScrapeAsync(ScrapeDto scrape);
 
-        Task PostSpawnAsync(ISpawn spawn);
+        Task PostStatisticAsync(IStatistic statistic);
     }
 }

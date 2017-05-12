@@ -3,13 +3,13 @@ using Bossr.Scraper.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bossr.Scraper.Services.Comparers
+namespace Bossr.Scraper.Comparers
 {
     public class CreatureComparer : ICreatureComparer
     {
-        public IEnumerable<ICreature> FindMissingCreatures(IEnumerable<IStatistic> statistics, IEnumerable<ICreature> existingCreatures)
+        public IEnumerable<ICreature> FindMissingCreatures(IEnumerable<IStatisticsTableRow> killStatsTableRows, IEnumerable<ICreature> existingCreatures)
         {
-            return statistics
+            return killStatsTableRows
                 .Where(x => !existingCreatures.Any(y => y.Name == x.CreatureName))
                 .GroupBy(x => x.CreatureName)
                 .Select(x => new Creature { Name = x.First().CreatureName });

@@ -1,6 +1,6 @@
 ﻿namespace Bossr.Scraper.Models.Entities
 {
-    public class Statistic : IStatistic
+    public class StatisticsTableRow : IStatisticsTableRow
     {
         public int WorldId { get; set; }
         public string CreatureName { get; set; }

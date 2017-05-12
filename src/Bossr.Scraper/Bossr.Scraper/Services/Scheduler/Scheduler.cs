@@ -10,14 +10,14 @@ namespace Bossr.Scraper.Services
     public class Scheduler : IScheduler
     {
         private readonly IWorldScraper worldScraper;
-        private readonly IStatisticScraper statsScraper;
+        private readonly IStatisticsTableRowScraper statsScraper;
         private readonly IConfiguration configuration;
         private readonly IRestClient restClient;
         private readonly IYesterdayLocalDateFactory yesterdayLocalDateFactory;
 
         public Scheduler(
             IWorldScraper worldScraper,
-            IStatisticScraper statsScraper,
+            IStatisticsTableRowScraper statsScraper,
             IConfigurationFactory configurationFactory,
             IRestClient restClient,
             IYesterdayLocalDateFactory yesterdayLocalDateFactory)

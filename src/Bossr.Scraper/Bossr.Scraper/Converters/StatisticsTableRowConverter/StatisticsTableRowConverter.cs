@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Bossr.Lib.Models.Entities;
 using Bossr.Scraper.Models.Entities;
+using System.Collections.Generic;
 using System.Linq;
-using Bossr.Lib.Models.Entities;
 
-namespace Bossr.Scraper.Services.Converters
+namespace Bossr.Scraper.Converters
 {
-    public class StatisticConverter : IStatisticConverter
+    public class StatisticsTableRowConverter : IStatisticsTableRowConverter
     {
-        public IEnumerable<ISpawn> ConvertToSpawns(IEnumerable<IStatistic> statistics, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, ScrapeDto scrapeDto)
+        public IEnumerable<IStatistic> ConvertToStatistics(IEnumerable<IStatisticsTableRow> statisticTableRow, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, ScrapeDto scrapeDto)
         {
-            return statistics
+            return statisticTableRow
                 .Where(x => x.CreaturesKilled > 0 || x.PlayersKilled > 0)
                 .Where(x => creatures.Single(y => y.Name == x.CreatureName).IsMonitored)
                 .Where(x => worlds.Single(y => y.Id == x.WorldId).IsMonitored)
-                .Select(x => new Spawn
+                .Select(x => new Statistic
                 {
                     WorldId = x.WorldId,
                     ScrapeId = scrapeDto.Id,

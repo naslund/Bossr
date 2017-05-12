@@ -1,12 +1,10 @@
 ﻿using Bossr.Lib.Models.Entities;
+using Bossr.Scraper.Comparers;
 using Bossr.Scraper.Converters;
 using Bossr.Scraper.Factories;
 using Bossr.Scraper.Models.Entities;
-using Bossr.Scraper.Services.Comparers;
-using Bossr.Scraper.Services.Converters;
-using Bossr.Scraper.Services.Parsers;
+using Bossr.Scraper.Parsers;
 using Microsoft.Extensions.Configuration;
-using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,23 +12,23 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services.Scrapers
 {
-    public class StatisticScraper : IStatisticScraper
+    public class StatisticsTableRowScraper : IStatisticsTableRowScraper
     {
         private readonly IConfiguration configuration;
         private readonly IRestClient restClient;
         private readonly IDataFetcher dataFetcher;
-        private readonly IStatisticParser statsParser;
+        private readonly IStatisticsTableRowParser statsParser;
         private readonly ICreatureComparer creatureComparer;
-        private readonly IStatisticConverter statisticConverter;
+        private readonly IStatisticsTableRowConverter statisticConverter;
         private readonly IYesterdayLocalDateFactory yesterdayLocalDateFactory;
 
-        public StatisticScraper(
+        public StatisticsTableRowScraper(
             IConfigurationFactory configurationFactory,
             IRestClient restClient,
             IDataFetcher dataFetcher,
-            IStatisticParser statsParser,
+            IStatisticsTableRowParser statsParser,
             ICreatureComparer creatureComparer,
-            IStatisticConverter statisticConverter,
+            IStatisticsTableRowConverter statisticConverter,
             IYesterdayLocalDateFactory yesterdayLocalDateFactory)
         {
             configuration = configurationFactory.CreateConfiguration();
@@ -45,20 +43,21 @@ namespace Bossr.Scraper.Services.Scrapers
         public async Task Scrape()
         {
             var worlds = await restClient.GetWorldsAsync();
-            var statistics = await ScrapeStats(worlds);
+            var killStatsTableRows = await ScrapeStats(worlds);
 
             var creatures = await restClient.GetCreaturesAsync();
-            creatures = await PersistCreatures(creatures, statistics);
+            creatures = await PersistCreatures(creatures, killStatsTableRows);
             
             var scrapeDto = new ScrapeDto { Date = yesterdayLocalDateFactory.GetYesterdaysDate().ToIsoString() };
             await restClient.PostScrapeAsync(scrapeDto);
+            Console.WriteLine($"{scrapeDto.Id} {scrapeDto.Date}");
 
-            var spawns = statisticConverter.ConvertToSpawns(statistics, worlds, creatures, scrapeDto);
-            foreach (var spawn in spawns)
-                await restClient.PostSpawnAsync(spawn);
+            var statistics = statisticConverter.ConvertToStatistics(killStatsTableRows, worlds, creatures, scrapeDto);
+            foreach (var statistic in statistics)
+                await restClient.PostStatisticAsync(statistic);
         }
 
-        private async Task<IEnumerable<ICreature>> PersistCreatures(IEnumerable<ICreature> creatures, IEnumerable<IStatistic> statistics)
+        private async Task<IEnumerable<ICreature>> PersistCreatures(IEnumerable<ICreature> creatures, IEnumerable<IStatisticsTableRow> statistics)
         {
             var missingCreatures = creatureComparer.FindMissingCreatures(statistics, creatures).ToList();
             foreach (var creature in missingCreatures)
@@ -66,9 +65,9 @@ namespace Bossr.Scraper.Services.Scrapers
             return creatures.Concat(missingCreatures);
         }
 
-        private async Task<IEnumerable<IStatistic>> ScrapeStats(IEnumerable<IWorld> worlds)
+        private async Task<IEnumerable<IStatisticsTableRow>> ScrapeStats(IEnumerable<IWorld> worlds)
         {
-            var stats = new List<IStatistic>();
+            var stats = new List<IStatisticsTableRow>();
             foreach (var world in worlds)
             {
                 var baseUrl = configuration["TibiaStatsUrl"];
