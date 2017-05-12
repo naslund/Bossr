@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
-    public interface ICategoryRepository :
-        ICrudable<ICategory>
-    {
-    }
+    public interface ICategoryRepository : ICrudable<ICategory> { }
 
     public class CategoryRepository : ICategoryRepository
     {

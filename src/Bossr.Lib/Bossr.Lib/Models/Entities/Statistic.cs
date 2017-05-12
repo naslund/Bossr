@@ -8,6 +8,10 @@ namespace Bossr.Lib.Models.Entities
         int WorldId { get; set; }
         int ScrapeId { get; set; }
         int Amount { get; set; }
+
+        ICreature Creature { get; set; }
+        IWorld World { get; set; }
+        IScrape Scrape { get; set; }
     }
 
     public class Statistic : IStatistic
@@ -17,5 +21,9 @@ namespace Bossr.Lib.Models.Entities
         public int WorldId { get; set; }
         public int ScrapeId { get; set; }
         public int Amount { get; set; }
+
+        public ICreature Creature { get; set; }
+        public IWorld World { get; set; }
+        public IScrape Scrape { get; set; }
     }
 }

@@ -49,10 +49,10 @@ CREATE TABLE [dbo].[Statistics] (
 
 GO
 CREATE TABLE [dbo].[Raids] (
-    [Id]                INT           IDENTITY (1, 1) NOT NULL,
-    [Name]              NVARCHAR (30) NULL,
-    [FrequencyHoursMin] INT           NOT NULL,
-    [FrequencyHoursMax] INT           NOT NULL,
+    [Id]           INT           IDENTITY (1, 1) NOT NULL,
+    [Name]         NVARCHAR (30) NULL,
+    [FrequencyMin] INT           NOT NULL,
+    [FrequencyMax] INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -61,7 +61,7 @@ CREATE TABLE [dbo].[Spawns] (
     [Id]         INT IDENTITY (1, 1) NOT NULL,
     [CreatureId] INT NOT NULL,
     [RaidId]     INT NOT NULL,
-    [Amount]     INT NULL,
+    [Amount]     INT NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Spawns_Creatures] FOREIGN KEY ([CreatureId]) REFERENCES [dbo].[Creatures] ([Id]),
     CONSTRAINT [FK_Spawns_Raids] FOREIGN KEY ([RaidId]) REFERENCES [dbo].[Raids] ([Id])
@@ -69,22 +69,14 @@ CREATE TABLE [dbo].[Spawns] (
 
 GO
 CREATE TABLE [dbo].[Positions] (
-    [Id]   INT           IDENTITY (1, 1) NOT NULL,
-    [Name] NVARCHAR (30) NOT NULL,
-    [X]    INT           NOT NULL,
-    [Y]    INT           NOT NULL,
-    [Z]    INT           NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-GO
-CREATE TABLE [dbo].[SpawnPositions] (
-    [Id]         INT IDENTITY (1, 1) NOT NULL,
-    [SpawnId]    INT NOT NULL,
-    [PositionId] INT NOT NULL,
+    [Id]      INT           IDENTITY (1, 1) NOT NULL,
+    [Name]    NVARCHAR (30) NOT NULL,
+    [X]       INT           NOT NULL,
+    [Y]       INT           NOT NULL,
+    [Z]       INT           NOT NULL,
+    [SpawnId] INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_SpawnPositions_Positions] FOREIGN KEY ([PositionId]) REFERENCES [dbo].[Positions] ([Id]),
-    CONSTRAINT [FK_SpawnPositions_Spawns] FOREIGN KEY ([SpawnId]) REFERENCES [dbo].[Spawns] ([Id])
+    CONSTRAINT [FK_Positions_Spawns] FOREIGN KEY ([SpawnId]) REFERENCES [dbo].[Spawns] ([Id])
 );
 
 GO
