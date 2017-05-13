@@ -23,4 +23,15 @@ namespace Bossr.Lib.Models.Entities
         public IEnumerable<ISpawn> Spawns { get; set; }
         public IEnumerable<ITag> Tags { get; set; }
     }
+
+    public class RaidDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int FrequencyHoursMin { get; set; }
+        public int FrequencyHoursMax { get; set; }
+
+        public IEnumerable<ISpawn> Spawns { get; set; }
+        public IEnumerable<ITag> Tags { get; set; }
+    }
 }
