@@ -71,7 +71,8 @@ namespace Bossr.Api.Controllers
         {
             var scrape = Mapper.Map<Scrape>(request);
             await scrapeRepository.CreateAsync(scrape);
-            return Created($"/api/scrapes/{scrape.Id}", scrape);
+            var scrapeDto = Mapper.Map<ScrapeDto>(scrape);
+            return Created($"/api/scrapes/{scrape.Id}", scrapeDto);
         }
 
         [HttpPut("{id}")]
