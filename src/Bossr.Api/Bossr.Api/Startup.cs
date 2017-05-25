@@ -50,6 +50,7 @@ namespace Bossr.Api
             services.AddTransient<ITagRepository, TagRepository>();
             services.AddTransient<IRaidRepository, RaidRepository>();
             services.AddTransient<ISpawnRepository, SpawnRepository>();
+            services.AddTransient<IStatisticRepository, StatisticRepository>();
 
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IHashGenerator, HashGenerator>();
