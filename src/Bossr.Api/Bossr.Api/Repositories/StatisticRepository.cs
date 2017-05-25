@@ -24,7 +24,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                statistic.Id = await conn.QuerySingleAsync<int>("INSERT INTO Statistics (WorldId, CreatureId, ScrapeId, Amount) VALUES (@WorldId, @CreatureId, @ScrapeId, @Amount) SELECT CAST(SCOPE_IDENTITY() as int)", statistic);
+                statistic.Id = await conn.QuerySingleAsync<int>("INSERT INTO [Statistics] (WorldId, CreatureId, ScrapeId, Amount) VALUES (@WorldId, @CreatureId, @ScrapeId, @Amount) SELECT CAST(SCOPE_IDENTITY() as int)", statistic);
             }
         }
 
@@ -32,7 +32,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("DELETE FROM Statistics WHERE Id = @Id", new { Id = id });
+                await conn.ExecuteAsync("DELETE FROM [Statistics] WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -40,7 +40,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QueryAsync<Statistic>("SELECT * FROM Statistics");
+                return await conn.QueryAsync<Statistic>("SELECT * FROM [Statistics]");
             }
         }
 
@@ -48,7 +48,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                return await conn.QuerySingleOrDefaultAsync<Statistic>("SELECT * FROM Statistics WHERE Id = @Id", new { Id = id });
+                return await conn.QuerySingleOrDefaultAsync<Statistic>("SELECT * FROM [Statistics] WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -56,7 +56,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Statistics SET WorldId = @WorldId, CreatureId = @CreatureId, ScrapeId = @ScrapeId, Amount = @Amount WHERE Id = @Id", statistic);
+                await conn.ExecuteAsync("UPDATE [Statistics] SET WorldId = @WorldId, CreatureId = @CreatureId, ScrapeId = @ScrapeId, Amount = @Amount WHERE Id = @Id", statistic);
             }
         }
     }
