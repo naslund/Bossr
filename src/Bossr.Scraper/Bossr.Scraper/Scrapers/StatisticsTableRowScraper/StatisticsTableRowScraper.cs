@@ -47,7 +47,7 @@ namespace Bossr.Scraper.Services.Scrapers
 
             var creatures = await restClient.GetCreaturesAsync();
             creatures = await PersistCreatures(creatures, killStatsTableRows);
-            
+
             var scrapeDto = new ScrapeDto { Date = yesterdayLocalDateFactory.GetYesterdaysDate().ToIsoString() };
             await restClient.PostScrapeAsync(scrapeDto);
             Console.WriteLine($"{scrapeDto.Id} {scrapeDto.Date}");
@@ -70,11 +70,34 @@ namespace Bossr.Scraper.Services.Scrapers
             var stats = new List<IStatisticsTableRow>();
             foreach (var world in worlds)
             {
-                var baseUrl = configuration["TibiaStatsUrl"];
-                var response = await dataFetcher.FetchHttpResponse($"{baseUrl}{world.Name}");
-                stats.AddRange(await statsParser.Parse(response, world.Id));
+                stats.AddRange(await ScrapeStatsForWorld(world));
             }
             return stats;
+        }
+
+        private async Task<IEnumerable<IStatisticsTableRow>> ScrapeStatsForWorld(IWorld world)
+        {
+            var baseUrl = configuration["TibiaStatsUrl"];
+            int maximumAttempts = int.Parse(configuration["ScrapeAttemptsMax"]);
+            IEnumerable<IStatisticsTableRow> result = null;
+            int attempt = 0;
+            while (result == null)
+            {
+                attempt++;
+
+                try
+                {
+                    var response = await dataFetcher.FetchHttpResponse($"{baseUrl}{world.Name}");
+                    result = await statsParser.Parse(response, world.Id);
+                }
+                catch (Exception)
+                {
+                    if (maximumAttempts <= attempt)
+                        throw;
+                }
+            }
+
+            return result;
         }
     }
 }
