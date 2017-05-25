@@ -7,18 +7,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { WorldsComponent } from './worlds.component';
 import { CreaturesComponent } from './creatures.component';
+import { LoginComponent } from './login.component';
 
 const appRoutes: Routes = [
   { path: 'creatures', component: CreaturesComponent },
   { path: 'worlds', component: WorldsComponent },
-  { path: '', redirectTo: '/creatures', pathMatch:'full' }
+  { path: '', redirectTo: '/creatures', pathMatch: 'full' }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     WorldsComponent,
-    CreaturesComponent
+    CreaturesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
