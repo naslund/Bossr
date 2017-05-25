@@ -39,7 +39,7 @@ namespace Bossr.Api.Controllers
             return Ok(usersDto);
         }
 
-        [HttpGet("{id}", Name = "GetUser")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var user = await userRepository.ReadByIdAsync(id);
@@ -58,7 +58,7 @@ namespace Bossr.Api.Controllers
 
             var user = await userRepository.ReadByUsername(request.Username);
             var userDto = Mapper.Map<UserDto>(user);
-            return CreatedAtRoute("GetUser", new { controller = "api/users", id = userDto.Id }, userDto);
+            return Created($"/api/users/{userDto.Id}", userDto);
         }
 
         [HttpPut("{id}/password")]

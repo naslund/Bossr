@@ -43,7 +43,7 @@ namespace Bossr.Api.Controllers
             return Ok(scrapeDto);
         }
 
-        [HttpGet("{id}", Name = "GetScrape")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var scrape = await scrapeRepository.ReadByIdAsync(id);
@@ -71,7 +71,7 @@ namespace Bossr.Api.Controllers
         {
             var scrape = Mapper.Map<Scrape>(request);
             await scrapeRepository.CreateAsync(scrape);
-            return CreatedAtRoute("GetScrape", new { controller = "api/scrapes", id = scrape.Id }, Mapper.Map<ScrapeDto>(scrape));
+            return Created($"/api/scrapes/{scrape.Id}", scrape);
         }
 
         [HttpPut("{id}")]

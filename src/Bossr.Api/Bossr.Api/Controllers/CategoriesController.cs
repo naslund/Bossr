@@ -33,7 +33,7 @@ namespace Bossr.Api.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}", Name = "GetCategory")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var category = await repository.ReadByIdAsync(id);
@@ -61,7 +61,7 @@ namespace Bossr.Api.Controllers
         {
             await repository.CreateAsync(request);
             var category = await repository.ReadByIdAsync(request.Id);
-            return CreatedAtRoute("GetCategory", new { controller = "api/categories", id = category.Id }, category);
+            return Created($"/api/categories/{category.Id}", category);
         }
 
         [HttpPut("{id}")]

@@ -35,7 +35,7 @@ namespace Bossr.Api.Controllers
             return Ok(raidsDto);
         }
 
-        [HttpGet("{id}", Name = "GetRaid")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var raid = await repository.ReadByIdAsync(id);
@@ -73,7 +73,7 @@ namespace Bossr.Api.Controllers
             var response = await repository.ReadByIdAsync(raid.Id);
             var responseDto = Mapper.Map<RaidDto>(response);
 
-            return CreatedAtRoute("GetRaid", new { controller = "api/raids", id = responseDto.Id }, responseDto);
+            return Created($"/api/raids/{responseDto.Id}", responseDto);
         }
 
         [HttpPut("{id}")]
