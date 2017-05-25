@@ -3,6 +3,9 @@ using Bossr.Lib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
@@ -18,6 +21,13 @@ namespace Bossr.Api.Controllers
             this.spawnRepository = spawnRepository;
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await spawnRepository.DeleteByIdAsync(id);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -25,7 +35,7 @@ namespace Bossr.Api.Controllers
             return Ok(spawns);
         }
 
-        [HttpGet("{id}", Name = "GetSpawn")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var spawn = await spawnRepository.ReadByIdAsync(id);
@@ -52,7 +62,7 @@ namespace Bossr.Api.Controllers
         {
             await spawnRepository.CreateAsync(request);
             var spawn = await spawnRepository.ReadByIdAsync(request.Id);
-            return CreatedAtRoute("GetSpawn", new { controller = "api/spawns", id = spawn.Id }, spawn);
+            return Created($"/api/spawns/{spawn.Id}", spawn);
         }
 
         [HttpPut("{id}")]

@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
-    public interface IWorldRepository :
-        ICrudable<IWorld>,
-        IListableByIsMonitored<IWorld>,
-        IReadableByName<IWorld>
-    {
-    }
+    public interface IWorldRepository : ICrudable<IWorld>, IListableByIsMonitored<IWorld>, IReadableByName<IWorld> { }
 
     public class WorldRepository : IWorldRepository
     {

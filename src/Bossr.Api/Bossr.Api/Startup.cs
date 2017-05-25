@@ -44,11 +44,13 @@ namespace Bossr.Api
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IWorldRepository, WorldRepository>();
             services.AddTransient<ICreatureRepository, CreatureRepository>();
-            services.AddTransient<ISpawnRepository, SpawnRepository>();
             services.AddTransient<IScrapeRepository, ScrapeRepository>();
             services.AddTransient<IPositionRepository, PositionRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<IRaidRepository, RaidRepository>();
+            services.AddTransient<ISpawnRepository, SpawnRepository>();
+            services.AddTransient<IStatisticRepository, StatisticRepository>();
 
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IHashGenerator, HashGenerator>();
@@ -65,11 +67,27 @@ namespace Bossr.Api
             Mapper.Initialize(x =>
             {
                 x.CreateMap<User, UserDto>();
-                x.CreateMap<Scrape, ScrapeDto>().ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToString(y.Date)));
-                x.CreateMap<ScrapeDto, Scrape>().ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToLocalDate(y.Date)));
+
+                x.CreateMap<Scrape, ScrapeDto>()
+                    .ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToString(y.Date)));
+
+                x.CreateMap<ScrapeDto, Scrape>()
+                    .ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToLocalDate(y.Date)));
+
+                x.CreateMap<Raid, RaidDto>()
+                    .ForMember(dest => dest.FrequencyHoursMin, opts => opts.MapFrom(y => DurationHoursConverter.ToHours(y.FrequencyMin)))
+                    .ForMember(dest => dest.FrequencyHoursMax, opts => opts.MapFrom(y => DurationHoursConverter.ToHours(y.FrequencyMax)));
+
+                x.CreateMap<RaidDto, Raid>()
+                    .ForMember(dest => dest.FrequencyMin, opts => opts.MapFrom(y => DurationHoursConverter.ToDuration(y.FrequencyHoursMin)))
+                    .ForMember(dest => dest.FrequencyMax, opts => opts.MapFrom(y => DurationHoursConverter.ToDuration(y.FrequencyHoursMax)));
+
+                x.AllowNullCollections = false;
+                x.AllowNullDestinationValues = false;
             });
 
             SqlMapper.AddTypeHandler(new LocalDateTypeHandler());
+            SqlMapper.AddTypeHandler(new DurationTypeHandler());
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SecretKey"]));
 

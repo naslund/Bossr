@@ -1,14 +1,14 @@
-﻿using Bossr.Scraper.Factories;
+﻿using Bossr.Scraper.Comparers;
+using Bossr.Scraper.Converters;
+using Bossr.Scraper.Factories;
+using Bossr.Scraper.Parsers;
 using Bossr.Scraper.Services;
-using Bossr.Scraper.Services.Comparers;
-using Bossr.Scraper.Services.Converters;
-using Bossr.Scraper.Services.Parsers;
 using Bossr.Scraper.Services.Scrapers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bossr.Scraper
 {
-    internal class Program
+    public static class Program
     {
         private static void Main(string[] args)
         {
@@ -24,9 +24,9 @@ namespace Bossr.Scraper
                 .AddTransient<IWorldParser, WorldParser>()
                 .AddTransient<IWorldComparer, WorldComparer>()
 
-                .AddTransient<IStatisticScraper, StatisticScraper>()
-                .AddTransient<IStatisticParser, StatisticParser>()
-                .AddTransient<IStatisticConverter, StatisticConverter>()
+                .AddTransient<IStatisticsTableRowScraper, StatisticsTableRowScraper>()
+                .AddTransient<IStatisticsTableRowParser, StatisticsTableRowParser>()
+                .AddTransient<IStatisticsTableRowConverter, StatisticsTableRowConverter>()
 
                 .AddTransient<ICreatureComparer, CreatureComparer>()
 

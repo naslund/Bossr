@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
-    public interface ICreatureRepository :
-        ICrudable<ICreature>,
-        IListableByIsMonitored<ICreature>,
-        IReadableByName<ICreature>
-    {
-    }
+    public interface ICreatureRepository : ICrudable<ICreature>, IListableByIsMonitored<ICreature>, IReadableByName<ICreature> { }
 
     public class CreatureRepository : ICreatureRepository
     {

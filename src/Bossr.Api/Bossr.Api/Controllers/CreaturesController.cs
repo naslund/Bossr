@@ -33,7 +33,7 @@ namespace Bossr.Api.Controllers
             return Ok(creatures);
         }
 
-        [HttpGet("{id}", Name = "GetCreature")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var creature = await creatureRepository.ReadByIdAsync(id);
@@ -61,7 +61,7 @@ namespace Bossr.Api.Controllers
         {
             await creatureRepository.CreateAsync(request);
             var creature = await creatureRepository.ReadByIdAsync(request.Id);
-            return CreatedAtRoute("GetCreature", new { controller = "api/creatures", id = creature.Id }, creature);
+            return Created($"/api/creatures/{creature.Id}", creature);
         }
 
         [HttpPut("{id}")]

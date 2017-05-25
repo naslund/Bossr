@@ -76,13 +76,13 @@ namespace Bossr.Scraper.Services
                 scrape.Id = JsonConvert.DeserializeObject<ScrapeDto>(await response.Content.ReadAsStringAsync()).Id;
         }
 
-        public async Task PostSpawnAsync(ISpawn spawn)
+        public async Task PostStatisticAsync(IStatistic statistic)
         {
             await RefreshToken();
-            var spawnJson = JsonConvert.SerializeObject(spawn);
-            var response = await client.PostAsync(configuration["BossrApi:Resources:Spawns"], new StringContent(spawnJson, Encoding.UTF8, "application/json"));
+            var statisticJson = JsonConvert.SerializeObject(statistic);
+            var response = await client.PostAsync(configuration["BossrApi:Resources:Statistics"], new StringContent(statisticJson, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
-                spawn.Id = JsonConvert.DeserializeObject<Spawn>(await response.Content.ReadAsStringAsync()).Id;
+                statistic.Id = JsonConvert.DeserializeObject<Statistic>(await response.Content.ReadAsStringAsync()).Id;
         }
 
         public async Task PostWorldAsync(IWorld world)

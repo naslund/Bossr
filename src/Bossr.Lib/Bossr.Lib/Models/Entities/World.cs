@@ -1,4 +1,5 @@
 ﻿using Bossr.Lib.Models.Interfaces;
+using System.Collections.Generic;
 
 namespace Bossr.Lib.Models.Entities
 {
@@ -9,5 +10,8 @@ namespace Bossr.Lib.Models.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsMonitored { get; set; }
+
+        public IEnumerable<IStatistic> Statistics { get; set; }
+        public IEnumerable<ITag> Tags { get; set; }
     }
 }

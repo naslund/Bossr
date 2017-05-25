@@ -33,7 +33,7 @@ namespace Bossr.Api.Controllers
             return Ok(tags);
         }
 
-        [HttpGet("{id}", Name = "GetTag")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var tag = await repository.ReadByIdAsync(id);
@@ -61,7 +61,7 @@ namespace Bossr.Api.Controllers
         {
             await repository.CreateAsync(request);
             var tag = await repository.ReadByIdAsync(request.Id);
-            return CreatedAtRoute("GetTag", new { controller = "api/tags", id = tag.Id }, tag);
+            return Created($"/api/tags/{tag.Id}", tag);
         }
 
         [HttpPut("{id}")]
