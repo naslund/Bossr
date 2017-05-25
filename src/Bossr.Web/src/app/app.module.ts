@@ -12,7 +12,7 @@ import { LoginComponent } from './login.component';
 const appRoutes: Routes = [
   { path: 'creatures', component: CreaturesComponent },
   { path: 'worlds', component: WorldsComponent },
-  { path: '', redirectTo: '/creatures', pathMatch:'full' }
+  { path: '', redirectTo: '/creatures', pathMatch: 'full' }
 ];
 
 @NgModule({
