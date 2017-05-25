@@ -79,6 +79,9 @@ namespace Bossr.Api
                 x.CreateMap<RaidDto, Raid>()
                     .ForMember(dest => dest.FrequencyMin, opts => opts.MapFrom(y => DurationHoursConverter.ToDuration(y.FrequencyHoursMin)))
                     .ForMember(dest => dest.FrequencyMax, opts => opts.MapFrom(y => DurationHoursConverter.ToDuration(y.FrequencyHoursMax)));
+
+                x.AllowNullCollections = false;
+                x.AllowNullDestinationValues = false;
             });
 
             SqlMapper.AddTypeHandler(new LocalDateTypeHandler());
