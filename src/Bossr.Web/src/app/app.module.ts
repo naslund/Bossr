@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { WorldsComponent } from './worlds.component';
 import { CreaturesComponent } from './creatures.component';
+import { LoginComponent } from './login.component';
 
 const appRoutes: Routes = [
   { path: 'creatures', component: CreaturesComponent },
@@ -18,7 +19,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     WorldsComponent,
-    CreaturesComponent
+    CreaturesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
