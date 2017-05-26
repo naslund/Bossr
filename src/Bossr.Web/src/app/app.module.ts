@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { WorldsComponent } from './worlds.component';
-import { CreaturesComponent } from './creatures.component';
-import { LoginComponent } from './login.component';
-import { NavigationComponent } from './navigation.component';
+import { AppComponent } from './app/app.component';
+import { WorldsComponent } from './worlds/worlds.component';
+import { CreaturesComponent } from './creatures/creatures.component';
+import { LoginComponent } from './login/login.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 const appRoutes: Routes = [
   { path: 'creatures', component: CreaturesComponent },
