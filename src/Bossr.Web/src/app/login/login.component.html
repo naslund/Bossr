@@ -1,0 +1,9 @@
+<div *ngIf="!isLoggedIn">
+    <input #username placeholder="Username">
+    <input #password placeholder="Password">
+    <button (click)="login(username.value, password.value)">Login</button>
+</div>
+<div *ngIf="isLoggedIn">
+    <p>Logged in as: {{currentUser}}</p>
+    <button (click)="logout()">Logout</button>
+</div>
