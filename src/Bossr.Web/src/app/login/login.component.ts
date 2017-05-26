@@ -1,24 +1,39 @@
 import { Component } from '@angular/core';
+import { TokenService } from './token.service';
+import { Token } from './token';
 
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [TokenService]
 })
 
 export class LoginComponent {
   title = 'Login';
 
-  currentUser = '';
-  isLoggedIn = false;
+  token: Token;
+  currentUser: string;
+  isLoggedIn: boolean = false;
+  errorMessage: string;
+
+  constructor(private tokenService: TokenService) { }
 
   login(username: string, password: string) {
-    this.currentUser = username;
-    this.isLoggedIn = true;
+    this.tokenService
+      .postToken(username, password)
+      .subscribe(
+      token => {
+        this.token = token;
+        this.currentUser = username;
+        this.isLoggedIn = true;
+        this.errorMessage = undefined;
+      },
+      error => this.errorMessage = error);
   }
 
   logout() {
-    this.currentUser = '';
+    this.currentUser = undefined;
     this.isLoggedIn = false;
   }
 }
