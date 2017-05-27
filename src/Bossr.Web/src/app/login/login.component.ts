@@ -1,20 +1,22 @@
 import { Component } from '@angular/core';
-import { TokenService } from './token.service';
-import { Token } from './token';
+import { TokenService } from '../token/token.service';
+import { Token } from '../token/token';
+import { CurrentUser } from '../current-user/current-user';
+import { CurrentUserManager } from '../current-user/current-user-manager';
 
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [TokenService]
+  providers: [TokenService, CurrentUserManager]
 })
 
 export class LoginComponent {
   currentUser;
   errorMessage: string;
 
-  constructor(private tokenService: TokenService) {
-    this.getUser();
+  constructor(private tokenService: TokenService, private currentUserManager: CurrentUserManager) {
+    this.currentUser = this.currentUserManager.getCurrentUser();
   }
 
   login(username: string, password: string) {
@@ -22,23 +24,15 @@ export class LoginComponent {
       .postToken(username, password)
       .subscribe(
       token => {
-        this.setUser(username, token);
-        this.getUser();
+        this.currentUserManager.setCurrentUser({ username: username, token: token });
+        this.currentUser = this.currentUserManager.getCurrentUser();
         this.errorMessage = undefined;
       },
       error => this.errorMessage = error);
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    this.getUser();
-  }
-
-  setUser(username: string, token: Token) {
-    localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-  }
-
-  getUser() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUserManager.removeCurrentUser();
+    this.currentUser = this.currentUserManager.getCurrentUser();
   }
 }
