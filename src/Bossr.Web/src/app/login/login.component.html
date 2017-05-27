@@ -7,6 +7,6 @@
 <div *ngIf="currentUser">
     <p>Logged in as: {{currentUser.username}}</p>
     <button (click)="logout()">Logout</button>
-    <p>{{currentUser.token.AccessToken}}</p>
-    <p>{{currentUser.token.ExpiresIn}}</p>
+    <p>{{currentUser.token.accessToken}}</p>
+    <p>{{currentUser.token.expiresIn}}</p>
 </div>

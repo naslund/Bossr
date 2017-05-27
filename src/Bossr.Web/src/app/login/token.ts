@@ -1,4 +1,4 @@
 export class Token {
-  AccessToken: string;
-  ExpiresIn: number;
+  accessToken: string;
+  expiresIn: number;
 }

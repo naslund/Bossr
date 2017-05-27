@@ -38,7 +38,7 @@ export class TokenService {
     let errorMessage: string;
     if (error instanceof Response) {
       if (error.status === 400) {
-        errorMessage = error.json().Message;
+        errorMessage = error.json().message;
       }
     }
     return Promise.reject(errorMessage);
