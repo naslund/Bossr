@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
 import { TokenService } from '../token/token.service';
 import { Token } from '../token/token';
-import { UserManager } from '../usermanager/usermanager';
+import { CurrentUser } from '../current-user/current-user';
+import { CurrentUserManager } from '../current-user/current-user-manager';
 
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [TokenService, UserManager]
+  providers: [TokenService, CurrentUserManager]
 })
 
 export class LoginComponent {
   currentUser;
   errorMessage: string;
 
-  constructor(private tokenService: TokenService, private tokenStorage: UserManager) {
-    this.currentUser = this.tokenStorage.getToken();
+  constructor(private tokenService: TokenService, private currentUserManager: CurrentUserManager) {
+    this.currentUser = this.currentUserManager.getCurrentUser();
   }
 
   login(username: string, password: string) {
@@ -23,15 +24,15 @@ export class LoginComponent {
       .postToken(username, password)
       .subscribe(
       token => {
-        this.tokenStorage.setToken(username, token);
-        this.currentUser = this.tokenStorage.getToken();
+        this.currentUserManager.setCurrentUser({ username: username, token: token });
+        this.currentUser = this.currentUserManager.getCurrentUser();
         this.errorMessage = undefined;
       },
       error => this.errorMessage = error);
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    this.currentUser = this.tokenStorage.getToken();
+    this.currentUserManager.removeCurrentUser();
+    this.currentUser = this.currentUserManager.getCurrentUser();
   }
 }

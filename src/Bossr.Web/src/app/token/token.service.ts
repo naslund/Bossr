@@ -24,7 +24,7 @@ export class TokenService {
 
     return this.http
       .post(this.tokenUrl, body, options)
-      .map(this.dataExtractor.extractData)
-      .catch(this.errorHandler.handleError);
+      .map(result => this.dataExtractor.extractData(result))
+      .catch(error => this.errorHandler.handleError(error));
   }
 }

@@ -21,7 +21,16 @@ export class WorldService {
 
     return this.http
       .get(this.worldsUrl, options)
-      .map(this.dataExtractor.extractData)
-      .catch(this.errorHandler.handleError);
+      .map(result => this.dataExtractor.extractData(result))
+      .catch(error => this.errorHandler.handleError(error));
+  }
+
+  getWorld(id: number): Observable<World> {
+    let options = this.requestHelper.getHttpOptions();
+
+    return this.http
+      .get(this.worldsUrl + '/' + id, options)
+      .map(result => this.dataExtractor.extractData(result))
+      .catch(error => this.errorHandler.handleError(error));
   }
 }

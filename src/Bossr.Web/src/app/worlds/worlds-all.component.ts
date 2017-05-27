@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { WorldService } from './world.service';
-import { UserManager } from '../usermanager/usermanager';
+import { CurrentUserManager } from '../current-user/current-user-manager';
 
 import { World } from './world';
 
@@ -12,15 +12,15 @@ import { World } from './world';
   providers: [WorldService]
 })
 
-export class WorldsComponent implements OnInit {
+export class WorldsAllComponent implements OnInit {
   title = 'Worlds';
 
   worlds: World[];
 
-  constructor(private tokenStorage: UserManager, private worldService: WorldService) { }
+  constructor(private currentUserManager: CurrentUserManager, private worldService: WorldService) { }
 
   ngOnInit() {
-    if (this.tokenStorage.isThereAnyToken()) {
+    if (this.currentUserManager.getCurrentUser() !== null) {
       this.getWorlds();
     }
   }
