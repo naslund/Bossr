@@ -94,6 +94,8 @@ namespace Bossr.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(new TokenProviderOptions
             {
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)

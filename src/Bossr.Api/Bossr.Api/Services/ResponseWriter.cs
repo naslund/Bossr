@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -16,7 +17,8 @@ namespace Bossr.Api.Services
         {
             context.Response.StatusCode = (int)statusCode;
             context.Response.ContentType = "application/json; charset=utf-8";
-            var response = JsonConvert.SerializeObject(content);
+            var serializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            var response = JsonConvert.SerializeObject(content, serializerSettings);
             await context.Response.WriteAsync(response);
         }
     }
