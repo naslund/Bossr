@@ -5,10 +5,14 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app/app.component';
-import { WorldsComponent } from './worlds/worlds.component';
+import { WorldsComponent } from './worlds/worlds-all.component';
 import { CreaturesComponent } from './creatures/creatures.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationComponent } from './navigation/navigation.component';
+
+import { ErrorHandler, DataExtractor } from './shared/response.helper';
+import { UserManager } from './usermanager/usermanager';
+import { RequestHelper } from './shared/request.helper';
 
 const appRoutes: Routes = [
   { path: 'creatures', component: CreaturesComponent },
@@ -30,7 +34,12 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+    ErrorHandler,
+    DataExtractor,
+    UserManager,
+    RequestHelper
+  ],
   bootstrap: [AppComponent]
 })
 
