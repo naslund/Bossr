@@ -1,4 +1,4 @@
 <h2>{{title}}</h2>
 <ul *ngFor="let world of worlds">
-    <li>{{world.id}} - {{world.name}} - {{world.isMonitored}}</li>
+    <li><a [routerLink]="['/world', world.id]">{{world.id}} - {{world.name}} - {{world.isMonitored}}</a></li>
 </ul>
