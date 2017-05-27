@@ -18,10 +18,7 @@ export class TokenService {
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     let options = new RequestOptions({ headers: headers });
 
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('username', username);
-    urlSearchParams.append('password', password);
-    let body = urlSearchParams.toString();
+    let body = "username=" + username + "&password=" + password;
 
     return this.http
       .post(this.tokenUrl, body, options)
