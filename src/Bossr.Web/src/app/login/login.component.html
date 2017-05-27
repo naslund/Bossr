@@ -1,12 +1,12 @@
-<div *ngIf="!isLoggedIn">
+<div *ngIf="!currentUser">
     <input #username placeholder="Username">
     <input #password placeholder="Password">
     <button (click)="login(username.value, password.value)">Login</button>
     <p *ngIf="errorMessage">{{errorMessage}}</p>
 </div>
-<div *ngIf="isLoggedIn">
-    <p>Logged in as: {{currentUser}}</p>
+<div *ngIf="currentUser">
+    <p>Logged in as: {{currentUser.username}}</p>
     <button (click)="logout()">Logout</button>
-    <p>{{token.AccessToken}}</p>
-    <p>{{token.ExpiresIn}}</p>
+    <p>{{currentUser.token.AccessToken}}</p>
+    <p>{{currentUser.token.ExpiresIn}}</p>
 </div>
