@@ -1,12 +1,14 @@
 <div *ngIf="!currentUser">
-    <input #username placeholder="Username">
-    <input #password placeholder="Password">
-    <button (click)="login(username.value, password.value)">Login</button>
-    <p *ngIf="errorMessage">{{errorMessage}}</p>
+  <div class="form-group">
+    <input #username placeholder="Username" class="form-control">
+  </div>
+  <div class="form-group">
+    <input #password placeholder="Password" type="password" class="form-control">
+  </div>
+  <button (click)="login(username.value, password.value)" class="btn btn-success">Login</button>
+  <span *ngIf="errorMessage">{{errorMessage}}</span>
 </div>
 <div *ngIf="currentUser">
-    <p>Logged in as: {{currentUser.username}}</p>
-    <button (click)="logout()">Logout</button>
-    <p>{{currentUser.token.accessToken}}</p>
-    <p>{{currentUser.token.expiresIn}}</p>
+  <span>Logged in as: {{currentUser.username}}</span>
+  <button (click)="logout()" class="btn btn-danger">Logout</button>
 </div>
