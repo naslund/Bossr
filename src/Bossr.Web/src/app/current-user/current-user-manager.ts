@@ -1,15 +1,29 @@
-import { CurrentUser } from './current-user';
+import { Output, EventEmitter, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 
+import { CurrentUser } from './current-user';
+import { CurrentUserPersister } from './current-user-persister';
+
+@Injectable()
 export class CurrentUserManager {
-  setCurrentUser(currentUser: CurrentUser) {
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  private currentUser = new Subject<CurrentUser>();
+
+  constructor(private currentUserPersister: CurrentUserPersister) {
+    this.currentUser.next(this.currentUserPersister.getCurrentUser());
   }
 
-  getCurrentUser(): CurrentUser {
-    return JSON.parse(localStorage.getItem('currentUser'));
+  setCurrentUser(currentUser: CurrentUser) {
+    this.currentUserPersister.setCurrentUser(currentUser);
+    this.currentUser.next(this.currentUserPersister.getCurrentUser());
+  }
+
+  getCurrentUser(): Observable<CurrentUser> {
+    return this.currentUser.asObservable();
   }
 
   removeCurrentUser() {
-    localStorage.removeItem('currentUser');
+    this.currentUserPersister.removeCurrentUser();
+    this.currentUser.next();
   }
 }

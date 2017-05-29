@@ -14,6 +14,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { ErrorHandler, DataExtractor } from './shared/response.helper';
 import { CurrentUserManager } from './current-user/current-user-manager';
 import { RequestHelper } from './shared/request.helper';
+import { CurrentUserPersister } from './current-user/current-user-persister';
 
 const appRoutes: Routes = [
   { path: 'creatures', component: CreaturesComponent },
@@ -41,6 +42,7 @@ const appRoutes: Routes = [
     ErrorHandler,
     DataExtractor,
     CurrentUserManager,
+    CurrentUserPersister,
     RequestHelper
   ],
   bootstrap: [AppComponent]
