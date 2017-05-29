@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { WorldService } from './world.service';
 import { CurrentUserManager } from '../current-user/current-user-manager';
+import { CurrentUserPersister } from '../current-user/current-user-persister';
 
 import { World } from './world';
 
@@ -12,22 +13,33 @@ import { World } from './world';
   providers: [WorldService]
 })
 
-export class WorldsAllComponent implements OnInit {
+export class WorldsAllComponent implements OnInit, OnDestroy {
   title = 'Worlds';
-
   worlds: World[];
+  subscription;
 
-  constructor(private currentUserManager: CurrentUserManager, private worldService: WorldService) { }
+  constructor(private currentUserManager: CurrentUserManager, private currentUserPersister: CurrentUserPersister, private worldService: WorldService) { }
 
   ngOnInit() {
-    if (this.currentUserManager.getCurrentUser() !== null) {
-      this.getWorlds();
+    let currentUser = this.currentUserPersister.getCurrentUser();
+    this.getWorlds(currentUser);
+
+    this.subscription = this.currentUserManager
+      .getCurrentUser()
+      .subscribe(currentUser => this.getWorlds(currentUser));
+  }
+
+  private getWorlds(currentUser) {
+    if (currentUser) {
+      this.worldService
+        .getAllWorlds()
+        .subscribe(worlds => this.worlds = worlds);
+    } else {
+      this.worlds = undefined;
     }
   }
 
-  private getWorlds() {
-    this.worldService
-      .getAllWorlds()
-      .subscribe(worlds => this.worlds = worlds);
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
