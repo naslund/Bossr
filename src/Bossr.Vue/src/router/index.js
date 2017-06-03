@@ -4,6 +4,7 @@ import Worlds from '@/components/Worlds'
 import World from '@/components/World'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
+import Raids from '@/components/Raids'
 
 Vue.use(Router)
 
@@ -31,6 +32,12 @@ const router = new Router({
       path: '/worlds',
       name: 'worlds',
       component: Worlds,
+      beforeEnter: guardRoute
+    },
+    {
+      path: '/raids',
+      name: 'raids',
+      component: Raids,
       beforeEnter: guardRoute
     }
   ]
