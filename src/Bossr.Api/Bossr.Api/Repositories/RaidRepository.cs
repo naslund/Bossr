@@ -37,46 +37,33 @@ namespace Bossr.Api.Repositories
 
         public async Task<IEnumerable<IRaid>> ReadAllAsync()
         {
-            var sql = "SELECT * FROM Raids " +
-                "JOIN Spawns ON Spawns.RaidId = Raids.Id " +
-                "JOIN Creatures ON Spawns.CreatureId = Creatures.Id " +
-                "JOIN Positions ON Positions.SpawnId = Spawns.Id";
+            var sql = @"SELECT * FROM Raids;
+                        SELECT * FROM Spawns;
+                        SELECT * FROM Creatures;
+                        SELECT * FROM Positions";
 
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                var raids = new Dictionary<int, Raid>();
-                var spawns = new Dictionary<int, Spawn>();
-                var creatures = new Dictionary<int, Creature>();
-                var positions = new Dictionary<int, Position>();
-
-                await conn.QueryAsync<Raid, Spawn, Creature, Position, Raid>(sql, (raid, spawn, creature, position) => {
-                    if (!raids.ContainsKey(raid.Id))
-                        raids.Add(raid.Id, raid);
-
-                    if (!spawns.ContainsKey(spawn.Id))
-                        spawns.Add(spawn.Id, spawn);
-
-                    if (!creatures.ContainsKey(creature.Id))
-                        creatures.Add(creature.Id, creature);
-
-                    if (!positions.ContainsKey(position.Id))
-                        positions.Add(position.Id, position);
-
-                    return null;
-                });
-
-                foreach(var spawn in spawns.Values)
+                using (var multi = await conn.QueryMultipleAsync(sql))
                 {
-                    spawn.Creature = creatures.Values.Single(x => x.Id == spawn.CreatureId);
-                    spawn.Positions = positions.Values.Where(x => x.SpawnId == spawn.Id);
-                }
+                    var raids = multi.Read<Raid>();
+                    var spawns = multi.Read<Spawn>();
+                    var creatures = multi.Read<Creature>();
+                    var positions = multi.Read<Position>();
 
-                foreach(var raid in raids.Values)
-                {
-                    raid.Spawns = spawns.Values.Where(x => x.RaidId == raid.Id);
-                }
+                    foreach (var spawn in spawns)
+                    {
+                        spawn.Creature = creatures.Single(x => x.Id == spawn.CreatureId);
+                        spawn.Positions = positions.Where(x => x.SpawnId == spawn.Id);
+                    }
 
-                return raids.Values;
+                    foreach (var raid in raids)
+                    {
+                        raid.Spawns = spawns.Where(x => x.RaidId == raid.Id);
+                    }
+
+                    return raids;
+                }
             }
         }
 
