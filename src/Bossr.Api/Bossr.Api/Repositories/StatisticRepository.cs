@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
-    public interface IStatisticRepository : ICrudable<IStatistic> { }
+    public interface IStatisticRepository : ICrudable<IStatistic>
+    {
+        Task<IEnumerable<IStatistic>> ReadAllByWorldIdAsync(int worldId);
+    }
 
     public class StatisticRepository : IStatisticRepository
     {
@@ -41,6 +44,14 @@ namespace Bossr.Api.Repositories
             using (var conn = dbConnectionFactory.CreateConnection())
             {
                 return await conn.QueryAsync<Statistic>("SELECT * FROM [Statistics]");
+            }
+        }
+
+        public async Task<IEnumerable<IStatistic>> ReadAllByWorldIdAsync(int worldId)
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                return await conn.QueryAsync<Statistic>("SELECT * FROM [Statistics] WHERE WorldId = @WorldId", new { WorldId = worldId });
             }
         }
 

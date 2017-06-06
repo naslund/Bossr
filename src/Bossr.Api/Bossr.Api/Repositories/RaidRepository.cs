@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
-    public interface IRaidRepository : ICrudable<IRaid> { }
+    public interface IRaidRepository : ICrudable<IRaid>
+    {
+        Task<IEnumerable<IRaid>> ReadAllByCreatureId(int creatureId);
+    }
 
     public class RaidRepository : IRaidRepository
     {
@@ -32,6 +35,18 @@ namespace Bossr.Api.Repositories
             using (var conn = dbConnectionFactory.CreateConnection())
             {
                 await conn.ExecuteAsync("DELETE FROM Raids WHERE Id = @Id", new { Id = id });
+            }
+        }
+
+        public async Task<IEnumerable<IRaid>> ReadAllByCreatureId(int creatureId)
+        {
+            var sql = @"SELECT DISTINCT Raids.Id, Raids.Name, Raids.FrequencyMin, Raids.FrequencyMax FROM Raids
+                        JOIN Spawns ON Spawns.RaidId = Raids.Id
+                        WHERE CreatureId = @CreatureId";
+
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                return await conn.QueryAsync<Raid>(sql, new { CreatureId = creatureId });
             }
         }
 
