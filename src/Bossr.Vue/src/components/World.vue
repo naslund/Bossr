@@ -13,9 +13,7 @@
           </div>
           <hr>
           <p>Occurs between:</p>
-          <p>{{ state.expectedMin }}</p> 
-          <p> and </p>
-          <p>{{ state.expectedMax }}</p>
+          <p>{{ getFormattedTime(state.expectedMin) }} - {{ getFormattedTime(state.expectedMax) }}</p>
           <hr>
           <p>Missed: {{ state.missedRaids }}</p>
         </div>
@@ -25,6 +23,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   data () {
     return {
@@ -36,6 +36,11 @@ export default {
       console.log(response.body)
       this.states = response.body
     })
+  },
+  methods: {
+    getFormattedTime (time) {
+      return moment(time).fromNow()
+    }
   }
 }
 </script>
