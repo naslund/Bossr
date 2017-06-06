@@ -1,11 +1,43 @@
 <template>
-  <div class="world">
-    World
+  <div class="raids">
+    <div class="columns is-multiline">
+      <div class="column is-one-third" v-for="state in states">
+        <div class="box">
+          <p>{{ state.raid.frequencyHoursMin }} - {{ state.raid.frequencyHoursMax }} hours</p>
+          <div v-for="spawn in state.raid.spawns" :key="spawn.id">
+            <p>{{ spawn.creature.name }}</p>
+            <p v-for="position in spawn.positions" :key="position.id">
+              {{ position.name }}
+              <b-icon icon="place"></b-icon>
+            </p>
+          </div>
+          <hr>
+          <p>Occurs between:</p>
+          <p>{{ state.expectedMin }}</p> 
+          <p> and </p>
+          <p>{{ state.expectedMax }}</p>
+          <hr>
+          <p>Missed: {{ state.missedRaids }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default { }
+export default {
+  data () {
+    return {
+      states: []
+    }
+  },
+  created () {
+    this.$http.get('http://localhost:5000/api/states/' + this.$route.params.id).then(response => {
+      console.log(response.body)
+      this.states = response.body
+    })
+  }
+}
 </script>
 
 <style>
