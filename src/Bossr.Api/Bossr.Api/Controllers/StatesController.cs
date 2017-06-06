@@ -47,44 +47,52 @@ namespace Bossr.Api.Controllers
                 var spawn = raid.Spawns.First();
 
                 var latestOccurance = GetLatestOccurance(scrapes, spawn);
-
-                var expectedMin = GetMin(latestOccurance);
-                var expectedMax = GetMax(latestOccurance);
-
-                if (expectedMax.ToDateTimeUtc().Year == 9999 || expectedMin.ToDateTimeUtc().Year == 9999)
+                if (latestOccurance == null)
                     continue;
 
+                var expectedMin = GetMin(latestOccurance.Value).Plus(raid.FrequencyMin);
+                var expectedMax = GetMax(latestOccurance.Value).Plus(raid.FrequencyMax);
+
+                var missedRaids = 0;
                 while (Instant.FromDateTimeUtc(DateTime.UtcNow) > expectedMax)
                 {
                     expectedMin = expectedMin.Plus(raid.FrequencyMin);
                     expectedMax = expectedMax.Plus(raid.FrequencyMax);
+                    missedRaids++;
                 }
 
-                states.Add(new State { Raid = Mapper.Map<RaidDto>(raid), ExpectedMin = expectedMin.ToDateTimeUtc(), ExpectedMax = expectedMax.ToDateTimeUtc() });
+                var state = new State
+                {
+                    Raid = Mapper.Map<RaidDto>(raid),
+                    ExpectedMin = expectedMin.ToDateTimeUtc(),
+                    ExpectedMax = expectedMax.ToDateTimeUtc(),
+                    MissedRaids = missedRaids
+                };
+
+                states.Add(state);
             }
 
             return Ok(states);
         }
 
-        private LocalDate GetLatestOccurance(IEnumerable<IScrape> scrapes, ISpawn spawn)
+        private LocalDate? GetLatestOccurance(IEnumerable<IScrape> scrapes, ISpawn spawn)
         {
-            var result = scrapes.FirstOrDefault(x => x.Statistics.Any(y => y.CreatureId == spawn.CreatureId));
-            return result == null ? LocalDate.FromDateTime(DateTime.MaxValue) : result.Date;
+            return scrapes.FirstOrDefault(x => x.Statistics.Any(y => y.CreatureId == spawn.CreatureId))?.Date;
         }
 
         private Instant GetMin(LocalDate date)
         {
             return Instant
                 .FromDateTimeUtc(DateTime.SpecifyKind(date.ToDateTimeUnspecified(), DateTimeKind.Utc))
-                .Minus(Duration.FromDays(1))
-                .Minus(Duration.FromHours(-2));
+                .Plus(Duration.FromHours(2));
         }
 
         private Instant GetMax(LocalDate date)
         {
             return Instant
                 .FromDateTimeUtc(DateTime.SpecifyKind(date.ToDateTimeUnspecified(), DateTimeKind.Utc))
-                .Minus(Duration.FromHours(-2));
+                .Plus(Duration.FromDays(1))
+                .Plus(Duration.FromHours(2));
         }
 
         private class State
@@ -92,6 +100,7 @@ namespace Bossr.Api.Controllers
             public RaidDto Raid { get; set; }
             public DateTime ExpectedMin { get; set; }
             public DateTime ExpectedMax { get; set; }
+            public int MissedRaids { get; set; }
         }
     }
 }
