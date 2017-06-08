@@ -2,7 +2,7 @@
   <div class="worlds">
     <ul>
       <li v-for="world in worlds">
-        <router-link :to="{ name: 'world', params: { id: world.id } }">
+        <router-link :to="{ name: 'states', params: { worldid: world.id } }">
           {{world.name}}
         </router-link>
       </li>

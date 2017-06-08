@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Worlds from '@/components/Worlds'
-import World from '@/components/World'
+import States from '@/components/States/States'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
 import Raids from '@/components/Raids'
@@ -23,9 +23,9 @@ const router = new Router({
       beforeEnter: loginGuardRoute
     },
     {
-      path: '/world/:id',
-      name: 'world',
-      component: World,
+      path: '/states/:worldid',
+      name: 'states',
+      component: States,
       beforeEnter: guardRoute
     },
     {
