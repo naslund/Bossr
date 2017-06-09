@@ -3,23 +3,23 @@
     <p>
       <strong>{{ spawn.creature.name }}</strong>
     </p>
-    <position-info
+    <position
       v-for="position in spawn.positions" 
       :position="position" 
       :key="position.id">
-    </position-info>
+    </position>
     <hr>
   </div>
 </template>
 
 <script>
-import PositionInfo from './PositionInfo'
+import Position from './Position'
 
 export default {
-  name: 'spawn-info',
+  name: 'spawn',
   props: ['spawn'],
   components: {
-    'position-info': PositionInfo
+    'position': Position
   }
 }
 </script>

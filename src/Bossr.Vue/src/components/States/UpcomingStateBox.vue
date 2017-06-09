@@ -1,18 +1,16 @@
 <template>
   <div>
     <div class="box">
-      <spawn-info 
+      <spawn
         v-for="spawn in state.raid.spawns" 
         :spawn="spawn" 
         :key="spawn.id">
-      </spawn-info>
+      </spawn>
       <div>
         <p class="has-text-centered">
-          <b-icon icon="access_time" /> in {{ getFormattedTime(state.expectedMin) }}
+          <b-icon icon="access_time" /> {{ timeUntilPossible }}
         </p>
-        <p class="has-text-centered">
-          <b-icon icon="call_missed" /> {{ state.missedRaids }} missed raids
-        </p>
+        <missed-raids :missed-raids="state.missedRaids"></missed-raids>
       </div>
     </div>
   </div>
@@ -20,17 +18,19 @@
 
 <script>
 import moment from 'moment'
-import SpawnInfo from './SpawnInfo'
+import Spawn from './Spawn'
+import MissedRaids from './MissedRaids'
 
 export default {
   name: 'upcoming-state-box',
   components: {
-    'spawn-info': SpawnInfo
+    'spawn': Spawn,
+    'missed-raids': MissedRaids
   },
   props: ['state'],
-  methods: {
-    getFormattedTime (time) {
-      return moment(time).fromNow(true)
+  computed: {
+    timeUntilPossible () {
+      return moment(this.state.expectedMin).fromNow()
     }
   }
 }

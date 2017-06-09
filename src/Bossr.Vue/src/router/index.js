@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Worlds from '@/components/Worlds'
-import States from '@/components/States/States'
+import States from '@/components/states/States'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
 import Raids from '@/components/Raids'
+import Map from '@/components/Map'
 
 Vue.use(Router)
 
@@ -38,6 +39,12 @@ const router = new Router({
       path: '/raids',
       name: 'raids',
       component: Raids,
+      beforeEnter: guardRoute
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: Map,
       beforeEnter: guardRoute
     }
   ]
