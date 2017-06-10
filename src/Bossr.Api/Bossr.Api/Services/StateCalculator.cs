@@ -32,11 +32,10 @@ namespace Bossr.Api.Services
 
         public async Task<IEnumerable<StateDto>> GetStatesByWorldId(int worldId)
         {
-            var raids = await raidRepository.ReadAllAsync();
+            var raids = (await raidRepository.ReadAllAsync()).ToList();
 
-            var statistics = await statisticRepository.ReadAllByWorldIdAsync(worldId); // Todo: Only get latest X stats (X = amount of spawnpoints)
-            var scrapes = await scrapeRepository.ReadAllAsync();
-            scrapes = scrapes.OrderByDescending(x => x.Date);
+            var statistics = (await statisticRepository.ReadAllByWorldIdAsync(worldId)).ToList(); // Todo: Only get latest X stats (X = amount of spawnpoints)
+            var scrapes = (await scrapeRepository.ReadAllAsync()).OrderByDescending(x => x.Date).ToList();
 
             foreach (var scrape in scrapes) // Todo: Get combined from repo
                 scrape.Statistics = statistics.Where(x => x.ScrapeId == scrape.Id);
@@ -48,7 +47,8 @@ namespace Bossr.Api.Services
                 var totalAmount = GetAmountOfSpawnsByCreature(raids, spawn.CreatureId);
 
                 var latestOccurances = GetAllOccurances(scrapes, spawn)
-                    .Take(totalAmount);
+                    .Take(totalAmount)
+                    .ToList();
 
                 if (!latestOccurances.Any())
                     continue;
@@ -57,7 +57,8 @@ namespace Bossr.Api.Services
                 var expectedMax = GetMax(latestOccurances.Max(x => x.Date)).Plus(raid.FrequencyMax);
 
                 var missedRaids = 0;
-                while (Instant.FromDateTimeUtc(DateTime.UtcNow) > expectedMax)
+                var currentInstant = Instant.FromDateTimeUtc(DateTime.UtcNow);
+                while (currentInstant > expectedMax)
                 {
                     expectedMin = expectedMin.Plus(raid.FrequencyMin);
                     expectedMax = expectedMax.Plus(raid.FrequencyMax);
