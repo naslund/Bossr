@@ -58,6 +58,7 @@ namespace Bossr.Api
             services.AddTransient<ISaltGenerator, SaltGenerator>();
             services.AddTransient<ITokenGenerator, TokenGenerator>();
             services.AddTransient<IResponseWriter, ResponseWriter>();
+            services.AddTransient<IStateCalculator, StateCalculator>();
 
             services.AddMvc(x => { x.Filters.Add(new ModelStateValidationFilterAttribute()); });
         }
