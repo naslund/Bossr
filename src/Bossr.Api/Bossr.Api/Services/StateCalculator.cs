@@ -47,16 +47,14 @@ namespace Bossr.Api.Services
                 var spawn = raid.Spawns.First();
                 var totalAmount = GetAmountOfSpawnsByCreature(raids, spawn.CreatureId);
 
-                var allOccurances = GetAllOccurances(scrapes, spawn);
-                if (!allOccurances.Any())
+                var latestOccurances = GetAllOccurances(scrapes, spawn)
+                    .Take(totalAmount);
+
+                if (!latestOccurances.Any())
                     continue;
                 
-                var latestOccurances = allOccurances
-                    .Take(totalAmount)
-                    .OrderBy(x => x.Date);
-                
-                var expectedMin = GetMin(latestOccurances.First().Date).Plus(raid.FrequencyMin);
-                var expectedMax = GetMax(latestOccurances.Last().Date).Plus(raid.FrequencyMax);
+                var expectedMin = GetMin(latestOccurances.Min(x => x.Date)).Plus(raid.FrequencyMin);
+                var expectedMax = GetMax(latestOccurances.Max(x => x.Date)).Plus(raid.FrequencyMax);
 
                 var missedRaids = 0;
                 while (Instant.FromDateTimeUtc(DateTime.UtcNow) > expectedMax)
