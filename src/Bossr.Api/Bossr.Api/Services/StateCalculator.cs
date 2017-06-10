@@ -50,10 +50,10 @@ namespace Bossr.Api.Services
                 var allOccurances = GetAllOccurances(scrapes, spawn);
                 if (!allOccurances.Any())
                     continue;
-
+                
                 var latestOccurances = allOccurances
                     .Take(totalAmount)
-                    .OrderByDescending(x => x.Date);
+                    .OrderBy(x => x.Date);
                 
                 var expectedMin = GetMin(latestOccurances.First().Date).Plus(raid.FrequencyMin);
                 var expectedMax = GetMax(latestOccurances.Last().Date).Plus(raid.FrequencyMax);
