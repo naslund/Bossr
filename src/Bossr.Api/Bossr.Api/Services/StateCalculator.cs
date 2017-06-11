@@ -32,7 +32,8 @@ namespace Bossr.Api.Services
 
         public async Task<IEnumerable<StateDto>> GetStatesByWorldId(int worldId)
         {
-            var raids = (await raidRepository.ReadAllAsync()).ToList();
+            var raids = await raidRepository.ReadAllAsync();
+            var spawns = raids.SelectMany(x => x.Spawns);
 
             var statistics = (await statisticRepository.ReadAllByWorldIdAsync(worldId)).ToList(); // Todo: Only get latest X stats (X = amount of spawnpoints)
             var scrapes = (await scrapeRepository.ReadAllAsync()).OrderByDescending(x => x.Date).ToList();
@@ -44,7 +45,7 @@ namespace Bossr.Api.Services
             foreach (var raid in raids)
             {
                 var spawn = raid.Spawns.First();
-                var totalAmount = GetAmountOfSpawnsByCreature(raids, spawn.CreatureId);
+                var totalAmount = GetTotalAmountOfSpawnsByCreature(spawns, spawn.CreatureId);
 
                 var latestOccurances = GetAllOccurances(scrapes, spawn)
                     .Take(totalAmount)
@@ -79,11 +80,11 @@ namespace Bossr.Api.Services
             return states;
         }
 
-        private int GetAmountOfSpawnsByCreature(IEnumerable<IRaid> raids, int creatureId)
+        private int GetTotalAmountOfSpawnsByCreature(IEnumerable<ISpawn> spawns, int creatureId)
         {
-            return raids
-                .Where(x => x.Spawns.Any(y => y.CreatureId == creatureId))
-                .Sum(x => x.Spawns.Sum(y => y.Amount));
+            return spawns
+                .Where(x => x.CreatureId == creatureId)
+                .Sum(x => x.Amount);
         }
 
         private IEnumerable<IScrape> GetAllOccurances(IEnumerable<IScrape> scrapes, ISpawn spawn)
