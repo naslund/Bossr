@@ -2,7 +2,7 @@
   <div class="worlds">
     <ul>
       <li v-for="world in worlds">
-        <router-link :to="{ name: 'world', params: { id: world.id } }">
+        <router-link :to="{ name: 'states', params: { worldid: world.id } }">
           {{world.name}}
         </router-link>
       </li>
@@ -37,15 +37,6 @@ export default {
 </script>
 
 <style>
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
 li {
   display: inline-block;
   margin: 0 10px;

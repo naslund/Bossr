@@ -6,11 +6,9 @@
         <img src="./assets/bossr-text-icon.png" alt="Bossr Logo">
       </div>
     </section>
-    <section class="section">
-      <div class="container">
-        <router-view></router-view>
-      </div>
-    </section>
+    <main>
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
