@@ -32,8 +32,8 @@ namespace Bossr.Api.Services
 
         public async Task<IEnumerable<StateDto>> GetStatesByWorldId(int worldId)
         {
-            var raids = await raidRepository.ReadAllAsync();
-            var spawns = raids.SelectMany(x => x.Spawns);
+            var raids = (await raidRepository.ReadAllAsync()).ToList();
+            var spawns = raids.SelectMany(x => x.Spawns).ToList();
 
             var statistics = (await statisticRepository.ReadAllByWorldIdAsync(worldId)).ToList(); // Todo: Only get latest X stats (X = amount of spawnpoints)
             var scrapes = (await scrapeRepository.ReadAllAsync()).OrderByDescending(x => x.Date).ToList();
