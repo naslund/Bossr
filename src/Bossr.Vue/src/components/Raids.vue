@@ -26,7 +26,7 @@ export default {
     }
   },
   created () {
-    this.$http.get('http://localhost:5000/api/raids').then(response => {
+    this.$http.get(process.env.API_URL + 'api/raids').then(response => {
       this.raids = response.body
     })
   }

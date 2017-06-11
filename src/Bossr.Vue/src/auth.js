@@ -2,7 +2,6 @@ import Vue from 'vue'
 import router from './router'
 import store from './store'
 
-const LOGIN_URL = 'http://localhost:5000/token'
 const REFRESH_TOKEN_URL = '/auth'
 const AUTH_HEADERS = {
   headers: {
@@ -33,7 +32,7 @@ export default {
   login (creds, redirect) {
     const params = 'username=' + creds.username + '&password=' + creds.password
 
-    return Vue.http.post(LOGIN_URL, params, AUTH_HEADERS)
+    return Vue.http.post(process.env.API_URL + 'token', params, AUTH_HEADERS)
       .then((response) => {
         this._storeToken(response)
 
