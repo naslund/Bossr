@@ -50,7 +50,6 @@ export default {
   },
   created () {
     this.$http.get(process.env.API_URL + 'api/states/' + this.$route.params.worldid).then(response => {
-      console.log(response.body)
       this.states = response.body.sort(this.compareByCreatureName)
     })
   },
