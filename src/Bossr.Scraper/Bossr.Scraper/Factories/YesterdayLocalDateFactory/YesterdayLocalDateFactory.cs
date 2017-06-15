@@ -9,7 +9,7 @@ namespace Bossr.Scraper.Factories
     {
         public LocalDate GetYesterdaysDate()
         {
-            return LocalDate.FromDateTime(DateTime.Today).Minus(Period.FromDays(1));
+            return LocalDate.FromDateTime(DateTime.UtcNow.Date).Minus(Period.FromDays(1));
         }
     }
 }
