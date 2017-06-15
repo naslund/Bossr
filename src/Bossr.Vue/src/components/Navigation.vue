@@ -19,7 +19,7 @@
       <!-- Add the modifier "is-active" to display it on mobile -->
       <div v-bind:class="{ 'is-active': isHamburgerMenuActive }" class="nav-right nav-menu">
         <router-link to="/worlds" v-on:click.native="toggleHamburgerMenu" class="nav-item" active-class="is-active">Worlds</router-link>
-        <router-link to="/raids" v-on:click.native="toggleHamburgerMenu" class="nav-item" active-class="is-active">Raids</router-link>
+        <!--<router-link to="/raids" v-on:click.native="toggleHamburgerMenu" class="nav-item" active-class="is-active">Raids</router-link>-->
         <div class="nav-item">
           <a class="button is-danger" v-if="isLoggedIn" v-on:click="logout">Logout</a>
         </div>
