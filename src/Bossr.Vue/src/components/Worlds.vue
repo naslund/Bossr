@@ -1,13 +1,17 @@
 <template>
-  <div class="worlds">
-    <ul>
-      <li v-for="world in worlds">
-        <router-link :to="{ name: 'states', params: { worldid: world.id } }">
-          {{world.name}}
-        </router-link>
-      </li>
-    </ul>
-  </div>
+  <section class="section">
+    <div class="container">
+      <div class="worlds">
+        <ul>
+          <li v-for="world in worlds">
+            <router-link :to="{ name: 'states', params: { worldid: world.id } }">
+              {{world.name}}
+            </router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>

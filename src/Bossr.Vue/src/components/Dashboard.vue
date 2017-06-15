@@ -1,7 +1,9 @@
 <template>
-  <div class="dashboard">
-    <p>Dashboard</p>
-  </div>
+  <section class="section">
+    <div class="container">
+      
+    </div>
+  </section>
 </template>
 
 <script>
