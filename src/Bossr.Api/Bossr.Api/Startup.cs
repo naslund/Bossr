@@ -20,22 +20,20 @@ namespace Bossr.Api
 {
     public class Startup
     {
+        private readonly IConfigurationRoot configuration;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddUserSecrets<Startup>()
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(Configuration["ConnectionString"]));
+            services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(configuration["ConnectionStrings:Default"]));
 
             services.AddTransient<ITokenResponseFactory, TokenResponseFactory>();
             services.AddTransient<IJwtTokenFactory, JwtTokenFactory>();
@@ -90,9 +88,9 @@ namespace Bossr.Api
             SqlMapper.AddTypeHandler(new LocalDateTypeHandler());
             SqlMapper.AddTypeHandler(new DurationTypeHandler());
 
-            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SecretKey"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JwtToken:SecretKey"]));
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddConsole(configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
