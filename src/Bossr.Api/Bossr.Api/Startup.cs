@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace Bossr.Api
@@ -97,7 +98,9 @@ namespace Bossr.Api
 
             app.UseMiddleware<TokenProviderMiddleware>(Options.Create(new TokenProviderOptions
             {
-                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256),
+                Path = configuration["JwtToken:AccessTokenPath"],
+                Expiration = TimeSpan.FromMinutes(int.Parse(configuration["JwtToken:ExpirationTimeMinutes"]))
             }));
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
