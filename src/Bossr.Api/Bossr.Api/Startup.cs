@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using Bossr.Api.Attributes;
+﻿using Bossr.Api.Attributes;
 using Bossr.Api.Converters;
 using Bossr.Api.Factories;
+using Bossr.Api.Mappers;
 using Bossr.Api.Middleware;
 using Bossr.Api.Repositories;
 using Bossr.Api.Services;
-using Bossr.Lib.Models.Entities;
 using Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,6 +50,10 @@ namespace Bossr.Api
             services.AddTransient<ISpawnRepository, SpawnRepository>();
             services.AddTransient<IStatisticRepository, StatisticRepository>();
 
+            services.AddTransient<IRaidMapper, RaidMapper>();
+            services.AddTransient<IScrapeMapper, ScrapeMapper>();
+            services.AddTransient<IUserMapper, UserMapper>();
+
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IHashGenerator, HashGenerator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
@@ -64,28 +67,6 @@ namespace Bossr.Api
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            Mapper.Initialize(x =>
-            {
-                x.CreateMap<User, UserDto>();
-
-                x.CreateMap<Scrape, ScrapeDto>()
-                    .ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToString(y.Date)));
-
-                x.CreateMap<ScrapeDto, Scrape>()
-                    .ForMember(dest => dest.Date, opts => opts.MapFrom(y => LocalDateStringConverter.ToLocalDate(y.Date)));
-
-                x.CreateMap<Raid, RaidDto>()
-                    .ForMember(dest => dest.FrequencyHoursMin, opts => opts.MapFrom(y => DurationHoursConverter.ToHours(y.FrequencyMin)))
-                    .ForMember(dest => dest.FrequencyHoursMax, opts => opts.MapFrom(y => DurationHoursConverter.ToHours(y.FrequencyMax)));
-
-                x.CreateMap<RaidDto, Raid>()
-                    .ForMember(dest => dest.FrequencyMin, opts => opts.MapFrom(y => DurationHoursConverter.ToDuration(y.FrequencyHoursMin)))
-                    .ForMember(dest => dest.FrequencyMax, opts => opts.MapFrom(y => DurationHoursConverter.ToDuration(y.FrequencyHoursMax)));
-
-                x.AllowNullCollections = false;
-                x.AllowNullDestinationValues = false;
-            });
-
             SqlMapper.AddTypeHandler(new LocalDateTypeHandler());
             SqlMapper.AddTypeHandler(new DurationTypeHandler());
 

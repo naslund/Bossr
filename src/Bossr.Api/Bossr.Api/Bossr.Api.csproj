@@ -6,8 +6,6 @@
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Dapper" Version="1.50.2" />
     <PackageReference Include="Dapper.Contrib" Version="1.50.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
@@ -27,5 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Bossr.Lib\Bossr.Lib\Bossr.Lib.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+	<None Include="appsettings.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
 </Project>

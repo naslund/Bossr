@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using Bossr.Api.Mappers;
 using Bossr.Api.Repositories;
 using Bossr.Lib.Models.Entities;
 using NodaTime;
@@ -19,21 +19,37 @@ namespace Bossr.Api.Services
         private readonly IStatisticRepository statisticRepository;
         private readonly IScrapeRepository scrapeRepository;
         private readonly IRaidRepository raidRepository;
+        private readonly ISpawnRepository spawnRepository;
+        private readonly ICreatureRepository creatureRepository;
+        private readonly IPositionRepository positionRepository;
+        private readonly IRaidMapper raidMapper;
 
         public StateCalculator(
             IStatisticRepository statisticRepository,
             IScrapeRepository scrapeRepository,
-            IRaidRepository raidRepository)
+            IRaidRepository raidRepository,
+            ISpawnRepository spawnRepository,
+            ICreatureRepository creatureRepository,
+            IPositionRepository positionRepository,
+            IRaidMapper raidMapper)
         {
             this.statisticRepository = statisticRepository;
             this.scrapeRepository = scrapeRepository;
             this.raidRepository = raidRepository;
+            this.spawnRepository = spawnRepository;
+            this.creatureRepository = creatureRepository;
+            this.positionRepository = positionRepository;
+            this.raidMapper = raidMapper;
         }
 
         public async Task<IEnumerable<StateDto>> GetStatesByWorldId(int worldId)
         {
-            var raids = (await raidRepository.ReadAllAsync()).ToList();
-            var spawns = raids.SelectMany(x => x.Spawns).ToList();
+            var raids = await raidRepository.ReadAllAsync();
+            var spawns = await spawnRepository.ReadAllAsync();
+            var creatures = await creatureRepository.ReadAllAsync();
+            var positions = await positionRepository.ReadAllAsync();
+
+            raidMapper.MapRelations(raids, spawns, creatures, positions);
 
             var statistics = (await statisticRepository.ReadAllByWorldIdAsync(worldId)).ToList(); // Todo: Only get latest X stats (X = amount of spawnpoints)
             var scrapes = (await scrapeRepository.ReadAllAsync()).OrderByDescending(x => x.Date).ToList();
@@ -68,7 +84,7 @@ namespace Bossr.Api.Services
 
                 var state = new StateDto
                 {
-                    Raid = Mapper.Map<RaidDto>(raid),
+                    Raid = raidMapper.MapToRaidDto(raid),
                     ExpectedMin = expectedMin.ToDateTimeUtc(),
                     ExpectedMax = expectedMax.ToDateTimeUtc(),
                     MissedRaids = missedRaids

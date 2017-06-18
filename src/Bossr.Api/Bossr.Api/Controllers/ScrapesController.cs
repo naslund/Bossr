@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using Bossr.Api.Mappers;
 using Bossr.Api.Repositories;
 using Bossr.Lib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
@@ -14,10 +14,12 @@ namespace Bossr.Api.Controllers
     public class ScrapesController : Controller
     {
         private readonly IScrapeRepository scrapeRepository;
+        private readonly IScrapeMapper scrapeMapper;
 
-        public ScrapesController(IScrapeRepository scrapeRepository)
+        public ScrapesController(IScrapeRepository scrapeRepository, IScrapeMapper scrapeMapper)
         {
             this.scrapeRepository = scrapeRepository;
+            this.scrapeMapper = scrapeMapper;
         }
 
         [HttpDelete("{id}")]
@@ -31,7 +33,7 @@ namespace Bossr.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var scrapes = await scrapeRepository.ReadAllAsync();
-            var scrapesDto = Mapper.Map<List<ScrapeDto>>(scrapes);
+            var scrapesDto = scrapes.Select(x => scrapeMapper.MapToScrapeDto(x));
             return Ok(scrapesDto);
         }
 
@@ -39,7 +41,7 @@ namespace Bossr.Api.Controllers
         public async Task<IActionResult> GetLatest()
         {
             var scrape = await scrapeRepository.ReadLatest();
-            var scrapeDto = Mapper.Map<ScrapeDto>(scrape);
+            var scrapeDto = scrapeMapper.MapToScrapeDto(scrape);
             return Ok(scrapeDto);
         }
 
@@ -50,7 +52,7 @@ namespace Bossr.Api.Controllers
             if (scrape == null)
                 return NotFound();
 
-            var scrapeDto = Mapper.Map<ScrapeDto>(scrape);
+            var scrapeDto = scrapeMapper.MapToScrapeDto(scrape);
             return Ok(scrapeDto);
         }
 
@@ -69,9 +71,9 @@ namespace Bossr.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]ScrapeDto request)
         {
-            var scrape = Mapper.Map<Scrape>(request);
+            var scrape = scrapeMapper.MapToScrape(request);
             await scrapeRepository.CreateAsync(scrape);
-            var scrapeDto = Mapper.Map<ScrapeDto>(scrape);
+            var scrapeDto = scrapeMapper.MapToScrapeDto(scrape);
             return Created($"/api/scrapes/{scrape.Id}", scrapeDto);
         }
 
@@ -79,7 +81,7 @@ namespace Bossr.Api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]ScrapeDto request)
         {
             request.Id = id;
-            var scrape = Mapper.Map<Scrape>(request);
+            var scrape = scrapeMapper.MapToScrape(request);
             await scrapeRepository.UpdateAsync(scrape);
             return Ok();
         }

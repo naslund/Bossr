@@ -3,15 +3,11 @@ using Bossr.Api.Repositories.Interfaces;
 using Bossr.Lib.Models.Entities;
 using Dapper;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
-    public interface IRaidRepository : ICrudable<IRaid>
-    {
-        Task<IEnumerable<IRaid>> ReadAllByCreatureId(int creatureId);
-    }
+    public interface IRaidRepository : ICrudable<IRaid> { }
 
     public class RaidRepository : IRaidRepository
     {
@@ -38,47 +34,11 @@ namespace Bossr.Api.Repositories
             }
         }
 
-        public async Task<IEnumerable<IRaid>> ReadAllByCreatureId(int creatureId)
-        {
-            var sql = @"SELECT DISTINCT Raids.Id, Raids.Name, Raids.FrequencyMin, Raids.FrequencyMax FROM Raids
-                        JOIN Spawns ON Spawns.RaidId = Raids.Id
-                        WHERE CreatureId = @CreatureId";
-
-            using (var conn = dbConnectionFactory.CreateConnection())
-            {
-                return await conn.QueryAsync<Raid>(sql, new { CreatureId = creatureId });
-            }
-        }
-
         public async Task<IEnumerable<IRaid>> ReadAllAsync()
         {
-            var sql = @"SELECT * FROM Raids;
-                        SELECT * FROM Spawns;
-                        SELECT * FROM Creatures;
-                        SELECT * FROM Positions";
-
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                using (var multi = await conn.QueryMultipleAsync(sql))
-                {
-                    var raids = multi.Read<Raid>();
-                    var spawns = multi.Read<Spawn>();
-                    var creatures = multi.Read<Creature>();
-                    var positions = multi.Read<Position>();
-
-                    foreach (var spawn in spawns)
-                    {
-                        spawn.Creature = creatures.Single(x => x.Id == spawn.CreatureId);
-                        spawn.Positions = positions.Where(x => x.SpawnId == spawn.Id);
-                    }
-
-                    foreach (var raid in raids)
-                    {
-                        raid.Spawns = spawns.Where(x => x.RaidId == raid.Id);
-                    }
-
-                    return raids;
-                }
+                return await conn.QueryAsync<Raid>("SELECT * FROM Raids");
             }
         }
 
