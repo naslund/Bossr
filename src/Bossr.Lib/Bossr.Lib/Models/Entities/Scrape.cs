@@ -23,5 +23,7 @@ namespace Bossr.Lib.Models.Entities
     {
         public int Id { get; set; }
         public string Date { get; set; }
+
+        public IEnumerable<IStatistic> Statistics { get; set; }
     }
 }

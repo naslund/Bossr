@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using Bossr.Api.Mappers;
 using Bossr.Api.Repositories;
 using Bossr.Lib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
@@ -14,10 +14,12 @@ namespace Bossr.Api.Controllers
     public class RaidsController : Controller
     {
         private readonly IRaidRepository repository;
+        private readonly IRaidMapper raidMapper;
 
-        public RaidsController(IRaidRepository repository)
+        public RaidsController(IRaidRepository repository, IRaidMapper raidMapper)
         {
             this.repository = repository;
+            this.raidMapper = raidMapper;
         }
 
         [HttpDelete("{id}")]
@@ -31,7 +33,7 @@ namespace Bossr.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var raids = await repository.ReadAllAsync();
-            var raidsDto = Mapper.Map<IEnumerable<RaidDto>>(raids);
+            var raidsDto = raids.Select(x => raidMapper.MapToRaidDto(x));
             return Ok(raidsDto);
         }
 
@@ -42,7 +44,7 @@ namespace Bossr.Api.Controllers
             if (raid == null)
                 return NotFound();
 
-            var raidDto = Mapper.Map<RaidDto>(raid);
+            var raidDto = raidMapper.MapToRaidDto(raid);
             return Ok(raidDto);
         }
 
@@ -53,11 +55,11 @@ namespace Bossr.Api.Controllers
             if (raid == null)
                 return NotFound();
 
-            var raidDto = Mapper.Map<RaidDto>(raid);
+            var raidDto = raidMapper.MapToRaidDto(raid);
 
             patch.ApplyTo(raidDto);
 
-            var patchedRaid = Mapper.Map<Raid>(raidDto);
+            var patchedRaid = raidMapper.MapToRaid(raidDto);
 
             await repository.UpdateAsync(patchedRaid);
             return Ok();
@@ -66,12 +68,12 @@ namespace Bossr.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]RaidDto request)
         {
-            var raid = Mapper.Map<Raid>(request);
+            var raid = raidMapper.MapToRaid(request);
 
             await repository.CreateAsync(raid);
 
             var response = await repository.ReadByIdAsync(raid.Id);
-            var responseDto = Mapper.Map<RaidDto>(response);
+            var responseDto = raidMapper.MapToRaidDto(response);
 
             return Created($"/api/raids/{responseDto.Id}", responseDto);
         }
@@ -81,7 +83,7 @@ namespace Bossr.Api.Controllers
         {
             request.Id = id;
 
-            var raid = Mapper.Map<Raid>(request);
+            var raid = raidMapper.MapToRaid(request);
 
             await repository.UpdateAsync(raid);
             return Ok();

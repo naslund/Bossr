@@ -1,5 +1,5 @@
-using AutoMapper;
 using Bossr.Api.Attributes;
+using Bossr.Api.Mappers;
 using Bossr.Api.Models.Requests;
 using Bossr.Api.Repositories;
 using Bossr.Api.Services;
@@ -17,11 +17,13 @@ namespace Bossr.Api.Controllers
     {
         private readonly IUserManager userManager;
         private readonly IUserRepository userRepository;
+        private readonly IUserMapper userMapper;
 
-        public UsersController(IUserRepository userRepository, IUserManager userManager)
+        public UsersController(IUserRepository userRepository, IUserManager userManager, IUserMapper userMapper)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
+            this.userMapper = userMapper;
         }
 
         [HttpDelete("{id}")]
@@ -35,7 +37,7 @@ namespace Bossr.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var users = await userRepository.ReadAllAsync();
-            var usersDto = users.Select(x => Mapper.Map<UserDto>(x));
+            var usersDto = users.Select(x => userMapper.MapToUserDto(x));
             return Ok(usersDto);
         }
 
@@ -46,7 +48,7 @@ namespace Bossr.Api.Controllers
             if (user == null)
                 return NotFound();
 
-            var userDto = Mapper.Map<UserDto>(user);
+            var userDto = userMapper.MapToUserDto(user);
             return Ok(userDto);
         }
 
@@ -57,7 +59,7 @@ namespace Bossr.Api.Controllers
             await userManager.CreateUserAsync(request.Username, request.Password);
 
             var user = await userRepository.ReadByUsername(request.Username);
-            var userDto = Mapper.Map<UserDto>(user);
+            var userDto = userMapper.MapToUserDto(user);
             return Created($"/api/users/{userDto.Id}", userDto);
         }
 
