@@ -2,8 +2,13 @@
   <div>
     <section class="section">
       <div class="container">
-        <h1 class="title">Possible</h1>
-        <h2 class="subtitle">Raids that can occur right now</h2>
+        <a v-for="tag in tags" class="button" v-on:click="toggleActive(tag)" v-bind:class="{ 'is-success': tag.isActive }">{{ tag.name }}</a>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <h2 class="title">Possible</h2>
+        <h3 class="subtitle">Raids that can occur right now</h3>
         <div class="columns is-multiline">
           <possible-state-box 
             class="column is-one-third" 
@@ -17,8 +22,8 @@
     </section>
     <section class="section">
       <div class="container">
-        <h1 class="title">Upcoming</h1>
-        <h2 class="subtitle">Raids that soon can occur again</h2>
+        <h2 class="title">Upcoming</h2>
+        <h3 class="subtitle">Raids that soon can occur again</h3>
         <div class="columns is-multiline">
           <upcoming-state-box
             class="column is-one-third" 
@@ -45,12 +50,20 @@ export default {
   },
   data () {
     return {
-      states: []
+      states: [],
+      tags: []
     }
   },
   created () {
     this.$http.get(process.env.API_URL + 'api/states/' + this.$route.params.worldid).then(response => {
       this.states = response.body.sort(this.compareByCreatureName)
+    })
+
+    this.$http.get(process.env.API_URL + 'api/tags').then(response => {
+      response.body.forEach(function (tag) {
+        tag.isActive = false
+      })
+      this.tags = response.body
     })
   },
   methods: {
@@ -65,6 +78,15 @@ export default {
     },
     isSpawnable (min) {
       return moment().diff(min) > 0
+    },
+    toggleActive (tag) {
+      tag.isActive = !tag.isActive
+      this.filterStates()
+    },
+    filterStates () {
+      // Get state tags
+      console.log(this.states)
+      console.log(this.tags)
     }
   }
 }
