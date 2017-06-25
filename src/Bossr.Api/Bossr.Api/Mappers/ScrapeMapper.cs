@@ -1,10 +1,13 @@
 ﻿using Bossr.Api.Converters;
 using Bossr.Lib.Models.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bossr.Api.Mappers
 {
     public interface IScrapeMapper
     {
+        void MapRelations(IEnumerable<IScrape> scrapes, IEnumerable<IStatistic> statistics);
         ScrapeDto MapToScrapeDto(IScrape scrape);
         IScrape MapToScrape(ScrapeDto scrapeDto);
     }
@@ -29,6 +32,14 @@ namespace Bossr.Api.Mappers
                 Date = LocalDateStringConverter.ToLocalDate(scrapeDto.Date),
                 Statistics = scrapeDto.Statistics
             };
+        }
+
+        public void MapRelations(IEnumerable<IScrape> scrapes, IEnumerable<IStatistic> statistics)
+        {
+            foreach (var scrape in scrapes)
+            {
+                scrape.Statistics = statistics.Where(x => x.ScrapeId == scrape.Id);
+            }
         }
     }
 }
