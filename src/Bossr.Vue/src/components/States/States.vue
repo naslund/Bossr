@@ -2,7 +2,8 @@
   <div>
     <section class="section">
       <div class="container">
-        <a v-for="tag in tags" class="button" v-on:click="toggleActive(tag)" v-bind:class="{ 'is-success': tag.isActive }">{{ tag.name }}</a>
+        <h1 class="title">{{ world.name }}</h1>
+        <a v-for="tag in tags" class="button is-small" v-on:click="toggleActive(tag)" v-bind:class="{ 'is-success': tag.isActive }">{{ tag.name }}</a>
       </div>
     </section>
     <section class="section">
@@ -51,10 +52,15 @@ export default {
   data () {
     return {
       states: [],
-      tags: []
+      tags: [],
+      world: {}
     }
   },
   created () {
+    this.$http.get(process.env.API_URL + 'api/worlds/' + this.$route.params.worldid).then(response => {
+      this.world = response.body
+    })
+
     this.$http.get(process.env.API_URL + 'api/states/' + this.$route.params.worldid).then(response => {
       this.states = response.body.sort(this.compareByCreatureName)
     })
@@ -85,8 +91,8 @@ export default {
     },
     filterStates () {
       // Get state tags
-      console.log(this.states)
-      console.log(this.tags)
+      // console.log(this.states)
+      // console.log(this.tags)
     }
   }
 }
