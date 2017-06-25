@@ -33,7 +33,6 @@ namespace Bossr.Api.Mappers
             return new RaidDto
             {
                 Id = raid.Id,
-                Name = raid.Name,
                 FrequencyHoursMin = DurationHoursConverter.ToHours(raid.FrequencyMin),
                 FrequencyHoursMax = DurationHoursConverter.ToHours(raid.FrequencyMax),
                 Spawns = raid.Spawns,
@@ -46,7 +45,6 @@ namespace Bossr.Api.Mappers
             return new Raid
             {
                 Id = raidDto.Id,
-                Name = raidDto.Name,
                 FrequencyMin = DurationHoursConverter.ToDuration(raidDto.FrequencyHoursMin),
                 FrequencyMax = DurationHoursConverter.ToDuration(raidDto.FrequencyHoursMax),
                 Spawns = raidDto.Spawns,

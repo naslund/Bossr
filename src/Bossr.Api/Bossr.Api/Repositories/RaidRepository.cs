@@ -22,7 +22,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                raid.Id = await conn.QuerySingleAsync<int>("INSERT INTO Raids (Name, FrequencyMin, FrequencyMax) VALUES (@Name, @FrequencyMin, @FrequencyMax) SELECT CAST(SCOPE_IDENTITY() as int)", raid);
+                raid.Id = await conn.QuerySingleAsync<int>("INSERT INTO Raids (FrequencyMin, FrequencyMax) VALUES (@FrequencyMin, @FrequencyMax) SELECT CAST(SCOPE_IDENTITY() as int)", raid);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Bossr.Api.Repositories
         {
             using (var conn = dbConnectionFactory.CreateConnection())
             {
-                await conn.ExecuteAsync("UPDATE Raids SET Name = @Name, FrequencyMin = @FrequencyMin, FrequencyMax = @FrequencyMax WHERE Id = @Id", raid);
+                await conn.ExecuteAsync("UPDATE Raids SET FrequencyMin = @FrequencyMin, FrequencyMax = @FrequencyMax WHERE Id = @Id", raid);
             }
         }
     }

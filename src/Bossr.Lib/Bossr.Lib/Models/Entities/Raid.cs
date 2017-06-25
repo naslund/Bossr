@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Bossr.Lib.Models.Entities
 {
-    public interface IRaid : IEntity, INameable
+    public interface IRaid : IEntity
     {
         Duration FrequencyMin { get; set; }
         Duration FrequencyMax { get; set; }
@@ -16,7 +16,6 @@ namespace Bossr.Lib.Models.Entities
     public class Raid : IRaid
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public Duration FrequencyMin { get; set; }
         public Duration FrequencyMax { get; set; }
 
@@ -27,7 +26,6 @@ namespace Bossr.Lib.Models.Entities
     public class RaidDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public int FrequencyHoursMin { get; set; }
         public int FrequencyHoursMax { get; set; }
 

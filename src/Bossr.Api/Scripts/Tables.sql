@@ -50,7 +50,6 @@ CREATE TABLE [dbo].[Statistics] (
 GO
 CREATE TABLE [dbo].[Raids] (
     [Id]           INT           IDENTITY (1, 1) NOT NULL,
-    [Name]         NVARCHAR (30) NULL,
     [FrequencyMin] INT           NOT NULL,
     [FrequencyMax] INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
