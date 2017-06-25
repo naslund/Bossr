@@ -23,6 +23,7 @@ namespace Bossr.Api.Services
         private readonly ICreatureRepository creatureRepository;
         private readonly IPositionRepository positionRepository;
         private readonly IRaidMapper raidMapper;
+        private readonly IScrapeMapper scrapeMapper;
 
         public StateCalculator(
             IStatisticRepository statisticRepository,
@@ -31,7 +32,8 @@ namespace Bossr.Api.Services
             ISpawnRepository spawnRepository,
             ICreatureRepository creatureRepository,
             IPositionRepository positionRepository,
-            IRaidMapper raidMapper)
+            IRaidMapper raidMapper,
+            IScrapeMapper scrapeMapper)
         {
             this.statisticRepository = statisticRepository;
             this.scrapeRepository = scrapeRepository;
@@ -40,6 +42,7 @@ namespace Bossr.Api.Services
             this.creatureRepository = creatureRepository;
             this.positionRepository = positionRepository;
             this.raidMapper = raidMapper;
+            this.scrapeMapper = scrapeMapper;
         }
 
         public async Task<IEnumerable<StateDto>> GetStatesByWorldId(int worldId)
@@ -51,12 +54,16 @@ namespace Bossr.Api.Services
 
             raidMapper.MapRelations(raids, spawns, creatures, positions);
 
-            var statistics = (await statisticRepository.ReadAllByWorldIdAsync(worldId)).ToList(); // Todo: Only get latest X stats (X = amount of spawnpoints)
-            var scrapes = (await scrapeRepository.ReadAllAsync()).OrderByDescending(x => x.Date).ToList();
+            var statistics = (await statisticRepository.ReadAllByWorldIdAsync(worldId)) // Todo: Only get latest X stats (X = amount of spawnpoints)
+                .ToList();
 
-            foreach (var scrape in scrapes) // Todo: Get combined from repo
-                scrape.Statistics = statistics.Where(x => x.ScrapeId == scrape.Id);
+            var scrapes = (await scrapeRepository.ReadAllAsync())
+                .OrderByDescending(x => x.Date)
+                .ToList();
 
+            scrapeMapper.MapRelations(scrapes, statistics);
+
+            var currentTimeUtc = DateTime.UtcNow;
             var states = new List<StateDto>();
             foreach (var raid in raids)
             {
@@ -69,12 +76,12 @@ namespace Bossr.Api.Services
 
                 if (!latestOccurances.Any())
                     continue;
-                
+
                 var expectedMin = GetMin(latestOccurances.Min(x => x.Date)).Plus(raid.FrequencyMin);
                 var expectedMax = GetMax(latestOccurances.Max(x => x.Date)).Plus(raid.FrequencyMax);
 
                 var missedRaids = 0;
-                var currentInstant = Instant.FromDateTimeUtc(DateTime.UtcNow);
+                var currentInstant = Instant.FromDateTimeUtc(currentTimeUtc);
                 while (currentInstant > expectedMax)
                 {
                     expectedMin = expectedMin.Plus(raid.FrequencyMin);
@@ -82,18 +89,22 @@ namespace Bossr.Api.Services
                     missedRaids++;
                 }
 
-                var state = new StateDto
-                {
-                    Raid = raidMapper.MapToRaidDto(raid),
-                    ExpectedMin = expectedMin.ToDateTimeUtc(),
-                    ExpectedMax = expectedMax.ToDateTimeUtc(),
-                    MissedRaids = missedRaids
-                };
-
+                var state = CreateState(raid, expectedMin, expectedMax, missedRaids);
                 states.Add(state);
             }
 
             return states;
+        }
+
+        private StateDto CreateState(IRaid raid, Instant expectedMin, Instant expectedMax, int missedRaids)
+        {
+            return new StateDto
+            {
+                Raid = raidMapper.MapToRaidDto(raid),
+                ExpectedMin = expectedMin.ToDateTimeUtc(),
+                ExpectedMax = expectedMax.ToDateTimeUtc(),
+                MissedRaids = missedRaids
+            };
         }
 
         private int GetTotalAmountOfSpawnsByCreature(IEnumerable<ISpawn> spawns, int creatureId)
