@@ -2,6 +2,7 @@
 using Bossr.Lib.Models.Entities;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -23,19 +24,11 @@ namespace Bossr.Api.Services
 
         public async Task<IEnumerable<Claim>> FetchClaimsAsync(IUser user)
         {
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim("roles", "admin")
-            };
+            var claims = new List<Claim>();
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Username));
 
             var scopes = await scopeRepository.ReadAllByUserIdAsync(user.Id);
-
-            foreach (var scope in scopes)
-            {
-                var claim = new Claim("scope", scope.Name);
-                claims.Add(claim);
-            }
+            claims.AddRange(scopes.Select(x => new Claim("scope", x.Name)));
 
             return claims;
         }
