@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/states")]
-    [Authorize(Roles = "admin")]
     public class StatesController : Controller
     {
         private readonly IStateCalculator stateCalculator;
@@ -17,6 +16,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{worldId}")]
+        [Authorize(Policy = "ReadStates")]
         public async Task<IActionResult> Get(int worldId)
         {
             var states = await stateCalculator.GetStatesByWorldId(worldId);

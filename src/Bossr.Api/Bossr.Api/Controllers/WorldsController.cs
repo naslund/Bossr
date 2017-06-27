@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/worlds")]
-    [Authorize(Roles = "admin")]
     public class WorldsController : Controller
     {
         private readonly IWorldRepository worldRepository;
@@ -20,6 +19,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteWorlds")]
         public async Task<IActionResult> Delete(int id)
         {
             await worldRepository.DeleteByIdAsync(id);
@@ -27,6 +27,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadWorlds")]
         public async Task<IActionResult> Get()
         {
             var worlds = await worldRepository.ReadAllAsync();
@@ -34,6 +35,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadWorlds")]
         public async Task<IActionResult> Get(int id)
         {
             var world = await worldRepository.ReadByIdAsync(id);
@@ -44,6 +46,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateWorlds")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var world = await worldRepository.ReadByIdAsync(id);
@@ -57,6 +60,7 @@ namespace Bossr.Api.Controllers
 
         [HttpPost]
         [SqlExceptionFilter(2627, "World name not available.")]
+        [Authorize(Policy = "CreateWorlds")]
         public async Task<IActionResult> Post([FromBody]World request)
         {
             await worldRepository.CreateAsync(request);
@@ -65,6 +69,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateWorlds")]
         public async Task<IActionResult> Put(int id, [FromBody]World request)
         {
             request.Id = id;

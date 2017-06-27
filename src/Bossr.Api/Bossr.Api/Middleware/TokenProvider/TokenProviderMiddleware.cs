@@ -60,7 +60,7 @@ namespace Bossr.Api.Middleware
                 return;
             }
 
-            var token = tokenGenerator.GenerateToken(options, user);
+            var token = await tokenGenerator.GenerateTokenAsync(options, user);
             await responseWriter.WriteResponseAsync(context, HttpStatusCode.OK, token);
         }
     }

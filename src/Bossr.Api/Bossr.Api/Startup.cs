@@ -1,10 +1,8 @@
 ﻿using Bossr.Api.Attributes;
+using Bossr.Api.Configuration;
 using Bossr.Api.Converters;
 using Bossr.Api.Factories;
-using Bossr.Api.Mappers;
 using Bossr.Api.Middleware;
-using Bossr.Api.Repositories;
-using Bossr.Api.Services;
 using Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,35 +33,15 @@ namespace Bossr.Api
         {
             services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(configuration["ConnectionStrings:Default"]));
 
-            services.AddTransient<ITokenResponseFactory, TokenResponseFactory>();
-            services.AddTransient<IJwtTokenFactory, JwtTokenFactory>();
-            services.AddTransient<IClaimsFetcher, ClaimsFetcher>();
+            new DependencyConfiguration().ConfigureDependencies(services);
 
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IWorldRepository, WorldRepository>();
-            services.AddTransient<ICreatureRepository, CreatureRepository>();
-            services.AddTransient<IScrapeRepository, ScrapeRepository>();
-            services.AddTransient<IPositionRepository, PositionRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<ITagRepository, TagRepository>();
-            services.AddTransient<IRaidRepository, RaidRepository>();
-            services.AddTransient<ISpawnRepository, SpawnRepository>();
-            services.AddTransient<IStatisticRepository, StatisticRepository>();
+            services.AddMvc(x => { x.Filters.Add(new ModelStateValidationFilterAttribute()); })
+                .AddJsonOptions(x => x.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore);
 
-            services.AddTransient<IRaidMapper, RaidMapper>();
-            services.AddTransient<IScrapeMapper, ScrapeMapper>();
-            services.AddTransient<IUserMapper, UserMapper>();
-
-            services.AddTransient<IUserManager, UserManager>();
-            services.AddTransient<IHashGenerator, HashGenerator>();
-            services.AddTransient<IPasswordValidator, PasswordValidator>();
-            services.AddTransient<ISaltGenerator, SaltGenerator>();
-            services.AddTransient<ITokenGenerator, TokenGenerator>();
-            services.AddTransient<IResponseWriter, ResponseWriter>();
-            services.AddTransient<IStateCalculator, StateCalculator>();
-
-            services.AddMvc(x => { x.Filters.Add(new ModelStateValidationFilterAttribute()); });
+            new ScopesConfiguration().ConfigureScopes(services);
         }
+
+        
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
