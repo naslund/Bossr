@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/creatures")]
-    [Authorize(Roles = "admin")]
     public class CreaturesController : Controller
     {
         private readonly ICreatureRepository creatureRepository;
@@ -20,6 +19,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteCreatures")]
         public async Task<IActionResult> Delete(int id)
         {
             await creatureRepository.DeleteByIdAsync(id);
@@ -27,6 +27,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadCreatures")]
         public async Task<IActionResult> Get()
         {
             var creatures = await creatureRepository.ReadAllAsync();
@@ -34,6 +35,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadCreatures")]
         public async Task<IActionResult> Get(int id)
         {
             var creature = await creatureRepository.ReadByIdAsync(id);
@@ -44,6 +46,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateCreatures")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var creature = await creatureRepository.ReadByIdAsync(id);
@@ -57,6 +60,7 @@ namespace Bossr.Api.Controllers
 
         [HttpPost]
         [SqlExceptionFilter(2627, "Creature name not available.")]
+        [Authorize(Policy = "CreateCreatures")]
         public async Task<IActionResult> Post([FromBody]Creature request)
         {
             await creatureRepository.CreateAsync(request);
@@ -65,6 +69,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateCreatures")]
         public async Task<IActionResult> Put(int id, [FromBody]Creature request)
         {
             request.Id = id;

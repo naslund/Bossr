@@ -3,15 +3,11 @@ using Bossr.Lib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
     [Route("api/spawns")]
-    [Authorize(Roles = "admin")]
     public class SpawnsController : Controller
     {
         private readonly ISpawnRepository spawnRepository;
@@ -22,6 +18,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteSpawns")]
         public async Task<IActionResult> Delete(int id)
         {
             await spawnRepository.DeleteByIdAsync(id);
@@ -29,6 +26,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadSpawns")]
         public async Task<IActionResult> Get()
         {
             var spawns = await spawnRepository.ReadAllAsync();
@@ -36,6 +34,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadSpawns")]
         public async Task<IActionResult> Get(int id)
         {
             var spawn = await spawnRepository.ReadByIdAsync(id);
@@ -46,6 +45,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateSpawns")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var spawn = await spawnRepository.ReadByIdAsync(id);
@@ -58,6 +58,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CreateSpawns")]
         public async Task<IActionResult> Post([FromBody]Spawn request)
         {
             await spawnRepository.CreateAsync(request);
@@ -66,6 +67,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateSpawns")]
         public async Task<IActionResult> Put(int id, [FromBody]Spawn request)
         {
             request.Id = id;

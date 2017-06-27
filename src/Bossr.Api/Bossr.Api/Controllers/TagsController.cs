@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/tags")]
-    [Authorize(Roles = "admin")]
     public class TagsController : Controller
     {
         private readonly ITagRepository repository;
@@ -20,6 +19,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteTags")]
         public async Task<IActionResult> Delete(int id)
         {
             await repository.DeleteByIdAsync(id);
@@ -27,6 +27,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadTags")]
         public async Task<IActionResult> Get()
         {
             var tags = await repository.ReadAllAsync();
@@ -34,6 +35,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadTags")]
         public async Task<IActionResult> Get(int id)
         {
             var tag = await repository.ReadByIdAsync(id);
@@ -44,6 +46,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateTags")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var tag = await repository.ReadByIdAsync(id);
@@ -57,6 +60,7 @@ namespace Bossr.Api.Controllers
 
         [HttpPost]
         [SqlExceptionFilter(2627, "Name not available.")]
+        [Authorize(Policy = "CreateTags")]
         public async Task<IActionResult> Post([FromBody]Tag request)
         {
             await repository.CreateAsync(request);
@@ -65,6 +69,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateTags")]
         public async Task<IActionResult> Put(int id, [FromBody]Tag request)
         {
             request.Id = id;

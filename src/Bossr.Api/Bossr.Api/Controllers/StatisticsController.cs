@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/statistics")]
-    [Authorize(Roles = "admin")]
     public class StatisticsController : Controller
     {
         private readonly IStatisticRepository statisticRepository;
@@ -19,6 +18,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteStatistics")]
         public async Task<IActionResult> Delete(int id)
         {
             await statisticRepository.DeleteByIdAsync(id);
@@ -26,6 +26,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadStatistics")]
         public async Task<IActionResult> Get()
         {
             var statistics = await statisticRepository.ReadAllAsync();
@@ -33,6 +34,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadStatistics")]
         public async Task<IActionResult> Get(int id)
         {
             var statistic = await statisticRepository.ReadByIdAsync(id);
@@ -43,6 +45,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateStatistics")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var statistic = await statisticRepository.ReadByIdAsync(id);
@@ -55,6 +58,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CreateStatistics")]
         public async Task<IActionResult> Post([FromBody]Statistic request)
         {
             await statisticRepository.CreateAsync(request);
@@ -63,6 +67,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateStatistics")]
         public async Task<IActionResult> Put(int id, [FromBody]Statistic request)
         {
             request.Id = id;

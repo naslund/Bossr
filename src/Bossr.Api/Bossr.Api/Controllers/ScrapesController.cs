@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/scrapes")]
-    [Authorize(Roles = "admin")]
     public class ScrapesController : Controller
     {
         private readonly IScrapeRepository scrapeRepository;
@@ -23,6 +22,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteScrapes")]
         public async Task<IActionResult> Delete(int id)
         {
             await scrapeRepository.DeleteByIdAsync(id);
@@ -30,6 +30,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadScrapes")]
         public async Task<IActionResult> Get()
         {
             var scrapes = await scrapeRepository.ReadAllAsync();
@@ -38,6 +39,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("latest")]
+        [Authorize(Policy = "ReadScrapes")]
         public async Task<IActionResult> GetLatest()
         {
             var scrape = await scrapeRepository.ReadLatest();
@@ -46,6 +48,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadScrapes")]
         public async Task<IActionResult> Get(int id)
         {
             var scrape = await scrapeRepository.ReadByIdAsync(id);
@@ -57,6 +60,7 @@ namespace Bossr.Api.Controllers
         }
 
         //[HttpPatch("{id}")]
+        //[Authorize(Policy = "UpdateScrapes")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var scrape = await scrapeRepository.ReadByIdAsync(id);
@@ -69,6 +73,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CreateScrapes")]
         public async Task<IActionResult> Post([FromBody]ScrapeDto request)
         {
             var scrape = scrapeMapper.MapToScrape(request);
@@ -78,6 +83,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateScrapes")]
         public async Task<IActionResult> Put(int id, [FromBody]ScrapeDto request)
         {
             request.Id = id;

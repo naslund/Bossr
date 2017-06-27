@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/users")]
-    [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
         private readonly IUserManager userManager;
@@ -27,6 +26,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteUsers")]
         public async Task<IActionResult> Delete(int id)
         {
             await userRepository.DeleteByIdAsync(id);
@@ -34,6 +34,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadUsers")]
         public async Task<IActionResult> Get()
         {
             var users = await userRepository.ReadAllAsync();
@@ -42,6 +43,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadUsers")]
         public async Task<IActionResult> Get(int id)
         {
             var user = await userRepository.ReadByIdAsync(id);
@@ -54,6 +56,7 @@ namespace Bossr.Api.Controllers
 
         [HttpPost]
         [SqlExceptionFilter(2627, "Username not available.")]
+        [Authorize(Policy = "CreateUsers")]
         public async Task<IActionResult> Post([FromBody]UserPostRequest request)
         {
             await userManager.CreateUserAsync(request.Username, request.Password);
@@ -64,6 +67,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}/password")]
+        [Authorize(Policy = "UpdateUsers")]
         public async Task<IActionResult> PutPassword(int id, [FromBody]UserPutPasswordRequest request)
         {
             await userManager.UpdatePasswordAsync(id, request.Password);
