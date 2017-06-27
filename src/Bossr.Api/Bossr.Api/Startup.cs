@@ -49,6 +49,7 @@ namespace Bossr.Api
             services.AddTransient<IRaidRepository, RaidRepository>();
             services.AddTransient<ISpawnRepository, SpawnRepository>();
             services.AddTransient<IStatisticRepository, StatisticRepository>();
+            services.AddTransient<IScopeRepository, ScopeRepository>();
 
             services.AddTransient<IRaidMapper, RaidMapper>();
             services.AddTransient<IScrapeMapper, ScrapeMapper>();
@@ -62,7 +63,21 @@ namespace Bossr.Api
             services.AddTransient<IResponseWriter, ResponseWriter>();
             services.AddTransient<IStateCalculator, StateCalculator>();
 
-            services.AddMvc(x => { x.Filters.Add(new ModelStateValidationFilterAttribute()); });
+            services.AddMvc(x => { x.Filters.Add(new ModelStateValidationFilterAttribute()); })
+                .AddJsonOptions(x => x.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore);
+
+            ConfigureScopes(services);
+        }
+
+        private void ConfigureScopes(IServiceCollection services)
+        {
+            services.AddAuthorization(x =>
+            {
+                x.AddPolicy("CreateCategories", y => y.RequireClaim("scope", "categories.write"));
+                x.AddPolicy("ReadCategories", y => y.RequireClaim("scope", "categories.read"));
+                x.AddPolicy("UpdateCategories", y => y.RequireClaim("scope", "categories.write"));
+                x.AddPolicy("DeleteCategories", y => y.RequireClaim("scope", "categories.write"));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

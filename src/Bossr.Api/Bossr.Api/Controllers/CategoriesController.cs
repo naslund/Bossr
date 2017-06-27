@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/categories")]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly ICategoryRepository repository;
@@ -20,6 +20,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteCategories")]
         public async Task<IActionResult> Delete(int id)
         {
             await repository.DeleteByIdAsync(id);
@@ -27,6 +28,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadCategories")]
         public async Task<IActionResult> Get()
         {
             var categories = await repository.ReadAllAsync();
@@ -34,6 +36,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadCategories")]
         public async Task<IActionResult> Get(int id)
         {
             var category = await repository.ReadByIdAsync(id);
@@ -44,6 +47,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateCategories")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var category = await repository.ReadByIdAsync(id);
@@ -57,6 +61,7 @@ namespace Bossr.Api.Controllers
 
         [HttpPost]
         [SqlExceptionFilter(2627, "Name not available.")]
+        [Authorize(Policy = "CreateCategories")]
         public async Task<IActionResult> Post([FromBody]Category request)
         {
             await repository.CreateAsync(request);
@@ -65,6 +70,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateCategories")]
         public async Task<IActionResult> Put(int id, [FromBody]Category request)
         {
             request.Id = id;
