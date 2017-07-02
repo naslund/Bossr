@@ -97,6 +97,14 @@ CREATE TABLE [dbo].[Tags] (
 );
 
 GO
+CREATE TABLE [dbo].[Scopes] (
+    [Id]   INT           IDENTITY (1, 1) NOT NULL,
+    [Name] NVARCHAR (30) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([Name] ASC)
+);
+
+GO
 CREATE TABLE [dbo].[CreatureTags] (
     [Id]         INT IDENTITY (1, 1) NOT NULL,
     [CreatureId] INT NOT NULL,
@@ -138,4 +146,15 @@ CREATE TABLE [dbo].[WorldTags] (
     UNIQUE NONCLUSTERED ([WorldId] ASC, [TagId] ASC),
     CONSTRAINT [FK_WorldTags_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
     CONSTRAINT [FK_WorldTags_Tags] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tags] ([Id])
+);
+
+GO
+CREATE TABLE [dbo].[UserScopes] (
+    [Id]      INT IDENTITY (1, 1) NOT NULL,
+    [UserId]  INT NOT NULL,
+    [ScopeId] INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([UserId] ASC, [ScopeId] ASC),
+    CONSTRAINT [FK_UserScopes_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]),
+    CONSTRAINT [FK_UserScopes_Scopes] FOREIGN KEY ([ScopeId]) REFERENCES [dbo].[Scopes] ([Id])
 );

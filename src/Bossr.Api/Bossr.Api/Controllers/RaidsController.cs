@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace Bossr.Api.Controllers
 {
     [Route("api/raids")]
-    [Authorize(Roles = "admin")]
     public class RaidsController : Controller
     {
         private readonly IRaidRepository repository;
@@ -23,6 +22,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "DeleteRaids")]
         public async Task<IActionResult> Delete(int id)
         {
             await repository.DeleteByIdAsync(id);
@@ -30,6 +30,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ReadRaids")]
         public async Task<IActionResult> Get()
         {
             var raids = await repository.ReadAllAsync();
@@ -38,6 +39,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "ReadRaids")]
         public async Task<IActionResult> Get(int id)
         {
             var raid = await repository.ReadByIdAsync(id);
@@ -49,6 +51,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateRaids")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var raid = await repository.ReadByIdAsync(id);
@@ -66,6 +69,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CreateRaids")]
         public async Task<IActionResult> Post([FromBody]RaidDto request)
         {
             var raid = raidMapper.MapToRaid(request);
@@ -79,6 +83,7 @@ namespace Bossr.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UpdateRaids")]
         public async Task<IActionResult> Put(int id, [FromBody]RaidDto request)
         {
             request.Id = id;
