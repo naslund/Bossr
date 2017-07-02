@@ -88,7 +88,7 @@ export default {
       var normalizedKeyword = keyword.toLowerCase()
       var states = []
 
-      this.states.forEach(function (state, index) {
+      this.states.forEach(function (state) {
         var isMatch = false
         state.raid.spawns.forEach(function (spawn) {
           if (spawn.creature.name.toLowerCase().indexOf(normalizedKeyword) > -1) {
