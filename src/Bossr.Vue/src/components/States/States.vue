@@ -2,7 +2,12 @@
   <div>
     <section class="section">
       <div class="container">
-        <a v-for="tag in tags" class="button" v-on:click="toggleActive(tag)" v-bind:class="{ 'is-success': tag.isActive }">{{ tag.name }}</a>
+        <h1 class="title">{{ world.name }}</h1>
+        <input 
+          class="input"
+          type="text" 
+          placeholder="Filter by creature or location"
+          v-model="filter">
       </div>
     </section>
     <section class="section">
@@ -12,7 +17,7 @@
         <div class="columns is-multiline">
           <possible-state-box 
             class="column is-one-third" 
-            v-for="state in states"
+            v-for="state in filteredStates"
             v-if="isSpawnable(state.expectedMin)" 
             :key="state.raid.id"
             :state="state">
@@ -27,7 +32,7 @@
         <div class="columns is-multiline">
           <upcoming-state-box
             class="column is-one-third" 
-            v-for="state in states"
+            v-for="state in filteredStates"
             v-if="!isSpawnable(state.expectedMin)" 
             :key="state.raid.id"
             :state="state">
@@ -50,20 +55,20 @@ export default {
   },
   data () {
     return {
+      filteredStates: [],
       states: [],
-      tags: []
+      world: {},
+      filter: ''
     }
   },
   created () {
-    this.$http.get(process.env.API_URL + 'api/states/' + this.$route.params.worldid).then(response => {
-      this.states = response.body.sort(this.compareByCreatureName)
+    this.$http.get(process.env.API_URL + 'api/worlds/' + this.$route.params.worldid).then(response => {
+      this.world = response.body
     })
 
-    this.$http.get(process.env.API_URL + 'api/tags').then(response => {
-      response.body.forEach(function (tag) {
-        tag.isActive = false
-      })
-      this.tags = response.body
+    this.$http.get(process.env.API_URL + 'api/states/' + this.$route.params.worldid).then(response => {
+      this.states = response.body.sort(this.compareByCreatureName)
+      this.filterStatesByKeyword(this.filter)
     })
   },
   methods: {
@@ -79,14 +84,33 @@ export default {
     isSpawnable (min) {
       return moment().diff(min) > 0
     },
-    toggleActive (tag) {
-      tag.isActive = !tag.isActive
-      this.filterStates()
-    },
-    filterStates () {
-      // Get state tags
-      console.log(this.states)
-      console.log(this.tags)
+    filterStatesByKeyword (keyword) {
+      var normalizedKeyword = keyword.toLowerCase()
+      var states = []
+
+      this.states.forEach(function (state) {
+        var isMatch = false
+        state.raid.spawns.forEach(function (spawn) {
+          if (spawn.creature.name.toLowerCase().indexOf(normalizedKeyword) > -1) {
+            isMatch = true
+          }
+          spawn.positions.forEach(function (position) {
+            if (position.name.toLowerCase().indexOf(normalizedKeyword) > -1) {
+              isMatch = true
+            }
+          })
+        })
+        if (isMatch) {
+          states.push(state)
+        }
+      })
+
+      this.filteredStates = states
+    }
+  },
+  watch: {
+    'filter': function (keyword) {
+      this.filterStatesByKeyword(keyword)
     }
   }
 }
