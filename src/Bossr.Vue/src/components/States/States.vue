@@ -3,7 +3,11 @@
     <section class="section">
       <div class="container">
         <h1 class="title">{{ world.name }}</h1>
-        <a v-for="tag in tags" class="button is-small" v-on:click="toggleActive(tag)" v-bind:class="{ 'is-success': tag.isActive }">{{ tag.name }}</a>
+        <input 
+          class="input"
+          type="text" 
+          placeholder="Filter by creature or location"
+          v-model="filter">
       </div>
     </section>
     <section class="section">
@@ -13,7 +17,7 @@
         <div class="columns is-multiline">
           <possible-state-box 
             class="column is-one-third" 
-            v-for="state in states"
+            v-for="state in filteredStates"
             v-if="isSpawnable(state.expectedMin)" 
             :key="state.raid.id"
             :state="state">
@@ -28,7 +32,7 @@
         <div class="columns is-multiline">
           <upcoming-state-box
             class="column is-one-third" 
-            v-for="state in states"
+            v-for="state in filteredStates"
             v-if="!isSpawnable(state.expectedMin)" 
             :key="state.raid.id"
             :state="state">
@@ -51,9 +55,10 @@ export default {
   },
   data () {
     return {
+      filteredStates: [],
       states: [],
-      tags: [],
-      world: {}
+      world: {},
+      filter: ''
     }
   },
   created () {
@@ -63,13 +68,7 @@ export default {
 
     this.$http.get(process.env.API_URL + 'api/states/' + this.$route.params.worldid).then(response => {
       this.states = response.body.sort(this.compareByCreatureName)
-    })
-
-    this.$http.get(process.env.API_URL + 'api/tags').then(response => {
-      response.body.forEach(function (tag) {
-        tag.isActive = false
-      })
-      this.tags = response.body
+      this.filterStatesByKeyword(this.filter)
     })
   },
   methods: {
@@ -85,14 +84,31 @@ export default {
     isSpawnable (min) {
       return moment().diff(min) > 0
     },
-    toggleActive (tag) {
-      tag.isActive = !tag.isActive
-      this.filterStates()
-    },
-    filterStates () {
-      // Get state tags
-      // console.log(this.states)
-      // console.log(this.tags)
+    filterStatesByKeyword (keyword) {
+      this.filteredStates = []
+      var normalizedKeyword = keyword.toLowerCase()
+
+      for (var i = 0; i < this.states.length; i++) {
+        var isMatch = false
+        for (var j = 0; j < this.states[i].raid.spawns.length; j++) {
+          if (this.states[i].raid.spawns[j].creature.name.toLowerCase().indexOf(normalizedKeyword) > -1) {
+            isMatch = true
+          }
+          for (var k = 0; k < this.states[i].raid.spawns[j].positions.length; k++) {
+            if (this.states[i].raid.spawns[j].positions[k].name.toLowerCase().indexOf(normalizedKeyword) > -1) {
+              isMatch = true
+            }
+          }
+        }
+        if (isMatch) {
+          this.filteredStates.push(this.states[i])
+        }
+      }
+    }
+  },
+  watch: {
+    'filter': function (keyword) {
+      this.filterStatesByKeyword(keyword)
     }
   }
 }
