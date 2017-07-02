@@ -68,7 +68,7 @@ namespace Bossr.Api.Services
             foreach (var raid in raids)
             {
                 var spawn = raid.Spawns.First();
-                var totalAmount = GetTotalAmountOfSpawnsByCreature(spawns, spawn.CreatureId);
+                var totalAmount = GetTotalAmountOfRaidsByCreature(raids, spawn);
 
                 var latestOccurances = GetAllOccurances(scrapes, spawn)
                     .Take(totalAmount)
@@ -77,8 +77,8 @@ namespace Bossr.Api.Services
                 if (!latestOccurances.Any())
                     continue;
 
-                var expectedMin = GetMin(latestOccurances.Min(x => x.Date)).Plus(raid.FrequencyMin);
-                var expectedMax = GetMax(latestOccurances.Max(x => x.Date)).Plus(raid.FrequencyMax);
+                var expectedMin = GetExpectedMin(latestOccurances.Min(x => x.Date)).Plus(raid.FrequencyMin);
+                var expectedMax = GetExpectedMax(latestOccurances.Max(x => x.Date)).Plus(raid.FrequencyMax);
 
                 var missedRaids = 0;
                 var currentInstant = Instant.FromDateTimeUtc(currentTimeUtc);
@@ -107,11 +107,11 @@ namespace Bossr.Api.Services
             };
         }
 
-        private int GetTotalAmountOfSpawnsByCreature(IEnumerable<ISpawn> spawns, int creatureId)
+        private int GetTotalAmountOfRaidsByCreature(IEnumerable<IRaid> raids, ISpawn spawn)
         {
-            return spawns
-                .Where(x => x.CreatureId == creatureId)
-                .Sum(x => x.Amount);
+            return raids
+                .Where(x => x.Spawns.Any(y => y.CreatureId == spawn.CreatureId))
+                .Count();
         }
 
         private IEnumerable<IScrape> GetAllOccurances(IEnumerable<IScrape> scrapes, ISpawn spawn)
@@ -119,14 +119,14 @@ namespace Bossr.Api.Services
             return scrapes.Where(x => x.Statistics.Any(y => y.CreatureId == spawn.CreatureId));
         }
 
-        private Instant GetMin(LocalDate date)
+        private Instant GetExpectedMin(LocalDate date)
         {
             return Instant
                 .FromDateTimeUtc(DateTime.SpecifyKind(date.ToDateTimeUnspecified(), DateTimeKind.Utc))
                 .Plus(Duration.FromHours(2));
         }
 
-        private Instant GetMax(LocalDate date)
+        private Instant GetExpectedMax(LocalDate date)
         {
             return Instant
                 .FromDateTimeUtc(DateTime.SpecifyKind(date.ToDateTimeUnspecified(), DateTimeKind.Utc))
