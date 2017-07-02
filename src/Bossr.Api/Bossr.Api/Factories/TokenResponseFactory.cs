@@ -11,9 +11,16 @@ namespace Bossr.Api.Factories
 
     public class TokenResponseFactory : ITokenResponseFactory
     {
+        private readonly JwtSecurityTokenHandler tokenHandler;
+
+        public TokenResponseFactory(JwtSecurityTokenHandler tokenHandler)
+        {
+            this.tokenHandler = tokenHandler;
+        }
+
         public TokenResponse CreateTokenResponse(JwtSecurityToken token, TokenProviderOptions options)
         {
-            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            var encodedToken = tokenHandler.WriteToken(token);
             var expiresInSeconds = (int)options.Expiration.TotalSeconds;
 
             var response = new TokenResponse
