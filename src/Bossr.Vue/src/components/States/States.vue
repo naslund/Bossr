@@ -85,25 +85,27 @@ export default {
       return moment().diff(min) > 0
     },
     filterStatesByKeyword (keyword) {
-      this.filteredStates = []
       var normalizedKeyword = keyword.toLowerCase()
+      var states = []
 
-      for (var i = 0; i < this.states.length; i++) {
+      this.states.forEach(function (state, index) {
         var isMatch = false
-        for (var j = 0; j < this.states[i].raid.spawns.length; j++) {
-          if (this.states[i].raid.spawns[j].creature.name.toLowerCase().indexOf(normalizedKeyword) > -1) {
+        state.raid.spawns.forEach(function (spawn) {
+          if (spawn.creature.name.toLowerCase().indexOf(normalizedKeyword) > -1) {
             isMatch = true
           }
-          for (var k = 0; k < this.states[i].raid.spawns[j].positions.length; k++) {
-            if (this.states[i].raid.spawns[j].positions[k].name.toLowerCase().indexOf(normalizedKeyword) > -1) {
+          spawn.positions.forEach(function (position) {
+            if (position.name.toLowerCase().indexOf(normalizedKeyword) > -1) {
               isMatch = true
             }
-          }
-        }
+          })
+        })
         if (isMatch) {
-          this.filteredStates.push(this.states[i])
+          states.push(state)
         }
-      }
+      })
+
+      this.filteredStates = states
     }
   },
   watch: {
