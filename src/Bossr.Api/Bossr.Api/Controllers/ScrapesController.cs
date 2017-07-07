@@ -59,8 +59,8 @@ namespace Bossr.Api.Controllers
             return Ok(scrapeDto);
         }
 
-        //[HttpPatch("{id}")]
-        //[Authorize(Policy = "UpdateScrapes")]
+        [HttpPatch("{id}")]
+        [Authorize(Policy = "UpdateScrapes")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
             var scrape = await scrapeRepository.ReadByIdAsync(id);
