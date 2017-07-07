@@ -39,6 +39,8 @@ namespace Bossr.Api
                 .AddJsonOptions(x => x.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore);
 
             new ScopesConfiguration().ConfigureScopes(services);
+
+            services.AddSwaggerGen(x => x.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Bossr API", Version = "v1" }));
         }
 
         
@@ -77,6 +79,10 @@ namespace Bossr.Api
             });
 
             app.UseMvc();
+
+            app.UseSwagger();
+            
+            app.UseSwaggerUI(x => { x.SwaggerEndpoint("/swagger/v1/swagger.json", "Bossr API v1"); });
         }
     }
 }
