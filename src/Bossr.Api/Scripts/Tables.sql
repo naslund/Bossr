@@ -9,6 +9,18 @@ CREATE TABLE [dbo].[Users] (
 );
 
 GO
+CREATE TABLE [dbo].[Characters] (
+	[Id]		INT				IDENTITY (1, 1) NOT NULL,
+	[Name]		NVARCHAR (50)	NOT NULL,
+	[WorldId]	INT				NOT NULL,
+	[RaidId]	INT				NULL,
+	[UserId]	INT				NOT NULL,
+	CONSTRAINT [FK_Characters_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
+	CONSTRAINT [FK_Characters_Raids] FOREIGN KEY ([RaidId]) REFERENCES [dbo].[Raids] ([Id]),
+	CONSTRAINT [FK_Characters_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]),
+);
+
+GO
 CREATE TABLE [dbo].[Creatures] (
     [Id]          INT           IDENTITY (1, 1) NOT NULL,
     [Name]        NVARCHAR (30) NOT NULL,
