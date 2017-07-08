@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services.Scrapers
 {
+    public interface IStatisticsTableRowScraper
+    {
+        Task Scrape();
+    }
+
     public class StatisticsTableRowScraper : IStatisticsTableRowScraper
     {
         private readonly IConfiguration configuration;

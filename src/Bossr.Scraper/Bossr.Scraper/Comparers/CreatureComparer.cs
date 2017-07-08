@@ -5,6 +5,11 @@ using System.Linq;
 
 namespace Bossr.Scraper.Comparers
 {
+    public interface ICreatureComparer
+    {
+        IEnumerable<ICreature> FindMissingCreatures(IEnumerable<IStatisticsTableRow> killStatsTableRows, IEnumerable<ICreature> existingCreatures);
+    }
+
     public class CreatureComparer : ICreatureComparer
     {
         public IEnumerable<ICreature> FindMissingCreatures(IEnumerable<IStatisticsTableRow> killStatsTableRows, IEnumerable<ICreature> existingCreatures)

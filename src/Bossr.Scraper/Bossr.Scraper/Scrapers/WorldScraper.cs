@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services.Scrapers
 {
+    public interface IWorldScraper
+    {
+        Task Scrape();
+    }
+
     public class WorldScraper : IWorldScraper
     {
         private readonly IConfiguration configuration;

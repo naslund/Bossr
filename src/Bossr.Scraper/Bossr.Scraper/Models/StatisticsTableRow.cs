@@ -7,4 +7,12 @@
         int CreaturesKilled { get; set; }
         int PlayersKilled { get; set; }
     }
+
+    public class StatisticsTableRow : IStatisticsTableRow
+    {
+        public int WorldId { get; set; }
+        public string CreatureName { get; set; }
+        public int CreaturesKilled { get; set; }
+        public int PlayersKilled { get; set; }
+    }
 }

@@ -5,6 +5,11 @@ using System.Linq;
 
 namespace Bossr.Scraper.Converters
 {
+    public interface IStatisticsTableRowConverter
+    {
+        IEnumerable<IStatistic> ConvertToStatistics(IEnumerable<IStatisticsTableRow> killStatsTableRows, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, Scrape scrape);
+    }
+
     public class StatisticsTableRowConverter : IStatisticsTableRowConverter
     {
         public IEnumerable<IStatistic> ConvertToStatistics(IEnumerable<IStatisticsTableRow> statisticTableRow, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, Scrape scrape)

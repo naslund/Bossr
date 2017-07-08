@@ -13,11 +13,28 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services
 {
+    public interface IRestClient
+    {
+        Task<IEnumerable<IWorld>> GetWorldsAsync();
+
+        Task<IEnumerable<ICreature>> GetCreaturesAsync();
+
+        Task<Scrape> GetLatestScrapeAsync();
+
+        Task PostWorldAsync(IWorld world);
+
+        Task PostCreatureAsync(ICreature creature);
+
+        Task PostScrapeAsync(Scrape scrape);
+
+        Task PostStatisticAsync(IStatistic statistic);
+    }
+
     public class RestClient : IRestClient
     {
         private readonly HttpClient client = new HttpClient();
         private readonly IConfiguration configuration;
-        private IAuthenticationToken token;
+        private IToken token;
 
         public RestClient(IConfigurationFactory configurationFactory)
         {
@@ -103,7 +120,7 @@ namespace Bossr.Scraper.Services
             }));
 
             if (response.IsSuccessStatusCode)
-                token = JsonConvert.DeserializeObject<AuthenticationToken>(await response.Content.ReadAsStringAsync());
+                token = JsonConvert.DeserializeObject<Token>(await response.Content.ReadAsStringAsync());
         }
 
         private async Task RefreshToken()

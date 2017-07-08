@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Parsers
 {
+    public interface IStatisticsTableRowParser
+    {
+        Task<IEnumerable<IStatisticsTableRow>> Parse(HttpResponseMessage response, int worldId);
+    }
+
     public class StatisticsTableRowParser : IStatisticsTableRowParser
     {
         public async Task<IEnumerable<IStatisticsTableRow>> Parse(HttpResponseMessage response, int worldId)
