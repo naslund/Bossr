@@ -3,6 +3,11 @@ using System.IO;
 
 namespace Bossr.Scraper.Factories
 {
+    public interface IConfigurationFactory
+    {
+        IConfiguration CreateConfiguration();
+    }
+
     public class ConfigurationFactory : IConfigurationFactory
     {
         public IConfiguration CreateConfiguration()

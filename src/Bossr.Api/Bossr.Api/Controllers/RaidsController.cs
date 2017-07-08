@@ -34,8 +34,7 @@ namespace Bossr.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var raids = await repository.ReadAllAsync();
-            var raidsDto = raids.Select(x => raidMapper.MapToRaidDto(x));
-            return Ok(raidsDto);
+            return Ok(raids);
         }
 
         [HttpGet("{id}")]
@@ -45,9 +44,8 @@ namespace Bossr.Api.Controllers
             var raid = await repository.ReadByIdAsync(id);
             if (raid == null)
                 return NotFound();
-
-            var raidDto = raidMapper.MapToRaidDto(raid);
-            return Ok(raidDto);
+            
+            return Ok(raid);
         }
 
         [HttpPatch("{id}")]
@@ -57,39 +55,26 @@ namespace Bossr.Api.Controllers
             var raid = await repository.ReadByIdAsync(id);
             if (raid == null)
                 return NotFound();
-
-            var raidDto = raidMapper.MapToRaidDto(raid);
-
-            patch.ApplyTo(raidDto);
-
-            var patchedRaid = raidMapper.MapToRaid(raidDto);
-
-            await repository.UpdateAsync(patchedRaid);
+            
+            patch.ApplyTo(raid);
+            
+            await repository.UpdateAsync(raid);
             return Ok();
         }
 
         [HttpPost]
         [Authorize(Policy = "CreateRaids")]
-        public async Task<IActionResult> Post([FromBody]RaidDto request)
+        public async Task<IActionResult> Post([FromBody]Raid raid)
         {
-            var raid = raidMapper.MapToRaid(request);
-
             await repository.CreateAsync(raid);
-
-            var response = await repository.ReadByIdAsync(raid.Id);
-            var responseDto = raidMapper.MapToRaidDto(response);
-
-            return Created($"/api/raids/{responseDto.Id}", responseDto);
+            return Created($"/api/raids/{raid.Id}", raid);
         }
 
         [HttpPut("{id}")]
         [Authorize(Policy = "UpdateRaids")]
-        public async Task<IActionResult> Put(int id, [FromBody]RaidDto request)
+        public async Task<IActionResult> Put(int id, [FromBody]Raid raid)
         {
-            request.Id = id;
-
-            var raid = raidMapper.MapToRaid(request);
-
+            raid.Id = id;
             await repository.UpdateAsync(raid);
             return Ok();
         }

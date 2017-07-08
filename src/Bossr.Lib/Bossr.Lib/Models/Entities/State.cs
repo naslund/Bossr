@@ -2,9 +2,9 @@
 
 namespace Bossr.Lib.Models.Entities
 {
-    public class StateDto
+    public class State
     {
-        public RaidDto Raid { get; set; }
+        public IRaid Raid { get; set; }
         public DateTime ExpectedMin { get; set; }
         public DateTime ExpectedMax { get; set; }
         public int MissedRaids { get; set; }

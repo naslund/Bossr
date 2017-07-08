@@ -13,11 +13,28 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services
 {
+    public interface IRestClient
+    {
+        Task<IEnumerable<IWorld>> GetWorldsAsync();
+
+        Task<IEnumerable<ICreature>> GetCreaturesAsync();
+
+        Task<Scrape> GetLatestScrapeAsync();
+
+        Task PostWorldAsync(IWorld world);
+
+        Task PostCreatureAsync(ICreature creature);
+
+        Task PostScrapeAsync(Scrape scrape);
+
+        Task PostStatisticAsync(IStatistic statistic);
+    }
+
     public class RestClient : IRestClient
     {
         private readonly HttpClient client = new HttpClient();
         private readonly IConfiguration configuration;
-        private IAuthenticationToken token;
+        private IToken token;
 
         public RestClient(IConfigurationFactory configurationFactory)
         {
@@ -36,13 +53,13 @@ namespace Bossr.Scraper.Services
             return null;
         }
 
-        public async Task<ScrapeDto> GetLatestScrapeAsync()
+        public async Task<Scrape> GetLatestScrapeAsync()
         {
             await RefreshToken();
             var response = await client.GetAsync(configuration["BossrApi:Resources:Scrapes"] + "/latest");
 
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ScrapeDto>(await response.Content.ReadAsStringAsync());
+                return JsonConvert.DeserializeObject<Scrape>(await response.Content.ReadAsStringAsync());
 
             return null;
         }
@@ -67,13 +84,13 @@ namespace Bossr.Scraper.Services
                 creature.Id = JsonConvert.DeserializeObject<Creature>(await response.Content.ReadAsStringAsync()).Id;
         }
 
-        public async Task PostScrapeAsync(ScrapeDto scrape)
+        public async Task PostScrapeAsync(Scrape scrape)
         {
             await RefreshToken();
             var scrapeJson = JsonConvert.SerializeObject(scrape);
             var response = await client.PostAsync(configuration["BossrApi:Resources:Scrapes"], new StringContent(scrapeJson, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
-                scrape.Id = JsonConvert.DeserializeObject<ScrapeDto>(await response.Content.ReadAsStringAsync()).Id;
+                scrape.Id = JsonConvert.DeserializeObject<Scrape>(await response.Content.ReadAsStringAsync()).Id;
         }
 
         public async Task PostStatisticAsync(IStatistic statistic)
@@ -103,7 +120,7 @@ namespace Bossr.Scraper.Services
             }));
 
             if (response.IsSuccessStatusCode)
-                token = JsonConvert.DeserializeObject<AuthenticationToken>(await response.Content.ReadAsStringAsync());
+                token = JsonConvert.DeserializeObject<Token>(await response.Content.ReadAsStringAsync());
         }
 
         private async Task RefreshToken()

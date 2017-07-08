@@ -1,7 +1,6 @@
 ﻿using Bossr.Api.Mappers;
 using Bossr.Api.Repositories;
 using Bossr.Lib.Models.Entities;
-using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace Bossr.Api.Services
 {
     public interface IStateCalculator
     {
-        Task<IEnumerable<StateDto>> GetStatesByWorldId(int worldId);
+        Task<IEnumerable<State>> GetStatesByWorldId(int worldId);
     }
 
     public class StateCalculator : IStateCalculator
@@ -45,7 +44,7 @@ namespace Bossr.Api.Services
             this.scrapeMapper = scrapeMapper;
         }
 
-        public async Task<IEnumerable<StateDto>> GetStatesByWorldId(int worldId)
+        public async Task<IEnumerable<State>> GetStatesByWorldId(int worldId)
         {
             var raids = await raidRepository.ReadAllAsync();
             var spawns = await spawnRepository.ReadAllAsync();
@@ -64,7 +63,7 @@ namespace Bossr.Api.Services
             scrapeMapper.MapRelations(scrapes, statistics);
 
             var currentTimeUtc = DateTime.UtcNow;
-            var states = new List<StateDto>();
+            var states = new List<State>();
             foreach (var raid in raids)
             {
                 var spawn = raid.Spawns.First();
@@ -77,15 +76,14 @@ namespace Bossr.Api.Services
                 if (!latestOccurances.Any())
                     continue;
 
-                var expectedMin = GetExpectedMin(latestOccurances.Min(x => x.Date)).Plus(raid.FrequencyMin);
-                var expectedMax = GetExpectedMax(latestOccurances.Max(x => x.Date)).Plus(raid.FrequencyMax);
+                var expectedMin = GetExpectedMin(latestOccurances.Min(x => x.Date)).AddHours(raid.FrequencyHoursMin);
+                var expectedMax = GetExpectedMax(latestOccurances.Max(x => x.Date)).AddHours(raid.FrequencyHoursMax);
 
                 var missedRaids = 0;
-                var currentInstant = Instant.FromDateTimeUtc(currentTimeUtc);
-                while (currentInstant > expectedMax)
+                while (currentTimeUtc > expectedMax)
                 {
-                    expectedMin = expectedMin.Plus(raid.FrequencyMin);
-                    expectedMax = expectedMax.Plus(raid.FrequencyMax);
+                    expectedMin = expectedMin.AddHours(raid.FrequencyHoursMin);
+                    expectedMax = expectedMax.AddHours(raid.FrequencyHoursMax);
                     missedRaids++;
                 }
 
@@ -96,13 +94,13 @@ namespace Bossr.Api.Services
             return states;
         }
 
-        private StateDto CreateState(IRaid raid, Instant expectedMin, Instant expectedMax, int missedRaids)
+        private State CreateState(IRaid raid, DateTime expectedMin, DateTime expectedMax, int missedRaids)
         {
-            return new StateDto
+            return new State
             {
-                Raid = raidMapper.MapToRaidDto(raid),
-                ExpectedMin = expectedMin.ToDateTimeUtc(),
-                ExpectedMax = expectedMax.ToDateTimeUtc(),
+                Raid = raid,
+                ExpectedMin = expectedMin,
+                ExpectedMax = expectedMax,
                 MissedRaids = missedRaids
             };
         }
@@ -119,19 +117,14 @@ namespace Bossr.Api.Services
             return scrapes.Where(x => x.Statistics.Any(y => y.CreatureId == spawn.CreatureId));
         }
 
-        private Instant GetExpectedMin(LocalDate date)
+        private DateTime GetExpectedMin(DateTime date)
         {
-            return Instant
-                .FromDateTimeUtc(DateTime.SpecifyKind(date.ToDateTimeUnspecified(), DateTimeKind.Utc))
-                .Plus(Duration.FromHours(2));
+            return date.AddHours(2);
         }
 
-        private Instant GetExpectedMax(LocalDate date)
+        private DateTime GetExpectedMax(DateTime date)
         {
-            return Instant
-                .FromDateTimeUtc(DateTime.SpecifyKind(date.ToDateTimeUnspecified(), DateTimeKind.Utc))
-                .Plus(Duration.FromDays(1))
-                .Plus(Duration.FromHours(2));
+            return date.AddHours(26);
         }
     }
 }

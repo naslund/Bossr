@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services
 {
+    public interface IDataFetcher
+    {
+        Task<HttpResponseMessage> FetchHttpResponse(string url);
+    }
+
     public class DataFetcher : IDataFetcher
     {
         private readonly IConfiguration configuration;

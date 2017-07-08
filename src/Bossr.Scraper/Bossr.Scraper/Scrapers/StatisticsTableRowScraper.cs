@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services.Scrapers
 {
+    public interface IStatisticsTableRowScraper
+    {
+        Task Scrape();
+    }
+
     public class StatisticsTableRowScraper : IStatisticsTableRowScraper
     {
         private readonly IConfiguration configuration;
@@ -20,7 +25,7 @@ namespace Bossr.Scraper.Services.Scrapers
         private readonly IStatisticsTableRowParser statsParser;
         private readonly ICreatureComparer creatureComparer;
         private readonly IStatisticsTableRowConverter statisticConverter;
-        private readonly IYesterdayLocalDateFactory yesterdayLocalDateFactory;
+        private readonly IDateTimeFactory dateTimeFactory;
 
         public StatisticsTableRowScraper(
             IConfigurationFactory configurationFactory,
@@ -29,7 +34,7 @@ namespace Bossr.Scraper.Services.Scrapers
             IStatisticsTableRowParser statsParser,
             ICreatureComparer creatureComparer,
             IStatisticsTableRowConverter statisticConverter,
-            IYesterdayLocalDateFactory yesterdayLocalDateFactory)
+            IDateTimeFactory dateTimeFactory)
         {
             configuration = configurationFactory.CreateConfiguration();
             this.restClient = restClient;
@@ -37,7 +42,7 @@ namespace Bossr.Scraper.Services.Scrapers
             this.statsParser = statsParser;
             this.creatureComparer = creatureComparer;
             this.statisticConverter = statisticConverter;
-            this.yesterdayLocalDateFactory = yesterdayLocalDateFactory;
+            this.dateTimeFactory = dateTimeFactory;
         }
 
         public async Task Scrape()
@@ -48,7 +53,7 @@ namespace Bossr.Scraper.Services.Scrapers
             var creatures = await restClient.GetCreaturesAsync();
             creatures = await PersistCreatures(creatures, killStatsTableRows);
 
-            var scrapeDto = new ScrapeDto { Date = yesterdayLocalDateFactory.GetYesterdaysDate().ToIsoString() };
+            var scrapeDto = new Scrape { Date = dateTimeFactory.GetYesterdaysDate() };
             await restClient.PostScrapeAsync(scrapeDto);
             Console.WriteLine($"{scrapeDto.Id} {scrapeDto.Date}");
 

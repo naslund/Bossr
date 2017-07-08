@@ -3,7 +3,6 @@ using Bossr.Api.Mappers;
 using Bossr.Api.Models.Requests;
 using Bossr.Api.Repositories;
 using Bossr.Api.Services;
-using Bossr.Lib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
