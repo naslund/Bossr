@@ -36,13 +36,13 @@ namespace Bossr.Scraper.Services
             return null;
         }
 
-        public async Task<ScrapeDto> GetLatestScrapeAsync()
+        public async Task<Scrape> GetLatestScrapeAsync()
         {
             await RefreshToken();
             var response = await client.GetAsync(configuration["BossrApi:Resources:Scrapes"] + "/latest");
 
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ScrapeDto>(await response.Content.ReadAsStringAsync());
+                return JsonConvert.DeserializeObject<Scrape>(await response.Content.ReadAsStringAsync());
 
             return null;
         }
@@ -67,13 +67,13 @@ namespace Bossr.Scraper.Services
                 creature.Id = JsonConvert.DeserializeObject<Creature>(await response.Content.ReadAsStringAsync()).Id;
         }
 
-        public async Task PostScrapeAsync(ScrapeDto scrape)
+        public async Task PostScrapeAsync(Scrape scrape)
         {
             await RefreshToken();
             var scrapeJson = JsonConvert.SerializeObject(scrape);
             var response = await client.PostAsync(configuration["BossrApi:Resources:Scrapes"], new StringContent(scrapeJson, Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
-                scrape.Id = JsonConvert.DeserializeObject<ScrapeDto>(await response.Content.ReadAsStringAsync()).Id;
+                scrape.Id = JsonConvert.DeserializeObject<Scrape>(await response.Content.ReadAsStringAsync()).Id;
         }
 
         public async Task PostStatisticAsync(IStatistic statistic)

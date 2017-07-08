@@ -10,13 +10,13 @@ namespace Bossr.Scraper.Services
 
         Task<IEnumerable<ICreature>> GetCreaturesAsync();
 
-        Task<ScrapeDto> GetLatestScrapeAsync();
+        Task<Scrape> GetLatestScrapeAsync();
 
         Task PostWorldAsync(IWorld world);
 
         Task PostCreatureAsync(ICreature creature);
 
-        Task PostScrapeAsync(ScrapeDto scrape);
+        Task PostScrapeAsync(Scrape scrape);
 
         Task PostStatisticAsync(IStatistic statistic);
     }

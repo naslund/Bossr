@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace Bossr.Lib.Models.Entities
 {
-    public interface IWorld : IEntity, INameable, IMonitorable { }
+    public interface IWorld : IEntity, INameable, IMonitorable
+    {
+        IEnumerable<IStatistic> Statistics { get; set; }
+        IEnumerable<ITag> Tags { get; set; }
+    }
 
     public class World : IWorld
     {

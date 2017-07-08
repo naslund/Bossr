@@ -7,7 +7,7 @@ namespace Bossr.Scraper.Converters
 {
     public class StatisticsTableRowConverter : IStatisticsTableRowConverter
     {
-        public IEnumerable<IStatistic> ConvertToStatistics(IEnumerable<IStatisticsTableRow> statisticTableRow, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, ScrapeDto scrapeDto)
+        public IEnumerable<IStatistic> ConvertToStatistics(IEnumerable<IStatisticsTableRow> statisticTableRow, IEnumerable<IWorld> worlds, IEnumerable<ICreature> creatures, Scrape scrape)
         {
             return statisticTableRow
                 .Where(x => x.CreaturesKilled > 0 || x.PlayersKilled > 0)
@@ -16,7 +16,7 @@ namespace Bossr.Scraper.Converters
                 .Select(x => new Statistic
                 {
                     WorldId = x.WorldId,
-                    ScrapeId = scrapeDto.Id,
+                    ScrapeId = scrape.Id,
                     CreatureId = creatures.Single(y => y.Name == x.CreatureName).Id,
                     Amount = x.CreaturesKilled == 0 ? 1 : x.CreaturesKilled
                 });

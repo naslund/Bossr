@@ -47,8 +47,7 @@ namespace Bossr.Api
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            SqlMapper.AddTypeHandler(new LocalDateTypeHandler());
-            SqlMapper.AddTypeHandler(new DurationTypeHandler());
+            SqlMapper.AddTypeHandler(new DateTimeTypeHandler());
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JwtToken:SecretKey"]));
 

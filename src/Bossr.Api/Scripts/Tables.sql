@@ -49,9 +49,9 @@ CREATE TABLE [dbo].[Statistics] (
 
 GO
 CREATE TABLE [dbo].[Raids] (
-    [Id]           INT           IDENTITY (1, 1) NOT NULL,
-    [FrequencyMin] INT           NOT NULL,
-    [FrequencyMax] INT           NOT NULL,
+    [Id]				INT           IDENTITY (1, 1) NOT NULL,
+    [FrequencyHoursMin] INT           NOT NULL,
+    [FrequencyHoursMax] INT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

@@ -13,20 +13,20 @@ namespace Bossr.Scraper.Services
         private readonly IStatisticsTableRowScraper statsScraper;
         private readonly IConfiguration configuration;
         private readonly IRestClient restClient;
-        private readonly IYesterdayLocalDateFactory yesterdayLocalDateFactory;
+        private readonly IDateTimeFactory dateTimeFactory;
 
         public Scheduler(
             IWorldScraper worldScraper,
             IStatisticsTableRowScraper statsScraper,
             IConfigurationFactory configurationFactory,
             IRestClient restClient,
-            IYesterdayLocalDateFactory yesterdayLocalDateFactory)
+            IDateTimeFactory dateTimeFactory)
         {
             configuration = configurationFactory.CreateConfiguration();
             this.worldScraper = worldScraper;
             this.statsScraper = statsScraper;
             this.restClient = restClient;
-            this.yesterdayLocalDateFactory = yesterdayLocalDateFactory;
+            this.dateTimeFactory = dateTimeFactory;
         }
 
         public async Task Run()
@@ -48,10 +48,9 @@ namespace Bossr.Scraper.Services
             var latestScrape = await restClient.GetLatestScrapeAsync();
             if (latestScrape == null)
                 return true;
-
-            var latestScrapeDate = latestScrape.Date.ToLocalDate();
-            var yesterday = yesterdayLocalDateFactory.GetYesterdaysDate();
-            return latestScrapeDate != yesterday;
+            
+            var yesterday = dateTimeFactory.GetYesterdaysDate();
+            return latestScrape.Date != yesterday;
         }
     }
 }

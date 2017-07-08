@@ -14,7 +14,7 @@ namespace Bossr.Scraper
         {
             var serviceProvider = new ServiceCollection()
                 .AddTransient<IConfigurationFactory, ConfigurationFactory>()
-                .AddTransient<IYesterdayLocalDateFactory, YesterdayLocalDateFactory>()
+                .AddTransient<IDateTimeFactory, DateTimeFactory>()
 
                 .AddTransient<IScheduler, Scheduler>()
                 .AddTransient<IDataFetcher, DataFetcher>()
