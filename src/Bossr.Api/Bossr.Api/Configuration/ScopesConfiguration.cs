@@ -11,6 +11,8 @@ namespace Bossr.Api.Configuration
             {
                 new PolicySet { Scope = "categories.read", Policies = new [] { "ReadCategories" } },
                 new PolicySet { Scope = "categories.write", Policies = new [] { "CreateCategories", "UpdateCategories", "DeleteCategories" } },
+                new PolicySet { Scope = "characters.read", Policies = new [] { "ReadCharacters" } },
+                new PolicySet { Scope = "characters.write", Policies = new [] { "CreateCharacters", "UpdateCharacters", "DeleteCharacters" } },
                 new PolicySet { Scope = "creatures.read", Policies = new [] { "ReadCreatures" } },
                 new PolicySet { Scope = "creatures.write", Policies = new [] { "CreateCreatures", "UpdateCreatures", "DeleteCreatures" } },
                 new PolicySet { Scope = "positions.read", Policies = new [] { "ReadPositions" } },
@@ -28,6 +30,7 @@ namespace Bossr.Api.Configuration
                 new PolicySet { Scope = "tags.write", Policies = new [] { "CreateTags", "UpdateTags", "DeleteTags" } },
                 new PolicySet { Scope = "users.read", Policies = new [] { "ReadUsers" } },
                 new PolicySet { Scope = "users.write", Policies = new [] { "CreateUsers", "UpdateUsers", "DeleteUsers" } },
+                new PolicySet { Scope = "users.characters.read", Policies = new [] { "ReadUserCharacters" } },
                 new PolicySet { Scope = "worlds.read", Policies = new [] { "ReadWorlds" } },
                 new PolicySet { Scope = "worlds.write", Policies = new [] { "CreateWorlds", "UpdateWorlds", "DeleteWorlds" } }
             };

@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Repositories
 {
-    public interface ICharacterRepository : ICrudable<ICharacter> { }
+    public interface ICharacterRepository : ICrudable<ICharacter>
+    {
+        Task<IEnumerable<ICharacter>> ReadAllByUserIdAsync(int userId);
+    }
 
     public class CharacterRepository : ICharacterRepository
     {
@@ -39,6 +42,14 @@ namespace Bossr.Api.Repositories
             using (var conn = dbConnectionFactory.CreateConnection())
             {
                 return await conn.QueryAsync<Character>("SELECT * FROM Characters");
+            }
+        }
+
+        public async Task<IEnumerable<ICharacter>> ReadAllByUserIdAsync(int userId)
+        {
+            using (var conn = dbConnectionFactory.CreateConnection())
+            {
+                return await conn.QueryAsync<Character>("SELECT * FROM Characters WHERE UserId = @UserId", new { UserId = userId });
             }
         }
 

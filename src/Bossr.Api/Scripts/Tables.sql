@@ -15,6 +15,8 @@ CREATE TABLE [dbo].[Characters] (
 	[WorldId]	INT				NOT NULL,
 	[RaidId]	INT				NULL,
 	[UserId]	INT				NOT NULL,
+	PRIMARY KEY CLUSTERED ([Id] ASC),
+	UNIQUE NONCLUSTERED ([Name] ASC, [UserId] ASC),
 	CONSTRAINT [FK_Characters_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
 	CONSTRAINT [FK_Characters_Raids] FOREIGN KEY ([RaidId]) REFERENCES [dbo].[Raids] ([Id]),
 	CONSTRAINT [FK_Characters_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]),
@@ -117,6 +119,16 @@ CREATE TABLE [dbo].[Scopes] (
 );
 
 GO
+CREATE TABLE [dbo].[Policies] (
+    [Id]   INT           IDENTITY (1, 1) NOT NULL,
+    [Name] NVARCHAR (30)	NOT NULL,
+	[ScopeId] INT           NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([Name] ASC),
+	CONSTRAINT [FK_Policies_Scopes] FOREIGN KEY ([ScopeId]) REFERENCES [dbo].[Scopes] ([Id])
+);
+
+GO
 CREATE TABLE [dbo].[CreatureTags] (
     [Id]         INT IDENTITY (1, 1) NOT NULL,
     [CreatureId] INT NOT NULL,
@@ -158,6 +170,25 @@ CREATE TABLE [dbo].[WorldTags] (
     UNIQUE NONCLUSTERED ([WorldId] ASC, [TagId] ASC),
     CONSTRAINT [FK_WorldTags_Worlds] FOREIGN KEY ([WorldId]) REFERENCES [dbo].[Worlds] ([Id]),
     CONSTRAINT [FK_WorldTags_Tags] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tags] ([Id])
+);
+
+GO
+CREATE TABLE [dbo].[Roles] (
+    [Id]   INT           IDENTITY (1, 1) NOT NULL,
+    [Name] NVARCHAR (30) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([Name] ASC)
+);
+
+GO
+CREATE TABLE [dbo].[RoleScopes] (
+    [Id]      INT IDENTITY (1, 1) NOT NULL,
+    [RoleId]  INT NOT NULL,
+    [ScopeId] INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([RoleId] ASC, [ScopeId] ASC),
+    CONSTRAINT [FK_RoleScopes_Roles] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Roles] ([Id]),
+    CONSTRAINT [FK_RoleScopes_Scopes] FOREIGN KEY ([ScopeId]) REFERENCES [dbo].[Scopes] ([Id])
 );
 
 GO

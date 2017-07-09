@@ -28,12 +28,17 @@ namespace Bossr.Api.Configuration
             services.AddTransient<ISpawnRepository, SpawnRepository>();
             services.AddTransient<IStatisticRepository, StatisticRepository>();
             services.AddTransient<IScopeRepository, ScopeRepository>();
+            services.AddTransient<ICharacterRepository, CharacterRepository>();
 
             services.AddTransient<IRaidMapper, RaidMapper>();
             services.AddTransient<IScrapeMapper, ScrapeMapper>();
             services.AddTransient<IUserMapper, UserMapper>();
 
             services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<ICharacterManager, CharacterManager>();
+
+            services.AddTransient<IUserAccessValidator, UserAccessValidator>();
+            services.AddTransient<IUserIdentityReader, UserIdentityReader>();
             services.AddTransient<IHashGenerator, HashGenerator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
             services.AddTransient<ISaltGenerator, SaltGenerator>();
