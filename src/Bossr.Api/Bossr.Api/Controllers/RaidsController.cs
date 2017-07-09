@@ -1,10 +1,8 @@
-﻿using Bossr.Api.Mappers;
-using Bossr.Api.Repositories;
+﻿using Bossr.Api.Repositories;
 using Bossr.Lib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
@@ -13,12 +11,10 @@ namespace Bossr.Api.Controllers
     public class RaidsController : Controller
     {
         private readonly IRaidRepository repository;
-        private readonly IRaidMapper raidMapper;
 
-        public RaidsController(IRaidRepository repository, IRaidMapper raidMapper)
+        public RaidsController(IRaidRepository repository)
         {
             this.repository = repository;
-            this.raidMapper = raidMapper;
         }
 
         [HttpDelete("{id}")]

@@ -1,5 +1,4 @@
-﻿using Bossr.Api.Mappers;
-using Bossr.Api.Repositories;
+﻿using Bossr.Api.Repositories;
 using Bossr.Lib.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -11,20 +10,18 @@ namespace Bossr.Api.Controllers
     [Route("api/scrapes")]
     public class ScrapesController : Controller
     {
-        private readonly IScrapeRepository scrapeRepository;
-        private readonly IScrapeMapper scrapeMapper;
+        private readonly IScrapeRepository repository;
 
-        public ScrapesController(IScrapeRepository scrapeRepository, IScrapeMapper scrapeMapper)
+        public ScrapesController(IScrapeRepository repository)
         {
-            this.scrapeRepository = scrapeRepository;
-            this.scrapeMapper = scrapeMapper;
+            this.repository = repository;
         }
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "DeleteScrapes")]
         public async Task<IActionResult> Delete(int id)
         {
-            await scrapeRepository.DeleteByIdAsync(id);
+            await repository.DeleteByIdAsync(id);
             return Ok();
         }
 
@@ -32,7 +29,7 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "ReadScrapes")]
         public async Task<IActionResult> Get()
         {
-            var scrapes = await scrapeRepository.ReadAllAsync();
+            var scrapes = await repository.ReadAllAsync();
             return Ok(scrapes);
         }
 
@@ -40,7 +37,7 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "ReadScrapes")]
         public async Task<IActionResult> GetLatest()
         {
-            var scrape = await scrapeRepository.ReadLatest();
+            var scrape = await repository.ReadLatest();
             return Ok(scrape);
         }
 
@@ -48,7 +45,7 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "ReadScrapes")]
         public async Task<IActionResult> Get(int id)
         {
-            var scrape = await scrapeRepository.ReadByIdAsync(id);
+            var scrape = await repository.ReadByIdAsync(id);
             if (scrape == null)
                 return NotFound();
             
@@ -59,12 +56,12 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "UpdateScrapes")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
-            var scrape = await scrapeRepository.ReadByIdAsync(id);
+            var scrape = await repository.ReadByIdAsync(id);
             if (scrape == null)
                 return NotFound();
 
             patch.ApplyTo(scrape);
-            await scrapeRepository.UpdateAsync(scrape);
+            await repository.UpdateAsync(scrape);
             return Ok();
         }
 
@@ -72,7 +69,7 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "CreateScrapes")]
         public async Task<IActionResult> Post([FromBody]Scrape scrape)
         {
-            await scrapeRepository.CreateAsync(scrape);
+            await repository.CreateAsync(scrape);
             return Created($"/api/scrapes/{scrape.Id}", scrape);
         }
 
@@ -81,7 +78,7 @@ namespace Bossr.Api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]Scrape scrape)
         {
             scrape.Id = id;
-            await scrapeRepository.UpdateAsync(scrape);
+            await repository.UpdateAsync(scrape);
             return Ok();
         }
     }

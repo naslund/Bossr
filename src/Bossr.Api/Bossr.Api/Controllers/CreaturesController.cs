@@ -11,18 +11,18 @@ namespace Bossr.Api.Controllers
     [Route("api/creatures")]
     public class CreaturesController : Controller
     {
-        private readonly ICreatureRepository creatureRepository;
+        private readonly ICreatureRepository repository;
 
-        public CreaturesController(ICreatureRepository creatureRepository)
+        public CreaturesController(ICreatureRepository repository)
         {
-            this.creatureRepository = creatureRepository;
+            this.repository = repository;
         }
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "DeleteCreatures")]
         public async Task<IActionResult> Delete(int id)
         {
-            await creatureRepository.DeleteByIdAsync(id);
+            await repository.DeleteByIdAsync(id);
             return Ok();
         }
 
@@ -30,7 +30,7 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "ReadCreatures")]
         public async Task<IActionResult> Get()
         {
-            var creatures = await creatureRepository.ReadAllAsync();
+            var creatures = await repository.ReadAllAsync();
             return Ok(creatures);
         }
 
@@ -38,7 +38,7 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "ReadCreatures")]
         public async Task<IActionResult> Get(int id)
         {
-            var creature = await creatureRepository.ReadByIdAsync(id);
+            var creature = await repository.ReadByIdAsync(id);
             if (creature == null)
                 return NotFound();
 
@@ -49,12 +49,12 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "UpdateCreatures")]
         public async Task<IActionResult> Patch(int id, [FromBody]JsonPatchDocument patch)
         {
-            var creature = await creatureRepository.ReadByIdAsync(id);
+            var creature = await repository.ReadByIdAsync(id);
             if (creature == null)
                 return NotFound();
 
             patch.ApplyTo(creature);
-            await creatureRepository.UpdateAsync(creature);
+            await repository.UpdateAsync(creature);
             return Ok();
         }
 
@@ -63,8 +63,8 @@ namespace Bossr.Api.Controllers
         [Authorize(Policy = "CreateCreatures")]
         public async Task<IActionResult> Post([FromBody]Creature request)
         {
-            await creatureRepository.CreateAsync(request);
-            var creature = await creatureRepository.ReadByIdAsync(request.Id);
+            await repository.CreateAsync(request);
+            var creature = await repository.ReadByIdAsync(request.Id);
             return Created($"/api/creatures/{creature.Id}", creature);
         }
 
@@ -74,7 +74,7 @@ namespace Bossr.Api.Controllers
         {
             request.Id = id;
 
-            await creatureRepository.UpdateAsync(request);
+            await repository.UpdateAsync(request);
             return Ok();
         }
     }
