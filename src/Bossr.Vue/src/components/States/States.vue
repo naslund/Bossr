@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div>
     <section class="section">
       <div class="container">
@@ -62,11 +62,11 @@ export default {
     }
   },
   created () {
-    this.$http.get(process.env.API_URL + 'api/worlds/' + this.$route.params.worldid).then(response => {
+    this.$http.get(process.env.API_URL + 'worlds/' + this.$route.params.worldid).then(response => {
       this.world = response.body
     })
 
-    this.$http.get(process.env.API_URL + 'api/states/' + this.$route.params.worldid).then(response => {
+    this.$http.get(process.env.API_URL + 'states/' + this.$route.params.worldid).then(response => {
       this.states = response.body.sort(this.compareByCreatureName)
       this.filterStatesByKeyword(this.filter)
     })

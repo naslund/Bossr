@@ -23,7 +23,7 @@ export default {
     }
   },
   created () {
-    this.$http.get(process.env.API_URL + 'api/worlds').then(response => {
+    this.$http.get(process.env.API_URL + 'worlds').then(response => {
       function compare (a, b) {
         if (a.name < b.name) {
           return -1
