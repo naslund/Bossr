@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/states")]
+    [Route("states")]
     public class StatesController : Controller
     {
         private readonly IStateCalculator stateCalculator;

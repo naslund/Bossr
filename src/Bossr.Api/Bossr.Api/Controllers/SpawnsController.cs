@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/spawns")]
+    [Route("spawns")]
     public class SpawnsController : Controller
     {
         private readonly ISpawnRepository spawnRepository;

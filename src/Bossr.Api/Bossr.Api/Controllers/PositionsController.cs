@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/positions")]
+    [Route("positions")]
     public class PositionsController : Controller
     {
         private readonly IPositionRepository repository;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/users")]
+    [Route("users")]
     public class UsersController : Controller
     {
         private readonly IUserManager userManager;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/scrapes")]
+    [Route("scrapes")]
     public class ScrapesController : Controller
     {
         private readonly IScrapeRepository scrapeRepository;

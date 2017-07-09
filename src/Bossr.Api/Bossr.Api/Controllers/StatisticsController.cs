@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/statistics")]
+    [Route("statistics")]
     public class StatisticsController : Controller
     {
         private readonly IStatisticRepository statisticRepository;

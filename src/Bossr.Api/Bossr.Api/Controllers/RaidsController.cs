@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/raids")]
+    [Route("raids")]
     public class RaidsController : Controller
     {
         private readonly IRaidRepository repository;

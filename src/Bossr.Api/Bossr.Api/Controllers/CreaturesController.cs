@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/creatures")]
+    [Route("creatures")]
     public class CreaturesController : Controller
     {
         private readonly ICreatureRepository creatureRepository;

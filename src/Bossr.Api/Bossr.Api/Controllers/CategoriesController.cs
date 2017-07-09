@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/categories")]
+    [Route("categories")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryRepository repository;

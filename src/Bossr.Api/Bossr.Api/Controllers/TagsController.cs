@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/tags")]
+    [Route("tags")]
     public class TagsController : Controller
     {
         private readonly ITagRepository repository;

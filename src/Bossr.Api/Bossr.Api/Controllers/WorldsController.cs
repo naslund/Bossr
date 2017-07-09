@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bossr.Api.Controllers
 {
-    [Route("api/worlds")]
+    [Route("worlds")]
     public class WorldsController : Controller
     {
         private readonly IWorldRepository worldRepository;
