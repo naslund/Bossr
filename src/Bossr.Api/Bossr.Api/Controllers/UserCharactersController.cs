@@ -25,13 +25,11 @@ namespace Bossr.Api.Controllers
             this.userIdentityReader = userIdentityReader;
         }
 
-        private int CurrentUserId => userIdentityReader.GetUserId(User);
-
         [HttpGet("api/users/{userId}/characters")]
         [Authorize(Policy = "ReadUserCharacters")]
         public async Task<IActionResult> Get(int userId)
         {
-            var isAllowedToAccess = accessValidator.IsCurrentUserAllowedToAccessUserResources(CurrentUserId, userId);
+            var isAllowedToAccess = accessValidator.IsCurrentUserAllowedToAccessUserResources(userId);
             if (!isAllowedToAccess)
                 return Forbid();
 

@@ -2,6 +2,7 @@
 using Bossr.Api.Mappers;
 using Bossr.Api.Repositories;
 using Bossr.Api.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -12,6 +13,7 @@ namespace Bossr.Api.Configuration
         public void ConfigureDependencies(IServiceCollection services)
         {
             services.AddTransient<JwtSecurityTokenHandler>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<ITokenResponseFactory, TokenResponseFactory>();
             services.AddTransient<IJwtTokenFactory, JwtTokenFactory>();

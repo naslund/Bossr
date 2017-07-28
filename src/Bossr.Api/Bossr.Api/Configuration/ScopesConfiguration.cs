@@ -50,7 +50,7 @@ namespace Bossr.Api.Configuration
         private class PolicySet
         {
             public string Scope { get; set; }
-            public string[] Policies { get; set; }
+            public IEnumerable<string> Policies { get; set; }
         }
     }
 }
