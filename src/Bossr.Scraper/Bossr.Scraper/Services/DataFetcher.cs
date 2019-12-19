@@ -1,33 +1,28 @@
 ﻿using Bossr.Scraper.Factories;
 using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Bossr.Scraper.Services
 {
     public interface IDataFetcher
     {
-        Task<HttpResponseMessage> FetchHttpResponse(string url);
+        Task<string> FetchHttpResponse(string url);
     }
 
-    public class DataFetcher : IDataFetcher
+    public class DriverDataFetcher : IDataFetcher
     {
-        private readonly IConfiguration configuration;
-
-        public DataFetcher(IConfigurationFactory configurationFactory)
+        public async Task<string> FetchHttpResponse(string url)
         {
-            configuration = configurationFactory.CreateConfiguration();
-        }
-
-        public async Task<HttpResponseMessage> FetchHttpResponse(string url)
-        {
-            var delay = int.Parse(configuration["DataFetcherDelayMs"]);
-            await Task.Delay(delay);
-
-            using (HttpClient client = new HttpClient())
+            using (IWebDriver driver = new ChromeDriver(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName))
             {
-                return await client.GetAsync(url);
-            }
+                driver.Url = url;
+                return driver.PageSource;
+            };
         }
     }
 }

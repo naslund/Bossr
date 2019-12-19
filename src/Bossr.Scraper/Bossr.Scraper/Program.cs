@@ -17,7 +17,7 @@ namespace Bossr.Scraper
                 .AddTransient<IDateTimeFactory, DateTimeFactory>()
 
                 .AddTransient<IScheduler, Scheduler>()
-                .AddTransient<IDataFetcher, DataFetcher>()
+                .AddTransient<IDataFetcher, DriverDataFetcher>()
                 .AddSingleton<IRestClient, RestClient>()
 
                 .AddTransient<IWorldScraper, WorldScraper>()

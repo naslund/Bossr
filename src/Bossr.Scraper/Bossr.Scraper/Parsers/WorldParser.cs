@@ -10,25 +10,27 @@ namespace Bossr.Scraper.Parsers
 {
     public interface IWorldParser
     {
-        Task<IEnumerable<IWorld>> Parse(HttpResponseMessage response);
+        Task<IEnumerable<IWorld>> Parse(string response);
     }
 
     public class WorldParser : IWorldParser
     {
-        public async Task<IEnumerable<IWorld>> Parse(HttpResponseMessage response)
+        public async Task<IEnumerable<IWorld>> Parse(string response)
         {
             var nodes = await ConvertToNodesAsync(response);
             return ConvertToEntity(nodes);
         }
 
-        private async Task<IEnumerable<HtmlNode>> ConvertToNodesAsync(HttpResponseMessage response)
+        private async Task<IEnumerable<HtmlNode>> ConvertToNodesAsync(string response)
         {
             var document = new HtmlDocument();
-            document.LoadHtml(await response.Content.ReadAsStringAsync());
-            return document
+            document.LoadHtml(response);
+            var nodes = document
                 .DocumentNode
-                .SelectSingleNode("//*[@class='InnerTableContainer']/table/tr[2]/td/div[2]/div/table")
-                .SelectNodes("tr[position() > 1]");
+                .SelectNodes("(//*[@class='TableContent'])[3]/tbody/tr")
+                .Skip(1);
+            
+            return nodes;
         }
 
         private IEnumerable<IWorld> ConvertToEntity(IEnumerable<HtmlNode> nodes)

@@ -10,25 +10,27 @@ namespace Bossr.Scraper.Parsers
 {
     public interface IStatisticsTableRowParser
     {
-        Task<IEnumerable<IStatisticsTableRow>> Parse(HttpResponseMessage response, int worldId);
+        Task<IEnumerable<IStatisticsTableRow>> Parse(string response, int worldId);
     }
 
     public class StatisticsTableRowParser : IStatisticsTableRowParser
     {
-        public async Task<IEnumerable<IStatisticsTableRow>> Parse(HttpResponseMessage response, int worldId)
+        public async Task<IEnumerable<IStatisticsTableRow>> Parse(string response, int worldId)
         {
             var nodes = await ConvertToNodesAsync(response);
             return ConvertToEntities(nodes, worldId);
         }
 
-        private async Task<IEnumerable<HtmlNode>> ConvertToNodesAsync(HttpResponseMessage response)
+        private async Task<IEnumerable<HtmlNode>> ConvertToNodesAsync(string response)
         {
             var document = new HtmlDocument();
-            document.LoadHtml(await response.Content.ReadAsStringAsync());
+            document.LoadHtml(response);
+
             return document
                 .DocumentNode
-                .SelectSingleNode("//*[@id='killstatistics']/div[5]/div[1]/div[1]/table")
-                .SelectNodes("tr[position() > 2 and position() < last()]");
+                .SelectNodes("//form[@action='?subtopic=killstatistics']/../table/tbody/tr")
+                .Skip(2)
+                .SkipLast(1);
         }
 
         private IEnumerable<IStatisticsTableRow> ConvertToEntities(IEnumerable<HtmlNode> nodes, int worldId)
