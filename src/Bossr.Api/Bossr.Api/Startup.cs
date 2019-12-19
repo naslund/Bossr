@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace Bossr.Api
@@ -62,6 +63,8 @@ namespace Bossr.Api
                 Path = configuration["JwtToken:AccessTokenPath"],
                 Expiration = TimeSpan.FromMinutes(int.Parse(configuration["JwtToken:ExpirationTimeMinutes"]))
             }));
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {

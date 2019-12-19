@@ -25,7 +25,7 @@ namespace Bossr.Api.Services
         public async Task<IEnumerable<Claim>> FetchClaimsAsync(IUser user)
         {
             var claims = new List<Claim>();
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Username));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString(), ClaimValueTypes.Integer));
 
             var scopes = await scopeRepository.ReadAllByUserIdAsync(user.Id);
             claims.AddRange(scopes.Select(x => new Claim("scope", x.Name)));
