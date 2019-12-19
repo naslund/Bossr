@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bossr.Scraper", "Bossr.Scraper\Bossr.Scraper.csproj", "{0F36E99D-921D-4E85-9886-5F1B979C9591}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bossr.Scraper", "Bossr.Scraper\Bossr.Scraper.csproj", "{0F36E99D-921D-4E85-9886-5F1B979C9591}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bossr.Lib", "..\Bossr.Lib\Bossr.Lib\Bossr.Lib.csproj", "{2F1C5F6F-019E-455B-BB25-B9EA4EA5E9F0}"
 EndProject
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD3A5B1D-C1EA-484D-9450-D2C5C92FD244}
 	EndGlobalSection
 EndGlobal
